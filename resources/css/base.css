@@ -1,0 +1,74 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--color-page);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-size: var(--font-body);
+    font-weight: var(--weight-regular);
+    line-height: var(--line-body);
+}
+
+a {
+    color: var(--color-primary);
+    text-underline-offset: .2em;
+}
+
+h1, h2, h3, p {
+    margin-block: 0 var(--space-4);
+}
+
+:focus-visible {
+    outline: var(--focus-width) solid var(--color-primary);
+    outline-offset: var(--focus-offset);
+}
+
+.ms-muted { color: var(--color-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: 0s !important;
+        animation-duration: 0s !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+h1,
+h2,
+h3 {
+    line-height: var(--line-heading);
+}
+
+h1 {
+    font-size: var(--font-heading);
+    font-weight: var(--weight-bold);
+}
+
+h2,
+h3 {
+    font-size: var(--font-title);
+    font-weight: var(--weight-semibold);
+}
+
+.ms-display {
+    font-size: var(--font-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--line-heading);
+}
+
+.ms-caption {
+    font-size: var(--font-caption);
+    font-weight: var(--weight-regular);
+}
