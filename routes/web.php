@@ -41,6 +41,8 @@ Route::get('/admin/{page?}', function (?string $page = 'dashboard') {
         'imports.html' => 'imports.html',
         'courses' => 'courses.html',
         'courses.html' => 'courses.html',
+        'projects' => 'projects.html',
+        'projects.html' => 'projects.html',
         'announcements' => 'announcements.html',
         'announcements.html' => 'announcements.html',
         'audit' => 'audit.html',
@@ -53,4 +55,4 @@ Route::get('/admin/{page?}', function (?string $page = 'dashboard') {
         resource_path('views/pages/admin/'.$pages[$page]),
         ['Content-Type' => 'text/html; charset=UTF-8'],
     );
-})->where('page', 'dashboard|index\.html|users(?:\.html)?|imports(?:\.html)?|courses(?:\.html)?|announcements(?:\.html)?|audit(?:\.html)?');
+})->where('page', 'dashboard|index\.html|users(?:\.html)?|imports(?:\.html)?|courses(?:\.html)?|projects(?:\.html)?|announcements(?:\.html)?|audit(?:\.html)?');
