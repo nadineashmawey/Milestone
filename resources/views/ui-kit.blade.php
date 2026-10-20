@@ -8,6 +8,10 @@
     <a href="#buttons">Buttons</a>
     <a href="#fields">Inputs</a>
     <a href="#badges">Badges</a>
+    <a href="#more-buttons">Button options</a>
+    <a href="#more-fields">Select and textarea</a>
+    <a href="#feedback">Alerts and empty states</a>
+    <a href="#section-headings">Section heading</a>
 @endsection
 
 @section('topbar-actions')
@@ -57,5 +61,42 @@
         <h2>Section heading</h2>
         <p>Body text uses Plus Jakarta Sans, with a system fallback if the font cannot load.</p>
         <p class="ms-caption ms-muted">Caption text for supporting information.</p>
+    </x-card>
+
+    <x-card title="Button options" id="more-buttons" class="ms-stack">
+        <p class="ms-muted">Optional props. Leaving them out gives the same buttons as above.</p>
+        <div class="ms-row">
+            <x-button variant="ghost">Ghost</x-button>
+            <x-button size="small">Small</x-button>
+            <x-button size="large">Large</x-button>
+            <x-button loading>Sending…</x-button>
+            <x-button variant="secondary" href="#more-buttons">Link styled as a button</x-button>
+        </div>
+    </x-card>
+
+    <x-card title="Select and textarea" id="more-fields" class="ms-stack">
+        <x-select id="preview-category" name="preview_category" label="Category" placeholder="Choose one"
+            :options="['teams' => 'Team or membership', 'grades' => 'Grades or feedback']" help="Pass options as value => label." />
+        <x-select id="preview-category-error" name="preview_category_error" label="Category with an error"
+            :options="['teams' => 'Team or membership']" placeholder="Choose one" error="Choose what the problem is about." />
+        <x-textarea id="preview-description" name="preview_description" label="Description" rows="4"
+            help="At least 20 characters." />
+        <x-textarea id="preview-description-error" name="preview_description_error" label="Description with an error"
+            value="Too short" error="Describe the problem in at least 20 characters." />
+    </x-card>
+
+    <x-card title="Alerts and empty states" id="feedback" class="ms-stack">
+        <x-alert tone="success" title="Report sent">Your reference is MS-4821.</x-alert>
+        <x-alert tone="error" title="We couldn’t send your report.">Your details are still here. Try again.</x-alert>
+        <x-alert title="Heads up">Info alerts use role="status"; error alerts use role="alert".</x-alert>
+        <x-empty-state title="No articles match “grades”.">
+            <p>Try a shorter word, or describe the problem in the form.</p>
+            <x-slot:action><x-button variant="secondary">Clear search</x-button></x-slot:action>
+        </x-empty-state>
+    </x-card>
+
+    <x-card title="Section heading" id="section-headings">
+        <x-section-heading eyebrow="How it works" title="Structure the project once."
+            description="Eyebrow and description are optional. Use level=&quot;3&quot; inside an h2 section." />
     </x-card>
 @endsection
