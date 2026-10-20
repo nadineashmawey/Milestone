@@ -3,7 +3,6 @@
 
 @section('title', 'My Projects')
 
-
 @push('styles')
     @vite('resources/css/student-projects.css')
 @endpush
@@ -32,7 +31,13 @@
                             </div>
                             <div class="project-card__title">
                                 <h2>{{ $project['title'] }}</h2>
-                                <p>{{ $project['course'] }}@if($project['professor']) · {{ $project['professor'] }} · {{ $project['team'] }}@else · {{ $project['members'] }} of 10 members · No grading@endif</p>
+                                <p>{{ $project['course'] }}
+                                    @if ($project['professor'])
+                                        · {{ $project['professor'] }} · {{ $project['team'] }}
+                                    @else
+                                        · {{ $project['members'] }} of 10 members · No grading
+                                    @endif
+                                </p>
                             </div>
                             <div class="project-progress">
                                 <div><span>{{ $project['kind'] === 'Academic' ? 'Overall progress' : 'Task progress' }}</span><strong>{{ $project['progress'] }}%</strong></div>
