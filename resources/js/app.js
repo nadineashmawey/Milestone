@@ -1,1 +1,1 @@
-//
+import './ta-reviews.js';
