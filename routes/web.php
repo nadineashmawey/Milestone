@@ -56,3 +56,28 @@ Route::get('/admin/{page?}', function (?string $page = 'dashboard') {
         ['Content-Type' => 'text/html; charset=UTF-8'],
     );
 })->where('page', 'dashboard|index\.html|users(?:\.html)?|imports(?:\.html)?|courses(?:\.html)?|projects(?:\.html)?|announcements(?:\.html)?|audit(?:\.html)?');
+
+Route::get('/ta/assets/css/{path}', function (string $path) {
+    abort_if(str_contains($path, '..'), 404);
+    $file = resource_path('css/'.$path);
+    abort_unless(is_file($file), 404);
+    return response()->file($file, ['Content-Type' => 'text/css; charset=UTF-8']);
+})->where('path', '.*');
+
+Route::get('/ta/assets/js/{path}', function (string $path) {
+    abort_if(str_contains($path, '..'), 404);
+    $file = resource_path('js/'.$path);
+    abort_unless(is_file($file), 404);
+    return response()->file($file, ['Content-Type' => 'text/javascript; charset=UTF-8']);
+})->where('path', '.*');
+
+Route::get('/ta/{page?}', function (?string $page = 'dashboard') {
+    $pages = [
+        'dashboard' => 'dashboard.html',
+        'reviews' => 'reviews.html',
+        'issues' => 'issues.html',
+        'invitations' => 'invitations.html',
+    ];
+    abort_unless(isset($pages[$page]), 404);
+    return response()->file(resource_path('views/pages/ta/'.$pages[$page]), ['Content-Type' => 'text/html; charset=UTF-8']);
+})->where('page', 'dashboard|reviews|issues|invitations');

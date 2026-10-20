@@ -1,0 +1,211 @@
+.review-shell {
+    display: grid;
+    grid-template-columns: 300px minmax(420px, 1fr) 390px;
+    min-height: 670px;
+    overflow: hidden;
+}
+.queue,
+.document,
+.review-form {
+    padding: 25px;
+}
+.queue,
+.document {
+    border-right: 1px solid var(--color-border);
+}
+.filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 25px;
+}
+.filter-tabs button {
+    border: 0;
+    border-radius: 9px;
+    padding: 8px 11px;
+    background: #f0f3f9;
+    color: var(--color-muted);
+    font-weight: 700;
+    cursor: pointer;
+}
+.filter-tabs .active {
+    background: #e7edff;
+    color: var(--color-primary);
+}
+.submission {
+    width: 100%;
+    padding: 17px 14px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    margin-top: 9px;
+}
+.submission.active {
+    border-color: #bccaff;
+    background: #f2f5ff;
+}
+.submission strong,
+.submission small {
+    display: block;
+}
+.submission small {
+    color: var(--color-muted);
+    margin: 4px 0;
+}
+.doc-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+}
+.versions {
+    display: flex;
+    align-self: flex-start;
+    gap: 6px;
+    padding: 5px;
+    background: #f2f5fb;
+    border: 1px solid var(--color-border);
+    border-radius: 13px;
+}
+.versions button {
+    height: 40px;
+    min-width: 45px;
+    padding: 0 13px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--color-muted);
+    font-weight: 750;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.18s ease;
+}
+.versions button:hover {
+    background: #fff;
+    border-color: #d3daea;
+    color: var(--color-ink);
+}
+.versions button:focus-visible {
+    outline: 3px solid rgba(47, 92, 255, 0.2);
+    outline-offset: 2px;
+}
+.versions .active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(47, 92, 255, 0.22);
+}
+.versions .active:hover {
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+    color: #fff;
+}
+.versions small {
+    font-size: 0.69rem;
+    font-weight: 750;
+    opacity: 0.82;
+}
+.paper {
+    margin-top: 22px;
+    padding: 32px;
+    background: #fafbfe;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+}
+.paper .line {
+    height: 9px;
+    background: #dfe5f0;
+    border-radius: 9px;
+    margin: 13px 0;
+}
+.paper .line:nth-child(2n) {
+    width: 82%;
+}
+.paper .line:nth-child(3n) {
+    width: 62%;
+}
+.score {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 4px 0 22px;
+    border-bottom: 1px solid var(--color-border);
+}
+.score > div {
+    display: grid;
+    gap: 5px;
+}
+.score strong {
+    display: block;
+    font-size: 2rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+}
+.score .badge {
+    flex: 0 0 auto;
+    margin-top: 2px;
+}
+.rubric {
+    padding: 18px 0;
+}
+.criterion {
+    margin: 13px 0;
+}
+.criterion-head {
+    display: flex;
+    justify-content: space-between;
+}
+.criterion input {
+    width: 100%;
+    accent-color: var(--color-primary);
+}
+.review-form textarea {
+    min-height: 125px;
+    resize: vertical;
+}
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 11px 0;
+}
+.chips button {
+    border: 1px solid var(--color-border);
+    background: #fff;
+    border-radius: 99px;
+    padding: 6px 9px;
+    cursor: pointer;
+}
+.actions {
+    display: flex;
+    gap: 9px;
+    justify-content: flex-end;
+    margin-top: 14px;
+}
+.actions .btn {
+    padding: 0 14px;
+}
+@media (max-width: 1200px) {
+    .review-shell {
+        grid-template-columns: 260px 1fr;
+    }
+    .review-form {
+        grid-column: 1/-1;
+        border-top: 1px solid var(--color-border);
+    }
+    .document {
+        border-right: 0;
+    }
+}
+@media (max-width: 760px) {
+    .review-shell {
+        display: block;
+    }
+    .queue,
+    .document {
+        border-right: 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+}

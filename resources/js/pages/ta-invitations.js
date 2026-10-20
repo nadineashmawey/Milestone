@@ -1,0 +1,4 @@
+const list=document.querySelector('#inviteList'),empty=document.querySelector('#inviteEmpty'),toast=document.querySelector('#toast');
+function respond(card,accepted){const project=card.dataset.project;card.hidden=true;if(!list.querySelector('.invite-card:not([hidden])')){list.hidden=true;empty.hidden=false}document.querySelector('#toastTitle').textContent=accepted?'Invitation accepted':'Invitation declined';document.querySelector('#toastMessage').textContent=accepted?`${project} was added to your workspace.`:'The professor has been notified.';toast.hidden=false;setTimeout(()=>{toast.hidden=true},3200)}
+list.addEventListener('click',event=>{const button=event.target.closest('[data-action]');if(!button)return;respond(button.closest('.invite-card'),button.dataset.action==='accept')});
+toast.querySelector('button').addEventListener('click',()=>{toast.hidden=true});
