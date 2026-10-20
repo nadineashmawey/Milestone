@@ -66,6 +66,7 @@
 .ms-empty__body { color: var(--color-muted); }
 .ms-empty__body > :last-child { margin-bottom: 0; }
 .ms-empty__action { margin-top: var(--space-2); }
+.ms-alert[hidden], .ms-empty[hidden] { display: none; }
 .ms-section-heading { max-width: 40rem; }
 .ms-section-heading__eyebrow { margin-bottom: var(--space-2); color: var(--color-primary); font-size: var(--font-caption); font-weight: var(--weight-semibold); letter-spacing: .08em; text-transform: uppercase; }
 .ms-section-heading__title { margin-bottom: var(--space-3); font-size: var(--font-heading); font-weight: var(--weight-bold); }
