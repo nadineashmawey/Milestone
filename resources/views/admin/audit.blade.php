@@ -1,31 +1,17 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Audit Log · Milestone</title>
-        <link rel="stylesheet" href="/admin/assets/css/tokens.css" />
-        <link rel="stylesheet" href="/admin/assets/css/base.css" />
-        <link rel="stylesheet" href="/admin/assets/css/components.css" />
-        <link rel="stylesheet" href="/admin/assets/css/admin-static.css?v=20261021-2" />
-        <link rel="stylesheet" href="/admin/assets/css/pages/admin-audit.css?v=20261021-2" />
-    </head>
-    <body>
-        <main class="page">
-            <div class="container">
-                <header class="page-header">
-                    <div>
-                        <p class="eyebrow">Admin · Governance</p>
-                        <h1>Audit log</h1>
-                        <p>
-                            Role, account, course, and project administration
-                            history.
-                        </p>
-                    </div>
+@extends('layouts.admin')
+
+@section('title', 'Audit Log')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'pages/admin-audit.css']) }}">
+@endpush
+
+@section('content')
+<x-admin.page-header eyebrow="Admin · Governance" title="Audit log" description="Role, account, course, and project administration history.">
                     <button class="btn secondary" id="exportCsv">
                         ↓ Export CSV
                     </button>
-                </header>
+</x-admin.page-header>
                 <section class="card audit-card" id="auditCard">
                     <div class="audit-toolbar">
                         <div class="select" id="auditSelect">
@@ -69,15 +55,35 @@
                     </div>
                 </section>
                 <section class="card page-state" id="auditNoActivity" hidden>
-                    <span class="state-icon">0</span><h2>No audit activity</h2>
-                    <p>Sensitive administrative actions will appear here when they occur.</p>
+                    <span class="state-icon">0</span>
+                    <h2>No audit activity</h2>
+                    <p>
+                        Sensitive administrative actions will appear here when
+                        they occur.
+                    </p>
                 </section>
-                <section class="card page-state error-state" id="auditErrorState" hidden>
-                    <span class="state-icon">!</span><h2>Audit log could not be loaded</h2>
-                    <p>Something went wrong while loading administrative activity.</p>
-                    <button class="btn" type="button" onclick="location.href='/admin/audit'">Retry</button>
+                <section
+                    class="card page-state error-state"
+                    id="auditErrorState"
+                    hidden
+                >
+                    <span class="state-icon">!</span>
+                    <h2>Audit log could not be loaded</h2>
+                    <p>
+                        Something went wrong while loading administrative
+                        activity.
+                    </p>
+                    <button
+                        class="btn"
+                        type="button"
+                        onclick="location.href = '/admin/audit'"
+                    >
+                        Retry
+                    </button>
                 </section>
-            </div>
+@endsection
+
+@push('overlays')
             <div class="toast" id="auditToast" hidden>
                 <div>
                     <strong>Export ready</strong>
@@ -85,7 +91,8 @@
                 </div>
                 <button>×</button>
             </div>
-        </main>
-        <script src="/admin/assets/js/pages/admin-audit.js"></script>
-    </body>
-</html>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('admin.assets.js', ['path' => 'pages/admin-audit.js']) }}"></script>
+@endpush

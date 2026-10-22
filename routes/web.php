@@ -21,7 +21,7 @@ Route::get('/admin/assets/css/{path}', function (string $path) {
     abort_unless(is_file($file), 404);
 
     return response()->file($file, ['Content-Type' => 'text/css; charset=UTF-8']);
-})->where('path', '.*');
+})->where('path', '.*')->name('admin.assets.css');
 
 Route::get('/admin/assets/js/{path}', function (string $path) {
     abort_if(str_contains($path, '..'), 404);
@@ -29,30 +29,14 @@ Route::get('/admin/assets/js/{path}', function (string $path) {
     abort_unless(is_file($file), 404);
 
     return response()->file($file, ['Content-Type' => 'text/javascript; charset=UTF-8']);
-})->where('path', '.*');
+})->where('path', '.*')->name('admin.assets.js');
 
-Route::get('/admin/{page?}', function (?string $page = 'dashboard') {
-    $pages = [
-        'dashboard' => 'index.html',
-        'index.html' => 'index.html',
-        'users' => 'users.html',
-        'users.html' => 'users.html',
-        'imports' => 'imports.html',
-        'imports.html' => 'imports.html',
-        'courses' => 'courses.html',
-        'courses.html' => 'courses.html',
-        'projects' => 'projects.html',
-        'projects.html' => 'projects.html',
-        'announcements' => 'announcements.html',
-        'announcements.html' => 'announcements.html',
-        'audit' => 'audit.html',
-        'audit.html' => 'audit.html',
-    ];
-
-    abort_unless(isset($pages[$page]), 404);
-
-    return response()->file(
-        resource_path('views/pages/admin/'.$pages[$page]),
-        ['Content-Type' => 'text/html; charset=UTF-8'],
-    );
-})->where('page', 'dashboard|index\.html|users(?:\.html)?|imports(?:\.html)?|courses(?:\.html)?|projects(?:\.html)?|announcements(?:\.html)?|audit(?:\.html)?');
+/* Frontend-only admin prototype: application and database logic follow in phase two. */
+Route::redirect('/admin', '/admin/dashboard');
+Route::view('/admin/dashboard', 'admin.dashboard')->name('admin.dashboard');
+Route::view('/admin/users', 'admin.users')->name('admin.users');
+Route::view('/admin/imports', 'admin.imports')->name('admin.imports');
+Route::view('/admin/courses', 'admin.courses')->name('admin.courses');
+Route::view('/admin/projects', 'admin.projects')->name('admin.projects');
+Route::view('/admin/announcements', 'admin.announcements')->name('admin.announcements');
+Route::view('/admin/audit', 'admin.audit')->name('admin.audit');

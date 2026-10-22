@@ -1,31 +1,14 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Import Users · Milestone</title>
-        <link rel="stylesheet" href="/admin/assets/css/tokens.css" />
-        <link rel="stylesheet" href="/admin/assets/css/base.css" />
-        <link rel="stylesheet" href="/admin/assets/css/components.css" />
-        <link rel="stylesheet" href="/admin/assets/css/admin-static.css?v=20261021-2" />
-        <link
-            rel="stylesheet"
-            href="/admin/assets/css/pages/admin-imports.css?v=20261021-2"
-        />
-    </head>
-    <body>
-        <main class="page imports">
-            <div class="container">
-                <header class="page-header">
-                    <div>
-                        <p class="eyebrow">Admin · Bulk import</p>
-                        <h1>Import university users</h1>
-                        <p>
-                            Upload, validate, review duplicates, then confirm.
-                            No data is persisted in this prototype.
-                        </p>
-                    </div>
-                </header>
+@extends('layouts.admin')
+
+@section('title', 'Import Users')
+@section('page-class', 'page imports')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'pages/admin-imports.css']) }}">
+@endpush
+
+@section('content')
+<x-admin.page-header eyebrow="Admin · Bulk import" title="Import university users" description="Upload, validate, review duplicates, then confirm. No data is persisted in this prototype." />
                 <div class="layout">
                     <ol class="steps">
                         <li class="active" data-indicator="1">
@@ -131,7 +114,7 @@
                             </div>
                         </aside>
                         <div class="actions">
-                            <a class="btn secondary" href="users.html"
+                            <a class="btn secondary" href="{{ route('admin.users') }}"
                                 >Back to users</a
                             ><button class="btn" id="validate" disabled>
                                 Validate and preview
@@ -146,16 +129,45 @@
                                 <p id="summary"></p>
                             </div>
                         </div>
-                        <div class="validation-totals" aria-label="Validation totals">
-                            <div><strong id="totalRows">0</strong><span>Total rows</span></div>
-                            <div class="accepted"><strong id="acceptedRows">0</strong><span>Accepted</span></div>
-                            <div class="duplicates"><strong id="duplicateRows">0</strong><span>Duplicates</span></div>
-                            <div class="rejected"><strong id="rejectedRows">0</strong><span>Rejected</span></div>
+                        <div
+                            class="validation-totals"
+                            aria-label="Validation totals"
+                        >
+                            <div>
+                                <strong id="totalRows">0</strong
+                                ><span>Total rows</span>
+                            </div>
+                            <div class="accepted">
+                                <strong id="acceptedRows">0</strong
+                                ><span>Accepted</span>
+                            </div>
+                            <div class="duplicates">
+                                <strong id="duplicateRows">0</strong
+                                ><span>Duplicates</span>
+                            </div>
+                            <div class="rejected">
+                                <strong id="rejectedRows">0</strong
+                                ><span>Rejected</span>
+                            </div>
                         </div>
-                        <div class="page-state error-state" id="noValidRowsState" hidden>
-                            <span class="state-icon">!</span><h2>No valid rows available</h2>
-                            <p>Correct the rejected and duplicate rows in the CSV, then upload the file again.</p>
-                            <button class="btn secondary" type="button" id="returnToUpload">Return to upload</button>
+                        <div
+                            class="page-state error-state"
+                            id="noValidRowsState"
+                            hidden
+                        >
+                            <span class="state-icon">!</span>
+                            <h2>No valid rows available</h2>
+                            <p>
+                                Correct the rejected and duplicate rows in the
+                                CSV, then upload the file again.
+                            </p>
+                            <button
+                                class="btn secondary"
+                                type="button"
+                                id="returnToUpload"
+                            >
+                                Return to upload
+                            </button>
                         </div>
                         <div class="preview">
                             <table>
@@ -184,22 +196,45 @@
                         <h2>Accounts are ready</h2>
                         <p id="completeCopy"></p>
                         <div class="confirmation-summary">
-                            <div><strong id="createdCount">0</strong><span>Ready to create</span></div>
-                            <div><strong id="skippedCount">0</strong><span>Skipped</span></div>
-                            <div><strong id="failedCount">0</strong><span>Rejected</span></div>
+                            <div>
+                                <strong id="createdCount">0</strong
+                                ><span>Ready to create</span>
+                            </div>
+                            <div>
+                                <strong id="skippedCount">0</strong
+                                ><span>Skipped</span>
+                            </div>
+                            <div>
+                                <strong id="failedCount">0</strong
+                                ><span>Rejected</span>
+                            </div>
                         </div>
                         <button class="btn" id="again">
                             Import another CSV
                         </button>
                     </section>
-                    <section class="card page-state error-state" id="importErrorState" hidden>
-                        <span class="state-icon">!</span><h2>Import validation failed</h2>
-                        <p>The CSV could not be validated. Check the file and try again.</p>
-                        <button class="btn" type="button" onclick="location.href='/admin/imports'">Try again</button>
+                    <section
+                        class="card page-state error-state"
+                        id="importErrorState"
+                        hidden
+                    >
+                        <span class="state-icon">!</span>
+                        <h2>Import validation failed</h2>
+                        <p>
+                            The CSV could not be validated. Check the file and
+                            try again.
+                        </p>
+                        <button
+                            class="btn"
+                            type="button"
+                            onclick="location.href = '/admin/imports'"
+                        >
+                            Try again
+                        </button>
                     </section>
                 </div>
-            </div>
-        </main>
-        <script src="/admin/assets/js/pages/admin-imports.js"></script>
-    </body>
-</html>
+@endsection
+
+@push('scripts')
+    <script src="{{ route('admin.assets.js', ['path' => 'pages/admin-imports.js']) }}"></script>
+@endpush

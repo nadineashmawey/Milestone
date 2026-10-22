@@ -1,32 +1,16 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Semesters and Courses · Milestone</title>
-        <link rel="stylesheet" href="/admin/assets/css/tokens.css" />
-        <link rel="stylesheet" href="/admin/assets/css/base.css" />
-        <link rel="stylesheet" href="/admin/assets/css/components.css" />
-        <link rel="stylesheet" href="/admin/assets/css/admin-static.css?v=20261021-2" />
-        <link
-            rel="stylesheet"
-            href="/admin/assets/css/pages/admin-courses.css?v=20261021-2"
-        />
-    </head>
-    <body>
-        <main class="page courses">
-            <div class="container">
-                <header class="page-header">
-                    <div>
-                        <p class="eyebrow">Academic structure</p>
-                        <h1>Semesters and courses</h1>
-                        <p>
-                            Maintain catalog periods and the work by semester,
-                            course, then project.
-                        </p>
-                    </div>
+@extends('layouts.admin')
+
+@section('title', 'Semesters and Courses')
+@section('page-class', 'page courses')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'pages/admin-courses.css']) }}">
+@endpush
+
+@section('content')
+<x-admin.page-header eyebrow="Academic structure" title="Semesters and courses" description="Maintain catalog periods and the work by semester, course, then project.">
                     <button class="btn" id="addSemester">+ Add semester</button>
-                </header>
+</x-admin.page-header>
                 <nav class="course-tabs" aria-label="Academic structure">
                     <button class="active" data-course-tab="semesters">
                         Semesters</button
@@ -158,21 +142,48 @@
                         </tbody>
                     </table>
                     <div class="page-state" id="coursesEmptyState" hidden>
-                        <span class="state-icon">0</span><h2>No courses yet</h2>
+                        <span class="state-icon">0</span>
+                        <h2>No courses yet</h2>
                         <p>Add the first course to the active semester.</p>
                     </div>
                 </section>
-                <section class="card page-state" id="semestersEmptyState" hidden>
-                    <span class="state-icon">0</span><h2>No semesters yet</h2>
-                    <p>Create a semester before adding courses and academic projects.</p>
-                    <button class="btn" type="button" id="emptyAddSemester">+ Add semester</button>
+                <section
+                    class="card page-state"
+                    id="semestersEmptyState"
+                    hidden
+                >
+                    <span class="state-icon">0</span>
+                    <h2>No semesters yet</h2>
+                    <p>
+                        Create a semester before adding courses and academic
+                        projects.
+                    </p>
+                    <button class="btn" type="button" id="emptyAddSemester">
+                        + Add semester
+                    </button>
                 </section>
-                <section class="card page-state error-state" id="academicErrorState" hidden>
-                    <span class="state-icon">!</span><h2>Academic structure could not be loaded</h2>
-                    <p>Something went wrong while loading semesters and courses.</p>
-                    <button class="btn" type="button" onclick="location.href='/admin/courses'">Retry</button>
+                <section
+                    class="card page-state error-state"
+                    id="academicErrorState"
+                    hidden
+                >
+                    <span class="state-icon">!</span>
+                    <h2>Academic structure could not be loaded</h2>
+                    <p>
+                        Something went wrong while loading semesters and
+                        courses.
+                    </p>
+                    <button
+                        class="btn"
+                        type="button"
+                        onclick="location.href = '/admin/courses'"
+                    >
+                        Retry
+                    </button>
                 </section>
-            </div>
+@endsection
+
+@push('overlays')
             <div class="course-overlay" id="semesterOverlay" hidden></div>
             <aside
                 class="semester-drawer"
@@ -296,7 +307,8 @@
                 </div>
                 <button>×</button>
             </div>
-        </main>
-        <script src="/admin/assets/js/pages/admin-courses.js"></script>
-    </body>
-</html>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('admin.assets.js', ['path' => 'pages/admin-courses.js']) }}"></script>
+@endpush

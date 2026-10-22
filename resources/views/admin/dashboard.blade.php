@@ -1,38 +1,22 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Admin Dashboard · Milestone</title>
-        <link rel="stylesheet" href="/admin/assets/css/tokens.css" />
-        <link rel="stylesheet" href="/admin/assets/css/base.css" />
-        <link rel="stylesheet" href="/admin/assets/css/components.css" />
-        <link rel="stylesheet" href="/admin/assets/css/admin-static.css" />
-        <link
-            rel="stylesheet"
-            href="/admin/assets/css/pages/admin-dashboard.css"
-        />
-    </head>
-    <body>
-        <main class="page dashboard">
-            <div class="container">
-                <header class="page-header">
-                    <div>
-                        <p class="eyebrow">System administration</p>
-                        <h1>University workspace</h1>
-                        <p>
-                            Manage people, academic structure, and retained
-                            project records.
-                        </p>
-                    </div>
-                    <a class="btn" href="imports.html"
+@extends('layouts.admin')
+
+@section('title', 'Admin Dashboard')
+@section('page-class', 'page dashboard')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'pages/admin-dashboard.css']) }}">
+@endpush
+
+@section('content')
+<x-admin.page-header eyebrow="System administration" title="University workspace" description="Manage people, academic structure, and retained project records.">
+                    <a class="btn" href="{{ route('admin.imports') }}"
                         ><svg viewBox="0 0 24 24">
                             <path
                                 d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"
                             /></svg
                         >Import users</a
                     >
-                </header>
+</x-admin.page-header>
                 <section class="metrics" aria-label="University overview">
                     <article class="card metric">
                         <span class="metric-icon"
@@ -123,7 +107,7 @@
                                 ></a>
                             </li>
                             <li>
-                                <a href="users.html"
+                                <a href="{{ route('admin.users') }}"
                                     ><i class="queue-marker"></i
                                     ><span class="queue-copy"
                                         ><strong
@@ -179,7 +163,7 @@
                             <h2>Recent administrative activity</h2>
                             <p>Account and academic structure changes</p>
                         </div>
-                        <a href="audit.html">View audit history</a>
+                        <a href="{{ route('admin.audit') }}">View audit history</a>
                     </header>
                     <ul class="activity-list">
                         <li>
@@ -211,7 +195,4 @@
                         </li>
                     </ul>
                 </section>
-            </div>
-        </main>
-    </body>
-</html>
+@endsection

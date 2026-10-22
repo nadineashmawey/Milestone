@@ -1,35 +1,19 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Project Administration · Milestone</title>
-        <link rel="stylesheet" href="/admin/assets/css/tokens.css" />
-        <link rel="stylesheet" href="/admin/assets/css/base.css" />
-        <link rel="stylesheet" href="/admin/assets/css/components.css" />
-        <link rel="stylesheet" href="/admin/assets/css/admin-static.css?v=20261021-2" />
-        <link
-            rel="stylesheet"
-            href="/admin/assets/css/pages/admin-projects.css?v=20261021-2"
-        />
-    </head>
-    <body>
-        <main class="page projects">
-            <div class="container">
+@extends('layouts.admin')
+
+@section('title', 'Project Administration')
+@section('page-class', 'page projects')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'pages/admin-projects.css']) }}">
+@endpush
+
+@section('content')
                 <section id="projectList">
-                    <header class="page-header">
-                        <div>
-                            <p class="eyebrow">Admin · Historical records</p>
-                            <h1>Project administration</h1>
-                            <p>
-                                Transfer academic ownership, archive records,
-                                and apply approved retention rules.
-                            </p>
-                        </div>
+<x-admin.page-header eyebrow="Admin · Historical records" title="Project administration" description="Transfer academic ownership, archive records, and apply approved retention rules.">
                         <button class="btn" id="openSupport">
                             ♧ Support access
                         </button>
-                    </header>
+</x-admin.page-header>
                     <section class="card project-card" id="projectRecordsCard">
                         <div class="project-toolbar">
                             <div class="project-filters">
@@ -99,14 +83,36 @@
                             </div>
                         </div>
                     </section>
-                    <section class="card page-state" id="projectsEmptyState" hidden>
-                        <span class="state-icon">0</span><h2>No project records</h2>
-                        <p>Project records will appear here after projects are created.</p>
+                    <section
+                        class="card page-state"
+                        id="projectsEmptyState"
+                        hidden
+                    >
+                        <span class="state-icon">0</span>
+                        <h2>No project records</h2>
+                        <p>
+                            Project records will appear here after projects are
+                            created.
+                        </p>
                     </section>
-                    <section class="card page-state error-state" id="projectsErrorState" hidden>
-                        <span class="state-icon">!</span><h2>Project records could not be loaded</h2>
-                        <p>Something went wrong while loading retained project records.</p>
-                        <button class="btn" type="button" onclick="location.href='/admin/projects'">Retry</button>
+                    <section
+                        class="card page-state error-state"
+                        id="projectsErrorState"
+                        hidden
+                    >
+                        <span class="state-icon">!</span>
+                        <h2>Project records could not be loaded</h2>
+                        <p>
+                            Something went wrong while loading retained project
+                            records.
+                        </p>
+                        <button
+                            class="btn"
+                            type="button"
+                            onclick="location.href = '/admin/projects'"
+                        >
+                            Retry
+                        </button>
                     </section>
                 </section>
                 <section id="supportScreen" hidden>
@@ -226,7 +232,9 @@
                         </aside>
                     </div>
                 </section>
-            </div>
+@endsection
+
+@push('overlays')
             <div class="project-overlay" id="actionOverlay" hidden></div>
             <section
                 class="action-dialog"
@@ -236,14 +244,27 @@
                 aria-labelledby="actionDialogTitle"
                 hidden
             >
-                <span class="action-icon" id="actionDialogIcon" aria-hidden="true">&#128451;</span>
+                <span
+                    class="action-icon"
+                    id="actionDialogIcon"
+                    aria-hidden="true"
+                    >&#128451;</span
+                >
                 <p class="eyebrow">Admin · Project records</p>
                 <h2 id="actionDialogTitle">Archive project?</h2>
                 <p id="actionDialogMessage"></p>
                 <aside class="action-notice" id="actionDialogNotice"></aside>
                 <footer>
-                    <button class="btn secondary" type="button" id="cancelProjectAction">Cancel</button>
-                    <button class="btn" type="button" id="confirmProjectAction">Confirm archive</button>
+                    <button
+                        class="btn secondary"
+                        type="button"
+                        id="cancelProjectAction"
+                    >
+                        Cancel
+                    </button>
+                    <button class="btn" type="button" id="confirmProjectAction">
+                        Confirm archive
+                    </button>
                 </footer>
             </section>
             <div class="project-overlay" id="transferOverlay" hidden></div>
@@ -258,11 +279,18 @@
                 <p class="eyebrow">Admin · Ownership transfer</p>
                 <h2 id="transferDialogTitle">Transfer project ownership</h2>
                 <p class="dialog-copy">
-                    Assign this academic project to another professor. No project records will be changed.
+                    Assign this academic project to another professor. No
+                    project records will be changed.
                 </p>
                 <dl class="transfer-summary">
-                    <div><dt>Project</dt><dd id="transferProjectName"></dd></div>
-                    <div><dt>Current professor</dt><dd id="transferCurrentOwner"></dd></div>
+                    <div>
+                        <dt>Project</dt>
+                        <dd id="transferProjectName"></dd>
+                    </div>
+                    <div>
+                        <dt>Current professor</dt>
+                        <dd id="transferCurrentOwner"></dd>
+                    </div>
                 </dl>
                 <div class="field">
                     <label for="transferProfessor">New professor</label>
@@ -272,7 +300,11 @@
                         <option>Professor Nabil Farouk</option>
                         <option>Professor Mona Adel</option>
                     </select>
-                    <small class="error" id="transferProfessorError" hidden></small>
+                    <small
+                        class="error"
+                        id="transferProfessorError"
+                        hidden
+                    ></small>
                 </div>
                 <div class="field">
                     <label for="transferReason">Transfer reason</label>
@@ -283,14 +315,27 @@
                         <option>Administrative correction</option>
                         <option>Other approved reason</option>
                     </select>
-                    <small class="error" id="transferReasonError" hidden></small>
+                    <small
+                        class="error"
+                        id="transferReasonError"
+                        hidden
+                    ></small>
                 </div>
                 <aside class="transfer-notice">
-                    This administrative change will be recorded in the audit log.
+                    This administrative change will be recorded in the audit
+                    log.
                 </aside>
                 <footer>
-                    <button class="btn secondary" type="button" id="cancelTransfer">Cancel</button>
-                    <button class="btn" type="button" id="confirmTransfer">Confirm transfer</button>
+                    <button
+                        class="btn secondary"
+                        type="button"
+                        id="cancelTransfer"
+                    >
+                        Cancel
+                    </button>
+                    <button class="btn" type="button" id="confirmTransfer">
+                        Confirm transfer
+                    </button>
                 </footer>
             </section>
             <div class="project-overlay" id="deleteOverlay" hidden></div>
@@ -361,7 +406,8 @@
                 </div>
                 <button type="button" id="closeProjectToast">×</button>
             </div>
-        </main>
-        <script src="/admin/assets/js/pages/admin-projects.js"></script>
-    </body>
-</html>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('admin.assets.js', ['path' => 'pages/admin-projects.js']) }}"></script>
+@endpush

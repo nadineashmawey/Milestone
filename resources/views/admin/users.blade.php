@@ -1,34 +1,21 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Users and Roles · Milestone</title>
-        <link rel="stylesheet" href="/admin/assets/css/tokens.css" />
-        <link rel="stylesheet" href="/admin/assets/css/base.css" />
-        <link rel="stylesheet" href="/admin/assets/css/components.css" />
-        <link rel="stylesheet" href="/admin/assets/css/admin-static.css?v=20261021-2" />
-        <link rel="stylesheet" href="/admin/assets/css/pages/admin-users.css?v=20261021-2" />
-    </head>
-    <body>
-        <main class="page users">
-            <div class="container">
-                <header class="page-header">
-                    <div>
-                        <p class="eyebrow">Admin · Access control</p>
-                        <h1>Users and roles</h1>
-                        <p>
-                            One role per account. Historical records remain
-                            after deactivation.
-                        </p>
-                    </div>
+@extends('layouts.admin')
+
+@section('title', 'Users and Roles')
+@section('page-class', 'page users')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'pages/admin-users.css']) }}">
+@endpush
+
+@section('content')
+<x-admin.page-header eyebrow="Admin · Access control" title="Users and roles" description="One role per account. Historical records remain after deactivation.">
                     <div>
                         <button class="btn" id="addUser">+ Add user</button>
-                        <a class="btn secondary" href="imports.html"
+                        <a class="btn secondary" href="{{ route('admin.imports') }}"
                             >Import CSV</a
                         >
                     </div>
-                </header>
+</x-admin.page-header>
                 <nav class="tabs" role="tablist">
                     <button data-tab="all" aria-selected="true">
                         All users</button
@@ -93,14 +80,38 @@
                         </table>
                     </div>
                     <div class="card page-state" id="usersEmptyState" hidden>
-                        <span class="state-icon">0</span><h2>No users found</h2>
-                        <p>No users match the selected role. Choose another role or add a user.</p>
-                        <button class="btn secondary" type="button" id="clearUserFilter">Show all users</button>
+                        <span class="state-icon">0</span>
+                        <h2>No users found</h2>
+                        <p>
+                            No users match the selected role. Choose another
+                            role or add a user.
+                        </p>
+                        <button
+                            class="btn secondary"
+                            type="button"
+                            id="clearUserFilter"
+                        >
+                            Show all users
+                        </button>
                     </div>
-                    <div class="card page-state error-state" id="usersErrorState" hidden>
-                        <span class="state-icon">!</span><h2>Users could not be loaded</h2>
-                        <p>Something went wrong while loading university accounts. Try again.</p>
-                        <button class="btn" type="button" onclick="location.href='/admin/users'">Retry</button>
+                    <div
+                        class="card page-state error-state"
+                        id="usersErrorState"
+                        hidden
+                    >
+                        <span class="state-icon">!</span>
+                        <h2>Users could not be loaded</h2>
+                        <p>
+                            Something went wrong while loading university
+                            accounts. Try again.
+                        </p>
+                        <button
+                            class="btn"
+                            type="button"
+                            onclick="location.href = '/admin/users'"
+                        >
+                            Retry
+                        </button>
                     </div>
                 </section>
                 <section class="users-panel" data-panel="pending" hidden>
@@ -254,7 +265,9 @@
                         </div>
                     </div>
                 </section>
-            </div>
+@endsection
+
+@push('overlays')
             <div class="overlay" id="overlay" hidden></div>
             <aside class="drawer" id="drawer" aria-hidden="true">
                 <button class="drawer-close" id="closeDrawer">×</button>
@@ -264,12 +277,24 @@
                     <div class="name-grid">
                         <div class="field">
                             <label for="first">First name</label
-                            ><input class="control" id="first" maxlength="50" autocomplete="given-name" required />
+                            ><input
+                                class="control"
+                                id="first"
+                                maxlength="50"
+                                autocomplete="given-name"
+                                required
+                            />
                             <p class="error" data-error="first" hidden></p>
                         </div>
                         <div class="field">
                             <label for="last">Last name</label
-                            ><input class="control" id="last" maxlength="50" autocomplete="family-name" required />
+                            ><input
+                                class="control"
+                                id="last"
+                                maxlength="50"
+                                autocomplete="family-name"
+                                required
+                            />
                             <p class="error" data-error="last" hidden></p>
                         </div>
                     </div>
@@ -438,7 +463,12 @@
                 aria-labelledby="deactivateTitle"
                 hidden
             >
-                <span class="deactivate-icon" id="statusDialogIcon" aria-hidden="true">!</span>
+                <span
+                    class="deactivate-icon"
+                    id="statusDialogIcon"
+                    aria-hidden="true"
+                    >!</span
+                >
                 <p class="eyebrow">Admin · Account access</p>
                 <h2 id="deactivateTitle">Deactivate account?</h2>
                 <p id="statusDialogMessage"></p>
@@ -447,10 +477,18 @@
                     history will remain available.
                 </aside>
                 <div class="deactivate-actions">
-                    <button type="button" class="btn secondary" id="cancelDeactivate">
+                    <button
+                        type="button"
+                        class="btn secondary"
+                        id="cancelDeactivate"
+                    >
                         Cancel
                     </button>
-                    <button type="button" class="btn danger-button" id="confirmDeactivate">
+                    <button
+                        type="button"
+                        class="btn danger-button"
+                        id="confirmDeactivate"
+                    >
                         Confirm deactivation
                     </button>
                 </div>
@@ -462,7 +500,8 @@
                 </div>
                 <button type="button" id="closeToast">×</button>
             </div>
-        </main>
-        <script src="/admin/assets/js/pages/admin-users.js"></script>
-    </body>
-</html>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('admin.assets.js', ['path' => 'pages/admin-users.js']) }}"></script>
+@endpush
