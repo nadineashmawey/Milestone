@@ -1,28 +1,15 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="icon" href="data:" />
-        <title>TA Assignments · Milestone</title>
-        <link rel="stylesheet" href="/ta/assets/css/admin-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/ta-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/pages/ta-invitations.css" />
-    </head>
-    <body>
-        <main class="ta-page">
-            <div class="ta-container">
-                <header class="ta-header">
-                    <div>
-                        <p class="eyebrow">Teaching assistant workspace</p>
-                        <h1>Project assignments</h1>
-                        <p class="lead">
-                            Professor assignments appear automatically. No
-                            acceptance is required.
-                        </p>
-                    </div>
-                    <span class="badge info">2 active assignments</span>
-                </header>
+@extends('layouts.ta')
+
+@section('title', 'TA Assignments')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('ta.assets.css', ['path' => 'pages/ta-invitations.css']) }}">
+@endpush
+
+@section('content')
+<x-ta.page-header title="Project assignments" description="Professor assignments appear automatically. No acceptance is required.">
+    <span class="badge info">2 active assignments</span>
+</x-ta.page-header>
                 <section id="assignmentContent">
                     <aside class="assignment-note">
                         Assignment access is controlled by the supervising
@@ -69,7 +56,7 @@
                             </div>
                             <footer>
                                 <span>Final grades remain professor-only.</span
-                                ><a class="btn" href="/ta/reviews?access=full"
+                                ><a class="btn" href="{{ route('ta.reviews', ['access' => 'full']) }}"
                                     >Open reviews</a
                                 >
                             </footer>
@@ -117,7 +104,7 @@
                                     unavailable.</span
                                 ><a
                                     class="btn"
-                                    href="/ta/reviews?access=comment"
+                                    href="{{ route('ta.reviews', ['access' => 'comment']) }}"
                                     >Open comments</a
                                 >
                             </footer>
@@ -141,8 +128,8 @@
                     id="assignmentState"
                     hidden
                 ></section>
-            </div>
-        </main>
-        <script src="/ta/assets/js/pages/ta-invitations.js"></script>
-    </body>
-</html>
+@endsection
+
+@push('scripts')
+    <script src="{{ route('ta.assets.js', ['path' => 'pages/ta-invitations.js']) }}"></script>
+@endpush

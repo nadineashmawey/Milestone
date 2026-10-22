@@ -1,30 +1,15 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="icon" href="data:" />
-        <title>TA Reviews · Milestone</title>
-        <link rel="stylesheet" href="/ta/assets/css/admin-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/ta-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/pages/ta-reviews.css" />
-    </head>
-    <body>
-        <main class="ta-page">
-            <div class="ta-container">
-                <header class="ta-header">
-                    <div>
-                        <p class="eyebrow">Teaching assistant workspace</p>
-                        <h1>Reviews</h1>
-                        <p class="lead">
-                            Review assigned submissions within the permission
-                            granted by the professor.
-                        </p>
-                    </div>
-                    <span class="badge info" id="accessBadge"
-                        >Full review · No final grade</span
-                    >
-                </header>
+@extends('layouts.ta')
+
+@section('title', 'TA Reviews')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('ta.assets.css', ['path' => 'pages/ta-reviews.css']) }}">
+@endpush
+
+@section('content')
+<x-ta.page-header title="Reviews" description="Review assigned submissions within the permission granted by the professor.">
+    <span class="badge info" id="accessBadge">Full review · No final grade</span>
+</x-ta.page-header>
                 <section id="reviewContent">
                     <div class="review-filters card">
                         <label
@@ -192,8 +177,9 @@
                     id="reviewState"
                     hidden
                 ></section>
-            </div>
-        </main>
+@endsection
+
+@push('overlays')
         <div class="toast" id="toast" hidden>
             <div>
                 <strong id="toastTitle">Done</strong>
@@ -201,6 +187,8 @@
             </div>
             <button>×</button>
         </div>
-        <script src="/ta/assets/js/pages/ta-reviews.js"></script>
-    </body>
-</html>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('ta.assets.js', ['path' => 'pages/ta-reviews.js']) }}"></script>
+@endpush

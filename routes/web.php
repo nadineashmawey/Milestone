@@ -21,7 +21,7 @@ Route::get('/admin/assets/css/{path}', function (string $path) {
     abort_unless(is_file($file), 404);
 
     return response()->file($file, ['Content-Type' => 'text/css; charset=UTF-8']);
-})->where('path', '.*');
+})->where('path', '.*')->name('ta.assets.css');
 
 Route::get('/admin/assets/js/{path}', function (string $path) {
     abort_if(str_contains($path, '..'), 404);
@@ -69,17 +69,17 @@ Route::get('/ta/assets/js/{path}', function (string $path) {
     $file = resource_path('js/'.$path);
     abort_unless(is_file($file), 404);
     return response()->file($file, ['Content-Type' => 'text/javascript; charset=UTF-8']);
-})->where('path', '.*');
+})->where('path', '.*')->name('ta.assets.js');
 
-Route::get('/ta/{page?}', function (?string $page = 'dashboard') {
-    $pages = [
-        'dashboard' => 'dashboard.html',
-        'reviews' => 'reviews.html',
-        'issues' => 'issues.html',
-        'invitations' => 'invitations.html',
-        'chat' => 'chat.html',
-        'tasks' => 'tasks.html',
-    ];
-    abort_unless(isset($pages[$page]), 404);
-    return response()->file(resource_path('views/pages/ta/'.$pages[$page]), ['Content-Type' => 'text/html; charset=UTF-8']);
-})->where('page', 'dashboard|reviews|issues|invitations|chat|tasks');
+/*
+| Frontend-only TA prototype
+| Blade renders the page structure, shared CSS controls the design, and
+| page-specific JavaScript provides prototype interactions. Database and
+| application logic remain intentionally deferred to phase two.
+*/
+Route::redirect('/ta', '/ta/dashboard');
+Route::view('/ta/dashboard', 'ta.dashboard')->name('ta.dashboard');
+Route::view('/ta/reviews', 'ta.reviews')->name('ta.reviews');
+Route::view('/ta/issues', 'ta.issues')->name('ta.issues');
+Route::view('/ta/invitations', 'ta.assignments')->name('ta.assignments');
+Route::view('/ta/tasks', 'ta.tasks')->name('ta.tasks');

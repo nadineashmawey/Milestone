@@ -1,30 +1,15 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="icon" href="data:" />
-        <title>TA Tasks and Blockers · Milestone</title>
-        <link rel="stylesheet" href="/ta/assets/css/admin-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/ta-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/pages/ta-tasks.css" />
-    </head>
-    <body>
-        <main class="ta-page">
-            <div class="ta-container">
-                <header class="ta-header">
-                    <div>
-                        <p class="eyebrow">Teaching assistant workspace</p>
-                        <h1>Official tasks and blockers</h1>
-                        <p class="lead">
-                            Create official tasks and respond to blockers in
-                            assigned academic projects.
-                        </p>
-                    </div>
-                    <button class="btn" id="openTaskForm">
-                        + Create official task
-                    </button>
-                </header>
+@extends('layouts.ta')
+
+@section('title', 'TA Tasks and Blockers')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('ta.assets.css', ['path' => 'pages/ta-tasks.css']) }}">
+@endpush
+
+@section('content')
+<x-ta.page-header title="Official tasks and blockers" description="Create official tasks and respond to blockers in assigned academic projects.">
+    <button class="btn" id="openTaskForm">+ Create official task</button>
+</x-ta.page-header>
                 <section id="tasksContent">
                     <section class="task-grid">
                         <article class="card blockers">
@@ -312,8 +297,9 @@
                     id="tasksState"
                     hidden
                 ></section>
-            </div>
-        </main>
+@endsection
+
+@push('overlays')
         <dialog class="task-dialog" id="taskPreview">
             <form method="dialog">
                 <header>
@@ -350,6 +336,8 @@
             </div>
             <button aria-label="Close">×</button>
         </div>
-        <script src="/ta/assets/js/pages/ta-tasks.js"></script>
-    </body>
-</html>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('ta.assets.js', ['path' => 'pages/ta-tasks.js']) }}"></script>
+@endpush

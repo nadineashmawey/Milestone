@@ -1,28 +1,15 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="icon" href="data:" />
-        <title>TA Issues · Milestone</title>
-        <link rel="stylesheet" href="/ta/assets/css/admin-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/ta-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/pages/ta-issues.css" />
-    </head>
-    <body>
-        <main class="ta-page">
-            <div class="ta-container">
-                <header class="ta-header">
-                    <div>
-                        <p class="eyebrow">Teaching assistant workspace</p>
-                        <h1>Issues</h1>
-                        <p class="lead">
-                            Report project or team problems directly to the
-                            supervising professor.
-                        </p>
-                    </div>
-                    <button class="btn" id="focusIssue">+ Report issue</button>
-                </header>
+@extends('layouts.ta')
+
+@section('title', 'TA Issues')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('ta.assets.css', ['path' => 'pages/ta-issues.css']) }}">
+@endpush
+
+@section('content')
+<x-ta.page-header title="Issues" description="Report project or team problems directly to the supervising professor.">
+    <button class="btn" id="focusIssue">+ Report issue</button>
+</x-ta.page-header>
                 <section id="issuesContent">
                     <div class="issue-filters card">
                         <label
@@ -114,8 +101,9 @@
                     id="issuesState"
                     hidden
                 ></section>
-            </div>
-        </main>
+@endsection
+
+@push('overlays')
         <div class="toast" id="toast" hidden>
             <div>
                 <strong>Issue reported</strong>
@@ -123,6 +111,8 @@
             </div>
             <button>×</button>
         </div>
-        <script src="/ta/assets/js/pages/ta-issues.js"></script>
-    </body>
-</html>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('ta.assets.js', ['path' => 'pages/ta-issues.js']) }}"></script>
+@endpush

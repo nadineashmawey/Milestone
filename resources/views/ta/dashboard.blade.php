@@ -1,28 +1,15 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="icon" href="data:" />
-        <title>TA Dashboard · Milestone</title>
-        <link rel="stylesheet" href="/ta/assets/css/admin-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/ta-static.css" />
-        <link rel="stylesheet" href="/ta/assets/css/pages/ta-dashboard.css" />
-    </head>
-    <body>
-        <main class="ta-page">
-            <div class="ta-container">
-                <header class="ta-header">
-                    <div>
-                        <p class="eyebrow">Teaching assistant workspace</p>
-                        <h1>Good morning, Sara</h1>
-                        <p class="lead">
-                            Assigned projects, teams, deadlines, notifications,
-                            and reported issues.
-                        </p>
-                    </div>
-                    <a class="btn" href="/ta/reviews">Open review queue →</a>
-                </header>
+@extends('layouts.ta')
+
+@section('title', 'TA Dashboard')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('ta.assets.css', ['path' => 'pages/ta-dashboard.css']) }}">
+@endpush
+
+@section('content')
+<x-ta.page-header title="Good morning, Sara" description="Assigned projects, teams, deadlines, notifications, and reported issues.">
+    <a class="btn" href="{{ route('ta.reviews') }}">Open review queue →</a>
+</x-ta.page-header>
                 <section id="dashboardContent">
                     <section class="metrics">
                         <article class="card metric">
@@ -49,11 +36,11 @@
                                     <h2>Assigned projects and teams</h2>
                                     <p>Permissions are set per project</p>
                                 </div>
-                                <a href="/ta/invitations">View access</a>
+                                <a href="{{ route('ta.assignments') }}">View access</a>
                             </header>
                             <a
                                 class="project-row"
-                                href="/ta/reviews?access=full"
+                                href="{{ route('ta.reviews', ['access' => 'full']) }}"
                                 ><span class="initial">SE</span
                                 ><span class="copy"
                                     ><strong
@@ -66,7 +53,7 @@
                                 ><b>›</b></a
                             ><a
                                 class="project-row"
-                                href="/ta/reviews?access=comment"
+                                href="{{ route('ta.reviews', ['access' => 'comment']) }}"
                                 ><span class="initial">DB</span
                                 ><span class="copy"
                                     ><strong>Database Systems</strong
@@ -120,15 +107,15 @@
                                     <h2>Notifications</h2>
                                     <p>Recent activity in assigned projects</p>
                                 </div>
-                                <a href="/ta/reviews">View reviews</a>
+                                <a href="{{ route('ta.reviews') }}">View reviews</a>
                             </header>
-                            <a class="notice-row unread" href="/ta/reviews"
+                            <a class="notice-row unread" href="{{ route('ta.reviews') }}"
                                 ><i></i
                                 ><span
                                     ><strong>Team 3 submitted M2 Design</strong
                                     ><small>12 minutes ago</small></span
                                 ></a
-                            ><a class="notice-row unread" href="/ta/issues"
+                            ><a class="notice-row unread" href="{{ route('ta.issues') }}"
                                 ><i></i
                                 ><span
                                     ><strong
@@ -144,9 +131,9 @@
                                     <h2>Reported issues</h2>
                                     <p>Problems shared with professors</p>
                                 </div>
-                                <a href="/ta/issues">View all</a>
+                                <a href="{{ route('ta.issues') }}">View all</a>
                             </header>
-                            <a class="issue-row" href="/ta/issues"
+                            <a class="issue-row" href="{{ route('ta.issues') }}"
                                 ><span
                                     ><strong>Team 3 sharing is disabled</strong
                                     ><small
@@ -155,7 +142,7 @@
                                 ><span class="badge status-acknowledged"
                                     >Acknowledged</span
                                 ></a
-                            ><a class="issue-row" href="/ta/issues"
+                            ><a class="issue-row" href="{{ route('ta.issues') }}"
                                 ><span
                                     ><strong
                                         >Milestone file cannot be opened</strong
@@ -172,8 +159,8 @@
                     id="dashboardState"
                     hidden
                 ></section>
-            </div>
-        </main>
-        <script src="/ta/assets/js/pages/ta-dashboard.js"></script>
-    </body>
-</html>
+@endsection
+
+@push('scripts')
+    <script src="{{ route('ta.assets.js', ['path' => 'pages/ta-dashboard.js']) }}"></script>
+@endpush
