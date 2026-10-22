@@ -1,28 +1,28 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProjectController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('guest')->group(function () {
+    Route::get('/sign-in', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/sign-in', [AuthController::class, 'login'])->name('login.submit');
+
+    Route::get('/sign-up', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/sign-up', [AuthController::class, 'register'])->name('register.submit');
 });
 
-// Frontend-only student project previews. The data is intentionally local until
-// the backend project API is ready.
-Route::get('/student/projects', function () {
-    return view('student.projects', ['projects' => \App\Support\StudentProjectCatalog::all()]);
-})->name('student.projects');
+Route::post('/sign-out', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/', fn () => redirect()->route('projects.index'))->name('home');
 
-Route::get('/student/projects/{project}', function (string $project) {
-    $selectedProject = \App\Support\StudentProjectCatalog::find($project);
+    Route::get('/my-projects', [ProjectController::class, 'index'])
+        ->name('projects.index');
 
-
-    abort_unless($selectedProject, 404);
-
-
-    return view('student.project-detail', ['project' => $selectedProject]);
-})->name('student.projects.show');
-
-if (app()->environment('local')) {
-    Route::view('/ui-kit', 'ui-kit')->name('ui-kit');
-}
+    Route::get('/my-projects/create', [ProjectController::class, 'create'])
+        ->name('projects.create');
+});
