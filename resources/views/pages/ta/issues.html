@@ -1,1 +1,128 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Issues · Milestone</title><link rel="stylesheet" href="/ta/assets/css/admin-static.css"><link rel="stylesheet" href="/ta/assets/css/ta-static.css"><link rel="stylesheet" href="/ta/assets/css/pages/ta-issues.css"></head><body><main class="ta-page"><div class="ta-container"><header class="ta-header"><div><p class="eyebrow">Teaching assistant workspace</p><h1>Issues</h1><p class="lead">Report project problems directly to the supervising professor.</p></div><button class="btn" id="focusIssue">+ Report issue</button></header><section class="issues-grid"><article class="card issues-list"><h2 class="section-title">Reported issues</h2><p class="section-subtitle">Problems you have shared with professors</p><div id="issueRows"><div class="issue-row"><span class="initial">T3</span><span class="copy"><strong>Team 3 sharing is disabled</strong><p>Software Engineering Capstone · Reported today</p></span><span class="badge warning">Professor review</span></div><div class="issue-row"><span class="initial">M2</span><span class="copy"><strong>M2 file could not be opened</strong><p>Database Systems · Reported Oct 17</p></span><span class="badge success">Resolved</span></div></div></article><article class="card issue-form"><h2 class="section-title">Report a problem</h2><p class="section-subtitle">The supervising professor will be notified.</p><form id="issueForm" novalidate><div class="field"><label for="project">Project</label><select class="control" id="project"><option>Software Engineering Capstone</option><option>Database Systems</option></select></div><div class="field"><label for="description">Description</label><textarea class="control" id="description" placeholder="Describe the problem and what you already tried"></textarea><p class="error" id="descriptionError" hidden>Please describe the problem.</p></div><button class="btn" type="submit">Send to professor</button></form></article></section></div></main><div class="toast" id="toast" hidden><div><strong>Issue reported</strong><p>Issue sent to Professor Lee</p></div><button aria-label="Close">×</button></div><script src="/ta/assets/js/pages/ta-issues.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="icon" href="data:" />
+        <title>TA Issues · Milestone</title>
+        <link rel="stylesheet" href="/ta/assets/css/admin-static.css" />
+        <link rel="stylesheet" href="/ta/assets/css/ta-static.css" />
+        <link rel="stylesheet" href="/ta/assets/css/pages/ta-issues.css" />
+    </head>
+    <body>
+        <main class="ta-page">
+            <div class="ta-container">
+                <header class="ta-header">
+                    <div>
+                        <p class="eyebrow">Teaching assistant workspace</p>
+                        <h1>Issues</h1>
+                        <p class="lead">
+                            Report project or team problems directly to the
+                            supervising professor.
+                        </p>
+                    </div>
+                    <button class="btn" id="focusIssue">+ Report issue</button>
+                </header>
+                <section id="issuesContent">
+                    <div class="issue-filters card">
+                        <label
+                            >Project<select class="control" id="projectFilter">
+                                <option value="all">All projects</option>
+                                <option>Software Engineering Capstone</option>
+                                <option>Database Systems</option>
+                            </select></label
+                        ><label
+                            >Status<select class="control" id="statusFilter">
+                                <option value="all">All statuses</option>
+                                <option>Open</option>
+                                <option>Acknowledged</option>
+                                <option>Resolved</option>
+                            </select></label
+                        >
+                    </div>
+                    <section class="issues-grid">
+                        <article class="card issues-list">
+                            <div>
+                                <h2>Reported issues</h2>
+                                <p>Open, acknowledged, and resolved reports</p>
+                            </div>
+                            <div id="issueRows"></div>
+                            <div class="list-empty" id="issueEmpty" hidden>
+                                No issues match these filters.
+                            </div>
+                        </article>
+                        <article class="card issue-form">
+                            <h2>Report a problem</h2>
+                            <p>The supervising professor will be notified.</p>
+                            <form id="issueForm" novalidate>
+                                <label class="field"
+                                    >Project<select
+                                        class="control"
+                                        id="project"
+                                    >
+                                        <option value="">
+                                            Choose a project
+                                        </option>
+                                        <option>
+                                            Software Engineering Capstone
+                                        </option>
+                                        <option>
+                                            Database Systems
+                                        </option></select
+                                    ><small
+                                        class="error"
+                                        id="projectError"
+                                        hidden
+                                        >Choose a project.</small
+                                    ></label
+                                ><label class="field"
+                                    >Team<select class="control" id="team">
+                                        <option value="">Choose a team</option>
+                                        <option>Team 1</option>
+                                        <option>Team 2</option>
+                                        <option>Team 3</option>
+                                        <option>Team 4</option>
+                                        <option>Team 5</option></select
+                                    ><small class="error" id="teamError" hidden
+                                        >Choose a team.</small
+                                    ></label
+                                ><label class="field"
+                                    >Description<textarea
+                                        class="control"
+                                        id="description"
+                                        maxlength="500"
+                                        placeholder="Describe the problem and what you already tried"
+                                    ></textarea
+                                    ><small
+                                        ><span id="descriptionCount">0</span
+                                        >/500</small
+                                    ><small
+                                        class="error"
+                                        id="descriptionError"
+                                        hidden
+                                        >Enter at least 10 characters.</small
+                                    ></label
+                                ><button class="btn" type="submit">
+                                    Send to professor
+                                </button>
+                            </form>
+                        </article>
+                    </section>
+                </section>
+                <section
+                    class="card state-card"
+                    id="issuesState"
+                    hidden
+                ></section>
+            </div>
+        </main>
+        <div class="toast" id="toast" hidden>
+            <div>
+                <strong>Issue reported</strong>
+                <p id="toastMessage"></p>
+            </div>
+            <button>×</button>
+        </div>
+        <script src="/ta/assets/js/pages/ta-issues.js"></script>
+    </body>
+</html>

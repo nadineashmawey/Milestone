@@ -1,1 +1,148 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invitations - Milestone</title><link rel="stylesheet" href="/ta/assets/css/admin-static.css"><link rel="stylesheet" href="/ta/assets/css/ta-static.css"><link rel="stylesheet" href="/ta/assets/css/pages/ta-invitations.css"></head><body><main class="ta-page"><div class="ta-container"><header class="ta-header"><div><p class="eyebrow">Teaching assistant workspace</p><h1>Invitations</h1><p class="lead">Invitations expire after seven days and grant access only to the specified project.</p></div></header><section class="invite-list" id="inviteList"><article class="card invite-card" data-project="Database Systems"><div class="invite-top"><div><span class="badge warning"><span class="dot"></span>Expires in 5 days</span><h2>Database Systems</h2><p>CS 342 &middot; Fall 2026 &middot; Invited by Dr. Lina Haddad</p></div><span class="invite-icon">TA</span></div><div class="invite-details"><section class="detail"><h3>PROJECT ACCESS</h3><strong>Comment only</strong><p class="section-subtitle">Review submissions and leave feedback.<br>You cannot assign or release grades.</p></section><section class="detail"><h3>PROJECT TERM</h3><strong>October 7&ndash;December 20</strong><p class="section-subtitle">Invitation expires October 25 at 4:30 PM.</p></section></div><div class="boundary"><span>&#128276;</span><div><strong>Role boundary</strong><p>Accepting does not change your account role or grant course-wide access.</p></div></div><div class="invite-actions"><button class="btn danger-btn" data-action="decline">Decline</button><button class="btn" data-action="accept">Accept invitation</button></div></article><article class="card invite-card" data-project="Web Engineering Lab"><div class="invite-top"><div><span class="badge warning"><span class="dot"></span>Expires in 2 days</span><h2>Web Engineering Lab</h2><p>CS 355 &middot; Fall 2026 &middot; Invited by Professor Omar Malik</p></div><span class="invite-icon">TA</span></div><div class="invite-details"><section class="detail"><h3>PROJECT ACCESS</h3><strong>Full review</strong><p class="section-subtitle">Review submissions, leave feedback, and request revisions.<br>You cannot assign or release grades.</p></section><section class="detail"><h3>PROJECT TERM</h3><strong>October 14&ndash;December 22</strong><p class="section-subtitle">Invitation expires October 22 at 11:00 AM.</p></section></div><div class="boundary"><span>&#128276;</span><div><strong>Role boundary</strong><p>Access applies only to this project and does not grant course-wide access.</p></div></div><div class="invite-actions"><button class="btn danger-btn" data-action="decline">Decline</button><button class="btn" data-action="accept">Accept invitation</button></div></article></section><div class="card empty" id="inviteEmpty" hidden><h2>No pending invitations</h2><p>You are all caught up.</p></div></div></main><div class="toast" id="toast" hidden><div><strong id="toastTitle"></strong><p id="toastMessage"></p></div><button aria-label="Close">&times;</button></div><script src="/ta/assets/js/pages/ta-invitations.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="icon" href="data:" />
+        <title>TA Assignments · Milestone</title>
+        <link rel="stylesheet" href="/ta/assets/css/admin-static.css" />
+        <link rel="stylesheet" href="/ta/assets/css/ta-static.css" />
+        <link rel="stylesheet" href="/ta/assets/css/pages/ta-invitations.css" />
+    </head>
+    <body>
+        <main class="ta-page">
+            <div class="ta-container">
+                <header class="ta-header">
+                    <div>
+                        <p class="eyebrow">Teaching assistant workspace</p>
+                        <h1>Project assignments</h1>
+                        <p class="lead">
+                            Professor assignments appear automatically. No
+                            acceptance is required.
+                        </p>
+                    </div>
+                    <span class="badge info">2 active assignments</span>
+                </header>
+                <section id="assignmentContent">
+                    <aside class="assignment-note">
+                        Assignment access is controlled by the supervising
+                        professor. Access changes take effect immediately and
+                        never grant final-grade authority.
+                    </aside>
+                    <section class="assignment-list">
+                        <article class="card assignment-card">
+                            <header>
+                                <div>
+                                    <span class="badge success">Active</span>
+                                    <h2>Software Engineering Capstone</h2>
+                                    <p>
+                                        CS 490 · Fall 2026 · Assigned by
+                                        Professor Lee
+                                    </p>
+                                </div>
+                                <span class="assignment-icon">TA</span>
+                            </header>
+                            <div class="assignment-details">
+                                <div>
+                                    <small>ACCESS</small
+                                    ><strong>Full review</strong>
+                                    <p>
+                                        Comment, save drafts, and record review
+                                        outcomes.
+                                    </p>
+                                </div>
+                                <div>
+                                    <small>ASSIGNED TEAMS</small
+                                    ><strong>Teams 1, 2, and 3</strong>
+                                    <p>
+                                        Access limited to these assigned teams.
+                                    </p>
+                                </div>
+                                <div>
+                                    <small>ASSIGNED</small
+                                    ><strong>October 7, 2026</strong>
+                                    <p>
+                                        Project access remains active until
+                                        removed.
+                                    </p>
+                                </div>
+                            </div>
+                            <footer>
+                                <span>Final grades remain professor-only.</span
+                                ><a class="btn" href="/ta/reviews?access=full"
+                                    >Open reviews</a
+                                >
+                            </footer>
+                        </article>
+                        <article class="card assignment-card">
+                            <header>
+                                <div>
+                                    <span class="badge success">Active</span>
+                                    <h2>Database Systems</h2>
+                                    <p>
+                                        CS 342 · Fall 2026 · Assigned by Dr.
+                                        Lina Haddad
+                                    </p>
+                                </div>
+                                <span class="assignment-icon">TA</span>
+                            </header>
+                            <div class="assignment-details">
+                                <div>
+                                    <small>ACCESS</small
+                                    ><strong>Comment only</strong>
+                                    <p>
+                                        Leave feedback without recording an
+                                        outcome.
+                                    </p>
+                                </div>
+                                <div>
+                                    <small>ASSIGNED TEAMS</small
+                                    ><strong>Teams 4 and 5</strong>
+                                    <p>
+                                        Access limited to these assigned teams.
+                                    </p>
+                                </div>
+                                <div>
+                                    <small>ASSIGNED</small
+                                    ><strong>October 14, 2026</strong>
+                                    <p>
+                                        Project access remains active until
+                                        removed.
+                                    </p>
+                                </div>
+                            </div>
+                            <footer>
+                                <span
+                                    >Review outcomes and grades are
+                                    unavailable.</span
+                                ><a
+                                    class="btn"
+                                    href="/ta/reviews?access=comment"
+                                    >Open comments</a
+                                >
+                            </footer>
+                        </article>
+                    </section>
+                    <section class="card access-history">
+                        <h2>Recent access changes</h2>
+                        <div class="history-row">
+                            <span
+                                ><strong>Mobile Computing Project</strong
+                                ><small
+                                    >Access removed October 18, 2026 by
+                                    Professor Mona</small
+                                ></span
+                            ><span class="badge danger">Revoked</span>
+                        </div>
+                    </section>
+                </section>
+                <section
+                    class="card state-card"
+                    id="assignmentState"
+                    hidden
+                ></section>
+            </div>
+        </main>
+        <script src="/ta/assets/js/pages/ta-invitations.js"></script>
+    </body>
+</html>

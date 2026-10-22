@@ -77,7 +77,9 @@ Route::get('/ta/{page?}', function (?string $page = 'dashboard') {
         'reviews' => 'reviews.html',
         'issues' => 'issues.html',
         'invitations' => 'invitations.html',
+        'chat' => 'chat.html',
+        'tasks' => 'tasks.html',
     ];
     abort_unless(isset($pages[$page]), 404);
     return response()->file(resource_path('views/pages/ta/'.$pages[$page]), ['Content-Type' => 'text/html; charset=UTF-8']);
-})->where('page', 'dashboard|reviews|issues|invitations');
+})->where('page', 'dashboard|reviews|issues|invitations|chat|tasks');
