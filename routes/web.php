@@ -17,12 +17,13 @@ Route::post('/sign-out', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', fn () => redirect()->route('projects.index'))->name('home');
+Route::get('/', fn () => redirect()->route('projects.index'))->name('home');
 
-    Route::get('/my-projects', [ProjectController::class, 'index'])
-        ->name('projects.index');
+Route::get('/my-projects', [ProjectController::class, 'index'])
+    ->name('projects.index');
 
-    Route::get('/my-projects/create', [ProjectController::class, 'create'])
-        ->name('projects.create');
-});
+Route::get('/my-projects/create', [ProjectController::class, 'create'])
+    ->name('projects.create');
+
+Route::get('/my-projects/{project}', [ProjectController::class, 'show'])
+    ->name('student.projects.show');
