@@ -1,14 +1,77 @@
-@extends('layouts.app')
-@section('title','Sign in')
+@extends('layouts.auth')
+
+@section('title', 'Sign in')
+
 @section('content')
-<div class="auth-layout"><section class="auth-intro"><span class="eyebrow">UNIVERSITY PROJECT MANAGEMENT</span><h1>Group projects that don’t fall apart.</h1><p>One focused workspace for academic supervision and student-led independent projects.</p><ul><li>One clear source for tasks, files, and deadlines</li><li>Review workflows with transparent permissions</li><li>Academic and independent projects together</li></ul></section>
-<section class="panel auth-card"><span class="eyebrow">WELCOME BACK</span><h2>Sign in to Milestone</h2><p class="muted">Use your MIU or independent-project account to continue.</p>
-<form method="POST" action="{{ route('login.submit') }}" class="stack">@csrf
-<label>Email address<input type="email" name="email" value="{{ old('email') }}" autocomplete="email" required autofocus></label>
-<label>Password<input type="password" name="password" autocomplete="current-password" required></label>
-<label class="check-inline"><input type="checkbox" name="remember" value="1"> Remember me</label>
-<button class="btn primary" type="submit">Sign in</button></form>
-<p class="auth-switch">Don’t have an account? <a href="{{ route('register') }}">Create account</a></p>
-<div class="note"><strong>Prototype conversion note</strong><p>Use an account stored in your database. Demo-role shortcuts from the React prototype are intentionally not used for authentication.</p></div>
-</section></div>
+<div class="auth-layout">
+
+    @include('auth.partials.intro', [
+        'pill'     => 'University project management',
+        'headline' => 'Group projects that don’t fall apart.',
+        'text'     => 'One focused workspace for academic supervision and student-led independent projects.',
+        'points'   => [
+            'One clear source for tasks, files, and deadlines',
+            'Review workflows with transparent permissions',
+            'Academic and independent projects together',
+        ],
+    ])
+
+    <section class="ms-card auth-card">
+        <p class="eyebrow">Welcome back</p>
+        <h2>Sign in to Milestone</h2>
+        <p class="auth-lead">Use your MIU or independent-project account to continue.</p>
+
+        @if ($errors->any())
+            <div class="auth-error" role="alert">{{ $errors->first() }}</div>
+        @endif
+
+        <form method="POST" action="{{ route('login.submit') }}" class="auth-form">
+            @csrf
+
+            <div class="ms-field">
+                <label for="email">Email address</label>
+                <input class="ms-input" type="email" id="email" name="email"
+                       value="{{ old('email') }}" autocomplete="email"
+                       placeholder="you@example.com" required autofocus>
+            </div>
+
+            <div class="ms-field">
+                <label for="password">Password</label>
+                <div class="password-wrap">
+                    <input class="ms-input" type="password" id="password" name="password"
+                           autocomplete="current-password" placeholder="Enter your password" required>
+                    <button type="button" class="password-toggle"
+                            data-toggle-password="password" aria-pressed="false">Show</button>
+                </div>
+            </div>
+
+            <div class="auth-row">
+                <label class="check-inline">
+                    <input type="checkbox" name="remember" value="1"> Remember me
+                </label>
+                {{-- Uncomment once the route exists:
+                <a class="auth-link" href="{{ route('password.request') }}">Forgot password?</a> --}}
+            </div>
+
+            <button class="ms-button" type="submit">Sign in</button>
+        </form>
+
+        <p class="auth-switch">
+            Don’t have an account?
+            <a href="{{ route('register') }}">Create account</a>
+        </p>
+    </section>
+</div>
+
+<script>
+document.querySelectorAll('[data-toggle-password]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        var input = document.getElementById(btn.dataset.togglePassword);
+        var show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        btn.textContent = show ? 'Hide' : 'Show';
+        btn.setAttribute('aria-pressed', show);
+    });
+});
+</script>
 @endsection
