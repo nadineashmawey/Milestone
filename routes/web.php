@@ -17,6 +17,7 @@ Route::post('/sign-out', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
+
 Route::get('/', fn () => redirect()->route('projects.index'))->name('home');
 
 Route::get('/my-projects', [ProjectController::class, 'index'])
@@ -27,3 +28,5 @@ Route::get('/my-projects/create', [ProjectController::class, 'create'])
 
 Route::get('/my-projects/{project}', [ProjectController::class, 'show'])
     ->name('student.projects.show');
+
+
