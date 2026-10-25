@@ -4,12 +4,11 @@
 
 @section('content')
 <div class="auth-layout">
-
     @include('auth.partials.intro', [
-        'pill'     => 'University project management',
+        'pill' => 'University project management',
         'headline' => 'Group projects that don’t fall apart.',
-        'text'     => 'One focused workspace for academic supervision and student-led independent projects.',
-        'points'   => [
+        'text' => 'One focused workspace for academic supervision and student-led independent projects.',
+        'points' => [
             'One clear source for tasks, files, and deadlines',
             'Review workflows with transparent permissions',
             'Academic and independent projects together',
@@ -27,50 +26,34 @@
 
         <form method="POST" action="{{ route('login.submit') }}" class="auth-form">
             @csrf
-
             <div class="ms-field">
                 <label for="email">Email address</label>
-                <input class="ms-input" type="email" id="email" name="email"
-                       value="{{ old('email') }}" autocomplete="email"
-                       placeholder="you@example.com" required autofocus>
+                <input class="ms-input" type="email" id="email" name="email" value="{{ old('email') }}" autocomplete="email" placeholder="you@example.com" required autofocus>
             </div>
-
             <div class="ms-field">
                 <label for="password">Password</label>
                 <div class="password-wrap">
-                    <input class="ms-input" type="password" id="password" name="password"
-                           autocomplete="current-password" placeholder="Enter your password" required>
-                    <button type="button" class="password-toggle"
-                            data-toggle-password="password" aria-pressed="false">Show</button>
+                    <input class="ms-input" type="password" id="password" name="password" autocomplete="current-password" placeholder="Enter your password" required>
+                    <button type="button" class="password-toggle" data-toggle-password="password" aria-pressed="false">Show</button>
                 </div>
             </div>
-
             <div class="auth-row">
-                <label class="check-inline">
-                    <input type="checkbox" name="remember" value="1"> Remember me
-                </label>
-                {{-- Uncomment once the route exists:
-                <a class="auth-link" href="{{ route('password.request') }}">Forgot password?</a> --}}
+                <label class="check-inline"><input type="checkbox" name="remember" value="1"> Remember me</label>
             </div>
-
             <button class="ms-button" type="submit">Sign in</button>
         </form>
-
-        <p class="auth-switch">
-            Don’t have an account?
-            <a href="{{ route('register') }}">Create account</a>
-        </p>
+        <p class="auth-switch">Don’t have an account? <a href="{{ route('register') }}">Create account</a></p>
     </section>
 </div>
 
 <script>
-document.querySelectorAll('[data-toggle-password]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-        var input = document.getElementById(btn.dataset.togglePassword);
+document.querySelectorAll('[data-toggle-password]').forEach(function (button) {
+    button.addEventListener('click', function () {
+        var input = document.getElementById(button.dataset.togglePassword);
         var show = input.type === 'password';
         input.type = show ? 'text' : 'password';
-        btn.textContent = show ? 'Hide' : 'Show';
-        btn.setAttribute('aria-pressed', show);
+        button.textContent = show ? 'Hide' : 'Show';
+        button.setAttribute('aria-pressed', show);
     });
 });
 </script>
