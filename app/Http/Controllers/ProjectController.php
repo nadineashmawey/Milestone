@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Support\StudentProjectCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
@@ -19,14 +20,36 @@ class ProjectController extends Controller
 
     public function index(): View
     {
+        $created = collect(session('independent_projects', []))
+            ->where('owner_id', auth()->id())
+            ->map(fn (array $project) => [
+                'id' => $project['id'], 'title' => $project['title'], 'kind' => 'Independent',
+                'course' => 'Student-led', 'professor' => null, 'team' => null,
+                'progress' => 0, 'next' => 'No tasks yet', 'due' => $project['description'] ?: 'Your independent project.',
+                'members' => 1, 'open_tasks' => 0,
+            ])->all();
+
         return view('student.projects', [
-            'projects' => StudentProjectCatalog::all(),
+            'projects' => array_merge(StudentProjectCatalog::all(), $created),
         ]);
     }
 
     public function show(string $project): View
     {
-        $project = StudentProjectCatalog::find($project);
+        $projectId = $project;
+        $project = StudentProjectCatalog::find($projectId);
+
+        if ($project === null) {
+            $created = collect(session('independent_projects', []))->firstWhere('id', $projectId);
+            if ($created && (int) $created['owner_id'] === (int) auth()->id()) {
+                $project = [
+                    'id' => $created['id'], 'title' => $created['title'], 'kind' => 'Independent',
+                    'course' => 'Student-led', 'professor' => null, 'team' => null,
+                    'progress' => 0, 'next' => 'No tasks yet', 'due' => $created['description'] ?: 'Your independent project.',
+                    'members' => 1, 'open_tasks' => 0,
+                ];
+            }
+        }
 
         abort_if($project === null, 404);
 
@@ -35,11 +58,30 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('student.projects', [
-            'projects' => StudentProjectCatalog::all(),
+        abort_unless($request->user()->project_type === 'independent', 403);
+
+        return view('student.project-create');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        abort_unless($request->user()->project_type === 'independent', 403);
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:120'],
+            'description' => ['nullable', 'string', 'max:2000'],
         ]);
+        $projects = $request->session()->get('independent_projects', []);
+        $projects[] = [
+            'id' => (string) Str::uuid(),
+            'title' => $data['title'],
+            'description' => $data['description'] ?? '',
+            'owner_id' => $request->user()->id,
+        ];
+        $request->session()->put('independent_projects', $projects);
+
+        return redirect()->route('projects.index')->with('success', 'Independent project created.');
     }
 
     public function tasks(): View

@@ -15,7 +15,7 @@
 
 
 @section('body')
-    <main class="detail-page" data-project-board>
+    <main class="detail-page" data-project-board data-project-id="{{ $project['id'] }}">
         <div class="detail-container">
             <a class="back-link" href="{{ route('projects.index') }}"><span aria-hidden="true">←</span> My Projects</a>
             <header class="detail-heading">
@@ -50,11 +50,29 @@
                             <p class="corkboard__meta"><span data-summary-percent>0</span>% complete · 0 unassigned · <span data-blocked-count>0</span> blocked</p>
                         </div>
                         <div class="corkboard__summary-actions">
-                            <label for="board-view">Prototype permission view</label>
-                            <select id="board-view" class="ms-input"><option>Aya · Team Leader</option><option>Malek · Team Member</option></select>
-                            <span class="corkboard__summary-hint">Task creation permissions</span>
+                            <label for="board-view">Preview as</label>
+                            <select id="board-view" class="ms-input"><option>Aya · Team Leader</option><option>Malek · Team Member</option><option>Nour · Team Member</option></select>
+                            <button class="ms-button corkboard__settings-button" type="button" data-open-board-settings>Task creation settings</button>
+                            <span class="corkboard__summary-hint" aria-live="polite">Task creation permissions</span>
                         </div>
                     </div>
+                    <dialog class="board-settings" data-board-settings aria-labelledby="board-settings-title">
+                        <form method="dialog" class="board-settings__close-form"><button class="board-settings__close" aria-label="Close settings">×</button></form>
+                        <p class="projects-eyebrow">Board settings</p>
+                        <h2 id="board-settings-title">Task Creation Permissions</h2>
+                        <p class="board-settings__intro">Choose who can create tasks for this project. Changes apply immediately.</p>
+                        <fieldset>
+                            <legend>Who can create tasks?</legend>
+                            <label class="board-settings__option"><input type="radio" name="task-creation-permission" value="leader"><span><strong>Team Leader Only</strong><small>Only Aya can create tasks.</small></span></label>
+                            <label class="board-settings__option"><input type="radio" name="task-creation-permission" value="selected"><span><strong>Selected Team Members</strong><small>Choose specific members who can create tasks.</small></span></label>
+                            <div class="board-settings__members" data-permission-members hidden>
+                                <label><input type="checkbox" value="Malek Mansour" checked> Malek Mansour</label>
+                                <label><input type="checkbox" value="Nour Saleh"> Nour Saleh</label>
+                            </div>
+                            <label class="board-settings__option"><input type="radio" name="task-creation-permission" value="all"><span><strong>All Team Members</strong><small>Every current team member can create tasks.</small></span></label>
+                        </fieldset>
+                        <div class="board-settings__footer"><button class="ms-button ms-button--primary" type="button" data-close-board-settings>Done</button></div>
+                    </dialog>
                     <div class="corkboard__frame">
                         <div class="corkboard__surface">
                             <span class="corkboard__hero-pin" aria-hidden="true"></span>

@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/my-projects', [ProjectController::class, 'index'])->name('projects.index');
     Route::get('/my-projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::post('/my-projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::get('/my-projects/{project}', [ProjectController::class, 'show'])->name('student.projects.show');
 
     Route::prefix('student-tasks')->name('student.tasks.')->group(function () {

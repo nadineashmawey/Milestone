@@ -316,12 +316,43 @@ if (board) {
 
     const permissionSelect = board.querySelector('#board-view');
     const permissionHint = board.querySelector('.corkboard__summary-hint');
+    const settingsDialog = board.querySelector('[data-board-settings]');
+    const membersList = board.querySelector('[data-permission-members]');
+    const permissionInputs = [...settingsDialog.querySelectorAll('[name="task-creation-permission"]')];
+    const memberInputs = [...membersList.querySelectorAll('input[type="checkbox"]')];
+    const permissionKey = `milestone:task-creation:${board.closest('[data-project-board]')?.dataset.projectId || 'default'}`;
+    let permission = { mode: 'leader', members: ['Malek Mansour'] };
+    try {
+        const saved = JSON.parse(localStorage.getItem(permissionKey));
+        if (saved && ['leader', 'selected', 'all'].includes(saved.mode) && Array.isArray(saved.members)) permission = saved;
+    } catch { /* Keep the default leader-only permission. */ }
+
     const updatePermissions = () => {
-        const isLeader = permissionSelect.selectedIndex === 0;
-        board.querySelectorAll('[data-add-task]').forEach((button) => { button.disabled = !isLeader; button.title = isLeader ? '' : 'Only the team leader can create tasks in this prototype.'; });
-        permissionHint.textContent = isLeader ? 'Team leaders can create tasks' : 'Team members can update tasks; only the leader can create tasks';
+        const actor = permissionSelect.value.startsWith('Aya') ? 'Aya Hassan' : permissionSelect.value.startsWith('Nour') ? 'Nour Saleh' : 'Malek Mansour';
+        const allowed = actor === 'Aya Hassan' || permission.mode === 'all' || (permission.mode === 'selected' && permission.members.includes(actor));
+        board.querySelectorAll('[data-add-task]').forEach((button) => {
+            button.disabled = !allowed;
+            button.title = allowed ? '' : 'You do not have permission to create tasks.';
+        });
+        permissionHint.textContent = permission.mode === 'leader' ? 'Only the team leader can create tasks' : permission.mode === 'all' ? 'All team members can create tasks' : `${permission.members.length} selected member${permission.members.length === 1 ? '' : 's'} can create tasks`;
     };
+    const syncSettings = () => {
+        permissionInputs.forEach((input) => { input.checked = input.value === permission.mode; });
+        memberInputs.forEach((input) => { input.checked = permission.members.includes(input.value); });
+        membersList.hidden = permission.mode !== 'selected';
+    };
+    const savePermission = () => {
+        permission.mode = permissionInputs.find((input) => input.checked)?.value || 'leader';
+        permission.members = memberInputs.filter((input) => input.checked).map((input) => input.value);
+        try { localStorage.setItem(permissionKey, JSON.stringify(permission)); } catch { /* The current page still honors the selected setting. */ }
+        syncSettings();
+        updatePermissions();
+    };
+    board.querySelector('[data-open-board-settings]').addEventListener('click', () => settingsDialog.showModal());
+    board.querySelector('[data-close-board-settings]').addEventListener('click', () => settingsDialog.close());
+    settingsDialog.addEventListener('change', savePermission);
     permissionSelect.addEventListener('change', updatePermissions);
+    syncSettings();
     updatePermissions();
 }
 

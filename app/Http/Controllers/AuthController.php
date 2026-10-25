@@ -31,25 +31,28 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'first_name' => ['required', 'string', 'max:80'],
-            'last_name' => ['required', 'string', 'max:80'],
+            'name' => ['required', 'string', 'max:161'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'project_type' => ['required', 'in:miu,independent'],
+            'account_type' => ['required', 'in:miu,independent'],
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
-        if ($validated['project_type'] === 'miu' && ! str_ends_with(strtolower($validated['email']), '@miuegypt.edu.eg')) {
+        if ($validated['account_type'] === 'miu' && ! str_ends_with(strtolower($validated['email']), '@miuegypt.edu.eg')) {
             return back()->withErrors(['email' => 'Use your MIU email ending in @miuegypt.edu.eg.'])->withInput($request->except('password', 'password_confirmation'));
         }
 
+        $nameParts = preg_split('/\s+/', trim($validated['name']), 2, PREG_SPLIT_NO_EMPTY);
+        $firstName = $nameParts[0] ?? '';
+        $lastName = $nameParts[1] ?? '';
+
         $user = User::create([
-            'name' => trim($validated['first_name'].' '.$validated['last_name']),
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
+            'name' => trim($validated['name']),
+            'first_name' => $firstName,
+            'last_name' => $lastName,
             'email' => strtolower($validated['email']),
             'password' => Hash::make($validated['password']),
             'role' => 'Student',
-            'project_type' => $validated['project_type'],
+            'project_type' => $validated['account_type'],
             'status' => 'active',
         ]);
 
