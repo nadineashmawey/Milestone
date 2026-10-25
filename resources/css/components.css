@@ -42,3 +42,33 @@
 .ms-field__error { color: var(--color-danger-text); }
 .ms-page-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); }
 .ms-page-header h1 { margin-bottom: var(--space-2); }
+.ms-notification-menu { position: relative; display: inline-flex; }
+.ms-user-role { display: inline-grid; width: 1.75rem; height: 1.75rem; place-items: center; border: 1px solid var(--color-border); border-radius: 50%; color: var(--color-muted); font-size: .58rem; font-weight: 700; }
+.ms-topbar-icon { display: inline-grid; width: 1.75rem; height: 1.75rem; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--color-muted); font: inherit; font-size: .75rem; font-weight: 700; cursor: pointer; }
+.ms-topbar-icon:hover { background: var(--color-info-bg); color: var(--color-primary); }
+.ms-topbar-icon svg { width: .9rem; height: .9rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ms-topbar-icon:focus-visible { outline: var(--focus-width) solid var(--color-primary); outline-offset: var(--focus-offset); }
+.ms-user-avatar { display: inline-grid; width: 1.8rem; height: 1.8rem; place-items: center; border-radius: 50%; background: #ffe1a2; color: #71500c; font-size: .58rem; font-weight: 800; }
+.ms-brand { display: inline-flex; align-items: center; gap: .2rem; color: var(--color-ink); font-weight: 800; text-decoration: none; }
+.ms-brand svg { width: 1.65rem; height: 1.25rem; overflow: visible; fill: none; stroke: var(--color-primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ms-brand svg circle { fill: var(--color-primary); stroke: none; }
+.ms-brand svg .ms-brand__accent { fill: #ffd93b; }
+.ms-notifications-link { position: relative; display: inline-grid; width: 2rem; height: 2rem; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--color-muted); cursor: pointer; }
+.ms-notifications-link:hover, .ms-notifications-link[aria-current='page'] { background: var(--color-info-bg); color: var(--color-primary); }
+.ms-notifications-link svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ms-notifications-link__dot { display: none; position: absolute; inset-block-start: .25rem; inset-inline-end: .28rem; width: .38rem; height: .38rem; border: 1px solid var(--color-surface); border-radius: 50%; background: var(--color-coral); }
+.ms-notifications-link.has-unread .ms-notifications-link__dot { display: block; }
+.ms-notifications-link:focus-visible { outline: var(--focus-width) solid var(--color-primary); outline-offset: var(--focus-offset); }
+.ms-notifications-popover { position: absolute; z-index: calc(var(--z-navigation) + 2); inset-block-start: calc(100% + .55rem); inset-inline-end: -.5rem; width: 13.25rem; padding: .65rem .7rem .35rem; border: 1px solid var(--color-border); border-radius: .75rem; background: var(--color-surface); box-shadow: var(--shadow-raised); color: var(--color-ink); }
+.ms-notifications-popover[hidden] { display: none; }
+.ms-notifications-popover > header { display: flex; justify-content: space-between; align-items: center; padding: 0 .1rem .45rem; border-bottom: 1px solid var(--color-border); font-size: .66rem; }
+.ms-notifications-popover > header a { color: var(--color-primary); font-weight: 700; text-decoration: none; }
+.ms-notification-preview__item { display: grid; grid-template-columns: .45rem minmax(0, 1fr); gap: .35rem; align-items: start; padding: .42rem 0; border-bottom: 1px solid var(--color-border); color: inherit; text-decoration: none; }
+.ms-notification-preview__item:last-child { border-bottom: 0; }
+.ms-notification-preview__item > span:last-child { display: grid; gap: .15rem; }
+.ms-notification-preview__item strong { font-size: .58rem; line-height: 1.35; }
+.ms-notification-preview__item small { color: var(--color-muted); font-size: .54rem; }
+.ms-notification-preview__dot { width: .35rem; height: .35rem; margin-top: .12rem; border-radius: 50%; background: var(--color-primary); }
+.ms-notification-preview__item.is-read .ms-notification-preview__dot { visibility: hidden; }
+.ms-notification-preview__item:hover strong { color: var(--color-primary); }
+.ms-notification-preview__empty { margin: .5rem 0; color: var(--color-muted); font-size: .62rem; }
