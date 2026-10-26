@@ -25,9 +25,10 @@
     $homeHref = $navigation[0]['href'] ?? url('/');
 @endphp
 
-@push('styles')
+{{-- Prepended: Blade runs the page's @push first, and page styles must load after the shell's. --}}
+@prepend('styles')
     @vite('resources/css/pages/app-shell.css')
-@endpush
+@endprepend
 
 @push('scripts')
     @vite('resources/js/pages/app-shell.js')

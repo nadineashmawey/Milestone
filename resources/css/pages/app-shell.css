@@ -12,8 +12,9 @@
     color: var(--color-ink);
     -webkit-font-smoothing: antialiased;
 }
-.as :where(h1, h2, h3, h4, p, ul, ol, dl, dd, figure, blockquote) { margin: 0; }
-.as :where(ul, ol) { padding: 0; list-style: none; }
+/* Zero-specificity resets, so any page class can set its own spacing. */
+:where(.as) :where(h1, h2, h3, h4, p, ul, ol, dl, dd, figure, blockquote) { margin: 0; }
+:where(.as) :where(ul, ol) { padding: 0; list-style: none; }
 .as .ms-button { white-space: nowrap; }
 .as .ms-button svg { flex: none; }
 .as-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
