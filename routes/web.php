@@ -14,3 +14,5 @@ Route::get('/professor/courses', [
 if (app()->environment('local')) {
     Route::view('/ui-kit', 'ui-kit')->name('ui-kit');
 }
+
+Route::view('/professor/projects/create', 'projects.create')->name('professor.projects.create');

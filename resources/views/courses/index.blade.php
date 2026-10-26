@@ -10,9 +10,9 @@
                 <p class="courses-page__semester">Fall 2026</p>
                 <h1>My Courses</h1>
             </div>
-            <x-button aria-describedby="courses-demo-note">
+            <a class="ms-button ms-button--primary" href="{{ route('professor.projects.create') }}">
                 + Create academic project
-            </x-button>
+            </a>
         </header>
 
         <div class="courses-page__layout">
@@ -184,7 +184,7 @@
                 </section>
 
                 <p id="courses-demo-note" class="ms-caption ms-muted">
-                    Creation, export and roster management are not connected yet.
+                    Export and roster management are not connected yet.
                 </p>
 
             </x-card>
