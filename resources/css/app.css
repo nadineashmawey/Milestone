@@ -4,6 +4,7 @@
 @import './base.css';
 @import './components.css';
 @import './layout.css';
+@import './components/navbar.css';
 @import './pages/courses.css';
 @import './pages/create-project.css';
 @import './pages/submissions.css';

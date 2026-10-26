@@ -204,7 +204,7 @@ final class ZinaDemoData
      */
     public function link(string $route, array $parameters = []): string
     {
-        return AppShellNavigation::href($route, $parameters);
+        return Navigation::href($route, $parameters);
     }
 
     /**
@@ -966,7 +966,8 @@ final class ZinaDemoData
      */
     public function profile(bool $newAccount = false): array
     {
-        $role = $this->context()['role'];
+        // Same role as the navbar: the signed-in user's, or the demo role.
+        $role = Navigation::role();
         $person = match ($role) {
             'professor' => $this->person('lee'),
             'ta' => $this->person('sara'),

@@ -11,8 +11,13 @@ final class DashboardRoute
 {
     public static function name(?Authenticatable $user): string
     {
-        return match (strtolower((string) ($user->role ?? ''))) {
-            'ta', 'teaching assistant' => 'ta.dashboard',
+        return self::forRole(Navigation::normalise((string) ($user->role ?? '')));
+    }
+
+    public static function forRole(string $role): string
+    {
+        return match ($role) {
+            'ta' => 'ta.dashboard',
             'professor' => 'professor.dashboard',
             'admin' => 'admin.dashboard',
             default => 'student.dashboard',
@@ -21,6 +26,6 @@ final class DashboardRoute
 
     public static function url(?Authenticatable $user): string
     {
-        return AppShellNavigation::href(self::name($user));
+        return Navigation::href(self::name($user));
     }
 }

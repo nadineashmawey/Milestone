@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Support\DashboardRoute;
+use App\Support\Navigation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -54,13 +53,7 @@ class HomeController extends Controller
      */
     private function accountLinks(): array
     {
-        // Until Jana's Sign in and Sign up routes exist, the links use Laravel's standard paths.
-        return [
-            'login' => Route::has('login') ? route('login') : url('/login'),
-            'register' => Route::has('register') ? route('register') : url('/register'),
-            'dashboard' => DashboardRoute::url(auth()->user()),
-            'logout' => Route::has('logout') ? route('logout') : null,
-        ];
+        return Navigation::accountLinks();
     }
 
     private function normalise(string $text): string
