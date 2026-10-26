@@ -75,7 +75,9 @@ class ProfessorDashboardTest extends TestCase
 
     public function test_the_professor_navigation_is_shown(): void
     {
-        $this->get('/professor/dashboard')
+        // The navbar follows the one current role (here the demo role), not the page.
+        $this->withSession([ZinaDemoData::SESSION_KEY => ['context' => ['role' => 'professor']]])
+            ->get('/professor/dashboard')
             ->assertSee('Professor navigation')
             ->assertSee('Risk Radar')
             ->assertSee('aria-current="page"', false);

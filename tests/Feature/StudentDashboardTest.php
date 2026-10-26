@@ -91,7 +91,7 @@ class StudentDashboardTest extends TestCase
 
     public function test_links_to_teammates_pages_fall_back_safely_until_they_exist(): void
     {
-        $this->assertSame('#', \App\Support\AppShellNavigation::href('a.route.nobody.has'));
+        $this->assertSame('#', \App\Support\Navigation::href('a.route.nobody.has'));
 
         // Jana's task pages: linked once her routes are registered, "#" before that.
         $expected = \Illuminate\Support\Facades\Route::has('student.tasks.show')

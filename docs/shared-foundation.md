@@ -7,13 +7,13 @@ Everyone writes their own assigned pages. The shared files supply consistent sty
 - `resources/css/tokens.css`: shared design values. Add agreed reusable values here.
 - `resources/css/base.css`: font and element defaults.
 - `resources/css/components.css`: shared button, input, card, badge and page-heading styles.
-- `resources/css/layout.css`: dashboard shell and small layout helpers.
-- `resources/css/app.css`: loads shared CSS once, including Plus Jakarta Sans.
+- `resources/css/layout.css`: content area and small layout helpers.
+- `resources/css/app.css`: loads shared CSS once, including Plus Jakarta Sans and the navbar.
 - `resources/views/layouts/base.blade.php`: HTML document and Vite loading.
-- `resources/views/layouts/app.blade.php`: reusable sidebar, topbar and content area.
-- `resources/views/components/`: reusable Blade markup.
+- `resources/views/layouts/app.blade.php`: the role-based navbar and the content area.
+- `resources/views/components/`: reusable Blade markup, including the navbar (`<x-navbar />`).
 
-The sidebar stacks above content on smaller screens. It is not an interactive mobile drawer. Navigation and topbar actions are intentionally empty until the team agrees their real links. No role checks or authentication are implemented here.
+The navbar picks its items from the signed-in user's role. Pages never add their own navigation; see [navbar.md](navbar.md).
 
 ## Start a page
 
@@ -23,10 +23,6 @@ Write your own template inside its assigned feature folder. This is an example t
 @extends('layouts.app')
 
 @section('title', 'Courses')
-
-@section('navigation')
-    {{-- Add real links after their routes exist. Use aria-current="page" on the active link. --}}
-@endsection
 
 @section('content')
     <x-page-header title="Courses" description="Your academic courses.">

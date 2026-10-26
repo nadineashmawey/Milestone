@@ -89,6 +89,7 @@ class DemoAccountsTest extends TestCase
             ->get('/student/dashboard')
             ->assertOk()
             ->assertSee('action="'.route('logout').'"', false)
-            ->assertSee('Sign out Aya Hassan');
+            ->assertSee('Account menu for Aya Hassan')
+            ->assertSee('Sign out');
     }
 }
