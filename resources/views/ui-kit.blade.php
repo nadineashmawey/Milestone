@@ -1,29 +1,27 @@
 @extends('layouts.app')
 
 @section('title', 'UI kit preview')
-@section('workspace-name', 'Shared foundation preview')
-
-@section('navigation')
-    <a href="{{ route('ui-kit') }}" aria-current="page">UI kit preview</a>
-    <a href="#buttons">Buttons</a>
-    <a href="#fields">Inputs</a>
-    <a href="#badges">Badges</a>
-    <a href="#more-buttons">Button options</a>
-    <a href="#more-fields">Select and textarea</a>
-    <a href="#feedback">Alerts and empty states</a>
-    <a href="#section-headings">Section heading</a>
-@endsection
-
-@section('topbar-actions')
-    <x-badge>Local preview only</x-badge>
-@endsection
 
 @section('content')
     <x-page-header title="Milestone UI kit" description="Shared pieces your team can reuse. This is a component preview, not a finished Figma screen." />
 
     <x-card title="What you are looking at">
-        <p>The sidebar and topbar are basic layout containers. Their links here only navigate this preview. Your assigned pages have not been built.</p>
-        <p class="ms-muted">The sample controls below do not save, delete or submit anything.</p>
+        <p>The bar at the top is the shared navbar for your current role. The sample controls below do not save, delete or submit anything.</p>
+        <p class="ms-muted">On this page:
+            <a href="#navbar">Navbar</a> · <a href="#buttons">Buttons</a> · <a href="#fields">Inputs</a> · <a href="#badges">Badges</a> ·
+            <a href="#more-buttons">Button options</a> · <a href="#more-fields">Select and textarea</a> · <a href="#feedback">Alerts and empty states</a> ·
+            <a href="#section-headings">Section heading</a>
+        </p>
+    </x-card>
+
+    <x-card title="Navbar" id="navbar" class="ms-stack">
+        <p>One component for every page: <code>&lt;x-navbar /&gt;</code>, included once by <code>layouts.app</code>. Items come from <code>config/navigation.php</code>, so pages never contain nav markup. See <code>docs/navbar.md</code>.</p>
+        <p class="ms-muted">Previews of each role (not sticky). Items whose page doesn’t exist yet show as “Coming soon”.</p>
+        @foreach (\App\Support\Navigation::ROLES as $previewRole)
+            <x-navbar :role="$previewRole" preview />
+        @endforeach
+        <p class="ms-muted">Guest variant, used on Home and Help: <code>&lt;x-navbar variant="guest" /&gt;</code></p>
+        <x-navbar variant="guest" preview />
     </x-card>
 
     <x-card title="Buttons" id="buttons" class="ms-stack">
