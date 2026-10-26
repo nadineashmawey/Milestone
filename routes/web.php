@@ -25,7 +25,6 @@ Route::get('/professor/courses', [
 if (app()->environment('local')) {
     Route::view('/ui-kit', 'ui-kit')->name('ui-kit');
 }
-
 Route::view('/professor/projects/create', 'projects.create')->name('professor.projects.create');
 Route::get('/professor/submissions', [ProfessorSubmissionController::class, 'index'])->name('professor.submissions.index');
 Route::get('/professor/risk-radar', [ProfessorRiskRadarController::class, 'index'])->name('professor.risk-radar.index');
@@ -36,8 +35,6 @@ Route::post('/sign-out', [AuthController::class, 'logout'])
     ->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', fn () => redirect()->route('projects.index'))->name('home');
-
     Route::get('/my-projects', [ProjectController::class, 'index'])->name('projects.index');
     Route::get('/my-projects/create', [ProjectController::class, 'create'])->name('projects.create');
     Route::post('/my-projects', [ProjectController::class, 'store'])->name('projects.store');
@@ -111,3 +108,6 @@ Route::view('/ta/reviews', 'ta.reviews')->name('ta.reviews');
 Route::view('/ta/issues', 'ta.issues')->name('ta.issues');
 Route::view('/ta/invitations', 'ta.assignments')->name('ta.assignments');
 Route::view('/ta/tasks', 'ta.tasks')->name('ta.tasks');
+
+require __DIR__.'/home.php'; // Home page and Help center. Loaded last, so its "/" replaces the welcome route above.
+require __DIR__.'/zina.php'; // Zina's signed-in prototype pages: dashboards, milestones, team and profile.

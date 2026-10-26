@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
             'project_type' => 'independent',
             'status' => 'active',
         ]);
+        $this->call(ProblemReportSeeder::class);
     }
 }

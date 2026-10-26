@@ -1,0 +1,65 @@
+/* Student team (Zina). Loaded only by zina/team/show.blade.php; scoped under .st. Shell pieces come from app-shell.css. */
+.st-head-badges { margin-top: var(--space-3); }
+.st .ms-alert p + p { margin-top: var(--space-1); }
+
+/* Summary strip */
+.st-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border: var(--border-width) solid var(--as-line); border-radius: 18px; background: var(--color-surface); }
+.st-summary > div { padding: var(--space-5) var(--space-6); }
+.st-summary > div + div { border-left: var(--border-width) solid var(--as-line); }
+.st-summary dt { color: var(--as-faint); font-size: .8125rem; font-weight: var(--weight-semibold); letter-spacing: .05em; text-transform: uppercase; }
+.st-summary dd { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-top: var(--space-2); }
+.st-summary dd strong { font-size: 1.25rem; letter-spacing: -.02em; }
+.st-summary dd .as-bar { flex: 1 1 100%; }
+.st-summary dd small { flex: 1 1 100%; color: var(--color-muted); font-size: var(--font-caption); }
+
+.st-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); align-items: start; }
+.st-subhead { margin: var(--space-5) 0 var(--space-2); color: var(--as-faint); font-size: .8125rem; font-weight: var(--weight-semibold); letter-spacing: .05em; text-transform: uppercase; }
+.as-panel-head + .st-subhead { margin-top: 0; }
+.st-break { overflow-wrap: anywhere; }
+
+/* People rows */
+.st-members > li, .st-requests > li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; }
+.st-members strong, .st-requests strong { display: block; font-size: .9375rem; }
+.st-members small, .st-requests small { display: block; color: var(--color-muted); font-size: var(--font-caption); }
+.st-you { color: var(--color-muted); font-weight: var(--weight-regular); }
+.st-none { display: block !important; padding: var(--space-3) 0; color: var(--color-muted); font-size: var(--font-small); }
+.st-request-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2); }
+.st-request-actions form { margin: 0; }
+.st-invite-icon { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--color-page); color: var(--color-muted); }
+.st-join { align-items: start !important; }
+.st-join-message { margin-top: var(--space-2); padding: var(--space-2) var(--space-3); border-radius: var(--radius-control); background: var(--color-page); color: var(--as-ink-2); font-size: var(--font-small); }
+.st-remove { color: var(--color-danger-text); }
+.st-transfer { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-3); }
+
+/* Forms */
+.st-send { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-3); margin-top: var(--space-5); }
+.st-send .ms-field { min-width: 0; }
+.st-send .ms-field__help, .st-send .ms-field__error { grid-column: 1 / -1; }
+.st-send > .ms-button { margin-bottom: 1.6rem; }
+.st .as-restriction { margin-top: var(--space-4); }
+.st-code { margin-top: var(--space-5); padding-top: var(--space-4); border-top: var(--border-width) solid var(--as-line); }
+.st-code .st-subhead { margin-top: 0; }
+.st-code-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.st-code code { padding: var(--space-2) var(--space-4); border: 1.5px dashed var(--color-border); border-radius: var(--radius-control); background: var(--color-page); font-size: 1.125rem; font-weight: var(--weight-bold); letter-spacing: .12em; }
+.st-code .as-note { margin-top: var(--space-2); }
+
+/* Leave request */
+.st-leave { margin-top: var(--space-5); padding: var(--space-4); border: var(--border-width) solid #d9c2f0; border-radius: 14px; background: #fcf9ff; }
+.st-leave h3 { font-size: 1rem; }
+.st-leave p { margin-top: var(--space-1); color: var(--color-muted); font-size: var(--font-small); }
+.st-leave blockquote { margin: var(--space-3) 0; color: var(--as-ink-2); font-size: var(--font-small); }
+
+@media (max-width: 1000px) {
+    .st-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+    .st-summary { grid-template-columns: minmax(0, 1fr); }
+    .st-summary > div + div { border-left: 0; border-top: var(--border-width) solid var(--as-line); }
+}
+@media (max-width: 600px) {
+    .st-summary > div { padding: var(--space-4); }
+    .st-requests > li { grid-template-columns: auto minmax(0, 1fr); }
+    .st-request-actions, .st-requests > li > form, .st-requests > li > .ms-badge { grid-column: 2; justify-content: flex-start; justify-self: start; }
+    .st-send { grid-template-columns: minmax(0, 1fr); }
+    .st-send > .ms-button { width: 100%; margin-bottom: 0; }
+}
