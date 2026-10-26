@@ -8,6 +8,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/css/student-projects.css',
+                'resources/css/student-tasks.css',
+                'resources/css/academic-admin.css',
                 'resources/css/pages/home.css',
                 'resources/js/pages/home.js',
                 'resources/css/pages/app-shell.css',
