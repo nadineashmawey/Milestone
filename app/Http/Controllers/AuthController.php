@@ -25,7 +25,14 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-        return redirect()->intended(route('projects.index'));
+        $dashboard = match (strtolower((string) $request->user()->role)) {
+            'ta', 'teaching assistant' => 'ta.dashboard',
+            'professor' => 'professor.dashboard',
+            'admin' => 'admin.dashboard',
+            default => 'student.dashboard',
+        };
+
+        return redirect()->intended(route($dashboard));
     }
 
     public function register(Request $request)
