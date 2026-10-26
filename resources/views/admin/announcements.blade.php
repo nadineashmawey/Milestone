@@ -1,0 +1,287 @@
+@extends('layouts.admin')
+
+@section('title', 'Announcements')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'pages/admin-announcements.css']) }}">
+@endpush
+
+@section('content')
+                <section id="list">
+<x-admin.page-header class="announcement-header" eyebrow="Admin · Communication" title="Announcements" description="Send important updates to people across Milestone.">
+                        <button class="btn" id="newAnnouncement">
+                            + New announcement
+                        </button>
+</x-admin.page-header>
+                    <section class="card history">
+                        <header>
+                            <h2>Past announcements</h2>
+                            <p>Sent and scheduled system messages</p>
+                        </header>
+                        <div class="empty" id="empty">
+                            <span>▣</span><strong>No announcements yet.</strong>
+                            <p>
+                                Create an announcement to notify people across
+                                Milestone.
+                            </p>
+                        </div>
+                        <div class="table-wrap" id="historyTable" hidden>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Audience</th>
+                                        <th>Channels</th>
+                                        <th>Sent time</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyBody"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </section>
+                <section id="compose" hidden>
+                    <button class="back" id="backList">
+                        ← Back to announcements
+                    </button>
+                    <header class="compose-header">
+                        <p class="eyebrow">Admin · Communication</p>
+                        <h1>New announcement</h1>
+                        <span
+                            >Send a system-wide message through Milestone and
+                            university email.</span
+                        >
+                    </header>
+                    <div class="compose-layout">
+                        <form
+                            class="announcement-form"
+                            id="announcementForm"
+                            novalidate
+                        >
+                            <label class="text-field"
+                                ><strong>Title <span>Required</span></strong
+                                ><input id="title" maxlength="80" /><small
+                                    class="count"
+                                    ><span id="titleCount">0</span>/80</small
+                                ><small
+                                    class="error"
+                                    id="titleError"
+                                    hidden
+                                ></small></label
+                            ><label class="text-field"
+                                ><strong>Message <span>Required</span></strong
+                                ><textarea
+                                    id="message"
+                                    maxlength="1000"
+                                    rows="7"
+                                    placeholder="Write the announcement message."
+                                ></textarea
+                                ><small class="count"
+                                    ><span id="messageCount">0</span
+                                    >/1000</small
+                                ><small
+                                    class="error"
+                                    id="messageError"
+                                    hidden
+                                ></small
+                            ></label>
+                            <fieldset>
+                                <legend>Audience</legend>
+                                <div class="choices">
+                                    <label
+                                        ><input
+                                            type="checkbox"
+                                            class="audience"
+                                            value="Students"
+                                            data-count="452"
+                                            checked
+                                        /><span
+                                            ><small>Students</small
+                                            ><strong>452 people</strong></span
+                                        ></label
+                                    ><label
+                                        ><input
+                                            type="checkbox"
+                                            class="audience"
+                                            value="Professors"
+                                            data-count="18"
+                                        /><span
+                                            ><small>Professors</small
+                                            ><strong>18 people</strong></span
+                                        ></label
+                                    ><label
+                                        ><input
+                                            type="checkbox"
+                                            class="audience"
+                                            value="TAs"
+                                            data-count="12"
+                                        /><span
+                                            ><small>TAs</small
+                                            ><strong>12 people</strong></span
+                                        ></label
+                                    ><label
+                                        ><input
+                                            type="checkbox"
+                                            class="audience"
+                                            value="Admins"
+                                            data-count="4"
+                                        /><span
+                                            ><small>Admins</small
+                                            ><strong>4 people</strong></span
+                                        ></label
+                                    >
+                                </div>
+                                <small
+                                    class="error"
+                                    id="audienceError"
+                                    hidden
+                                ></small>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Channels</legend>
+                                <div class="choices">
+                                    <label
+                                        ><input
+                                            type="checkbox"
+                                            class="channel"
+                                            value="In-app"
+                                            checked
+                                        /><span
+                                            ><small>In-app notification</small
+                                            ><strong
+                                                >Notification bell</strong
+                                            ></span
+                                        ></label
+                                    ><label
+                                        ><input
+                                            type="checkbox"
+                                            class="channel"
+                                            value="Email"
+                                        /><span
+                                            ><small>Email</small
+                                            ><strong
+                                                >University email</strong
+                                            ></span
+                                        ></label
+                                    >
+                                </div>
+                                <small
+                                    class="error"
+                                    id="channelError"
+                                    hidden
+                                ></small>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Delivery</legend>
+                                <div class="choices">
+                                    <label
+                                        ><input
+                                            type="radio"
+                                            name="delivery"
+                                            value="now"
+                                            checked
+                                        /><span
+                                            ><small>Send now</small
+                                            ><strong
+                                                >Deliver immediately</strong
+                                            ></span
+                                        ></label
+                                    ><label
+                                        ><input
+                                            type="radio"
+                                            name="delivery"
+                                            value="schedule"
+                                        /><span
+                                            ><small>Schedule</small
+                                            ><strong
+                                                >Choose a future time</strong
+                                            ></span
+                                        ></label
+                                    >
+                                </div>
+                            </fieldset>
+                            <label
+                                class="field schedule"
+                                id="scheduleField"
+                                hidden
+                                ><strong>Date and time</strong
+                                ><input
+                                    type="datetime-local"
+                                    id="scheduleTime" /><small
+                                    class="error"
+                                    id="scheduleError"
+                                    hidden
+                                ></small
+                            ></label>
+                            <footer>
+                                <div>
+                                    <strong
+                                        ><span id="recipientCount">452</span>
+                                        recipients</strong
+                                    ><br /><small
+                                        >Updates with your audience</small
+                                    >
+                                </div>
+                                <div>
+                                    <button
+                                        type="button"
+                                        class="btn secondary"
+                                        id="cancelCompose"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button class="btn" id="sendButton">
+                                        Send
+                                    </button>
+                                </div>
+                            </footer>
+                        </form>
+                        <aside class="card preview-card">
+                            <header>
+                                <div>
+                                    <h2>Live preview</h2>
+                                    <p>Notification bell</p>
+                                </div>
+                                <span>♢</span>
+                            </header>
+                            <div class="preview-message">
+                                <strong id="previewTitle">Your title</strong>
+                                <p id="previewMessage">
+                                    Your message will appear here.
+                                </p>
+                                <small>University Admin · Just now</small>
+                            </div>
+                            <strong
+                                ><span id="previewCount">452</span>
+                                people</strong
+                            >
+                            <p id="previewAudience">Students</p>
+                        </aside>
+                    </div>
+                </section>
+@endsection
+
+@push('overlays')
+            <div class="confirm-overlay" id="confirmOverlay" hidden></div>
+            <section class="confirm" id="confirmDialog" hidden>
+                <h2 id="confirmTitle">Send announcement?</h2>
+                <p id="confirmCopy"></p>
+                <div>
+                    <button class="btn secondary" id="confirmCancel">
+                        Cancel</button
+                    ><button class="btn" id="confirmSend">Send</button>
+                </div>
+            </section>
+            <div class="toast" id="announcementToast" hidden>
+                <div>
+                    <strong>Done</strong>
+                    <p>Announcement sent.</p>
+                </div>
+                <button>×</button>
+            </div>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('admin.assets.js', ['path' => 'pages/admin-announcements.js']) }}"></script>
+@endpush

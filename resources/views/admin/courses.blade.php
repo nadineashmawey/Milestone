@@ -1,0 +1,314 @@
+@extends('layouts.admin')
+
+@section('title', 'Semesters and Courses')
+@section('page-class', 'page courses')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'pages/admin-courses.css']) }}">
+@endpush
+
+@section('content')
+<x-admin.page-header eyebrow="Academic structure" title="Semesters and courses" description="Maintain catalog periods and the work by semester, course, then project.">
+                    <button class="btn" id="addSemester">+ Add semester</button>
+</x-admin.page-header>
+                <nav class="course-tabs" aria-label="Academic structure">
+                    <button class="active" data-course-tab="semesters">
+                        Semesters</button
+                    ><button data-course-tab="courses">Courses</button>
+                </nav>
+                <section id="semestersPanel" class="semester-grid">
+                    <article class="card semester-card">
+                        <span class="badge success">Active</span>
+                        <h2>Fall 2026</h2>
+                        <p>Sep 1–Dec 20, 2026</p>
+                        <footer>
+                            <div>
+                                <strong>18 courses</strong
+                                ><small>452 students</small>
+                            </div>
+                            <button data-manage="Fall 2026">Manage</button>
+                        </footer>
+                    </article>
+                    <article class="card semester-card">
+                        <span class="badge review">Scheduled</span>
+                        <h2>Spring 2026</h2>
+                        <p>Jan 12–May 15, 2026</p>
+                        <footer>
+                            <div>
+                                <strong>16 courses</strong
+                                ><small>421 students</small>
+                            </div>
+                            <button data-manage="Spring 2026">Manage</button>
+                        </footer>
+                    </article>
+                    <article class="card semester-card">
+                        <span class="badge">Archived</span>
+                        <h2>Fall 2025</h2>
+                        <p>Sep 1–Dec 20, 2025</p>
+                        <footer>
+                            <div>
+                                <strong>15 courses</strong
+                                ><small>398 students</small>
+                            </div>
+                            <button data-manage="Fall 2025">Manage</button>
+                        </footer>
+                    </article>
+                </section>
+                <section id="coursesPanel" class="card courses-table" hidden>
+                    <header>
+                        <h2>Fall 2026 courses</h2>
+                        <p>18 courses in the active semester</p>
+                    </header>
+                    <table id="coursesTable">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Professor</th>
+                                <th>Students</th>
+                                <th>Projects</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>CS 490</strong><br /><small
+                                        >Senior Project</small
+                                    >
+                                </td>
+                                <td>Professor Lee</td>
+                                <td>24</td>
+                                <td>8</td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        data-manage-course
+                                        data-code="CS 490"
+                                        data-name="Senior Project"
+                                        data-professor="Professor Lee"
+                                        data-students="24"
+                                        data-projects="8"
+                                    >
+                                        Manage
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>CS 342</strong><br /><small
+                                        >Database Systems</small
+                                    >
+                                </td>
+                                <td>Dr. Lina Haddad</td>
+                                <td>31</td>
+                                <td>6</td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        data-manage-course
+                                        data-code="CS 342"
+                                        data-name="Database Systems"
+                                        data-professor="Dr. Lina Haddad"
+                                        data-students="31"
+                                        data-projects="6"
+                                    >
+                                        Manage
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>CS 301</strong><br /><small
+                                        >Software Engineering</small
+                                    >
+                                </td>
+                                <td>Professor Nabil</td>
+                                <td>28</td>
+                                <td>7</td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        data-manage-course
+                                        data-code="CS 301"
+                                        data-name="Software Engineering"
+                                        data-professor="Professor Nabil"
+                                        data-students="28"
+                                        data-projects="7"
+                                    >
+                                        Manage
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="page-state" id="coursesEmptyState" hidden>
+                        <span class="state-icon">0</span>
+                        <h2>No courses yet</h2>
+                        <p>Add the first course to the active semester.</p>
+                    </div>
+                </section>
+                <section
+                    class="card page-state"
+                    id="semestersEmptyState"
+                    hidden
+                >
+                    <span class="state-icon">0</span>
+                    <h2>No semesters yet</h2>
+                    <p>
+                        Create a semester before adding courses and academic
+                        projects.
+                    </p>
+                    <button class="btn" type="button" id="emptyAddSemester">
+                        + Add semester
+                    </button>
+                </section>
+                <section
+                    class="card page-state error-state"
+                    id="academicErrorState"
+                    hidden
+                >
+                    <span class="state-icon">!</span>
+                    <h2>Academic structure could not be loaded</h2>
+                    <p>
+                        Something went wrong while loading semesters and
+                        courses.
+                    </p>
+                    <button
+                        class="btn"
+                        type="button"
+                        onclick="location.href = '/admin/courses'"
+                    >
+                        Retry
+                    </button>
+                </section>
+@endsection
+
+@push('overlays')
+            <div class="course-overlay" id="semesterOverlay" hidden></div>
+            <aside
+                class="semester-drawer"
+                id="semesterDrawer"
+                aria-hidden="true"
+            >
+                <button class="drawer-x" id="closeSemester">×</button>
+                <p class="eyebrow">Academic structure</p>
+                <h2 id="semesterDrawerTitle">Add semester</h2>
+                <form id="semesterForm" novalidate>
+                    <label class="field"
+                        ><span>Semester name</span
+                        ><input
+                            class="control"
+                            id="semesterName"
+                            placeholder="Fall 2027" /><small
+                            class="error"
+                            id="semesterNameError"
+                            hidden
+                        ></small
+                    ></label>
+                    <div class="date-grid">
+                        <label class="field"
+                            ><span>Start date</span
+                            ><input
+                                class="control"
+                                id="semesterStart"
+                                type="date" /><small
+                                class="error"
+                                id="semesterStartError"
+                                hidden
+                            ></small></label
+                        ><label class="field"
+                            ><span>End date</span
+                            ><input
+                                class="control"
+                                id="semesterEnd"
+                                type="date" /><small
+                                class="error"
+                                id="semesterEndError"
+                                hidden
+                            ></small
+                        ></label>
+                    </div>
+                    <label class="invite"
+                        ><input type="checkbox" id="semesterActive" /> Set as
+                        active semester</label
+                    >
+                    <div class="drawer-actions">
+                        <button
+                            type="button"
+                            class="btn secondary"
+                            id="cancelSemester"
+                        >
+                            Cancel</button
+                        ><button class="btn">Save semester</button>
+                    </div>
+                </form>
+            </aside>
+            <div class="course-overlay" id="courseOverlay" hidden></div>
+            <aside class="semester-drawer" id="courseDrawer" aria-hidden="true">
+                <button type="button" class="drawer-x" id="closeCourse">
+                    ×
+                </button>
+                <p class="eyebrow">Academic structure</p>
+                <h2 id="courseDrawerTitle">Manage course</h2>
+                <form id="courseForm" novalidate>
+                    <label class="field"
+                        ><span>Course code</span
+                        ><input
+                            class="control"
+                            id="courseCode"
+                            readonly /></label
+                    ><label class="field"
+                        ><span>Course name</span
+                        ><input class="control" id="courseName" /><small
+                            class="error"
+                            id="courseNameError"
+                            hidden
+                        ></small></label
+                    ><label class="field"
+                        ><span>Professor</span
+                        ><input class="control" id="courseProfessor" /><small
+                            class="error"
+                            id="courseProfessorError"
+                            hidden
+                        ></small
+                    ></label>
+                    <div class="date-grid">
+                        <label class="field"
+                            ><span>Students</span
+                            ><input
+                                class="control"
+                                id="courseStudents"
+                                type="number"
+                                min="0" /></label
+                        ><label class="field"
+                            ><span>Projects</span
+                            ><input
+                                class="control"
+                                id="courseProjects"
+                                type="number"
+                                min="0"
+                        /></label>
+                    </div>
+                    <div class="drawer-actions">
+                        <button
+                            type="button"
+                            class="btn secondary"
+                            id="cancelCourse"
+                        >
+                            Cancel</button
+                        ><button class="btn">Save course</button>
+                    </div>
+                </form>
+            </aside>
+            <div class="toast" id="semesterToast" hidden>
+                <div>
+                    <strong>Saved</strong>
+                    <p>Semester details updated.</p>
+                </div>
+                <button>×</button>
+            </div>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('admin.assets.js', ['path' => 'pages/admin-courses.js']) }}"></script>
+@endpush
