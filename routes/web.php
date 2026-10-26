@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfessorCourseController;
+use App\Http\Controllers\ProfessorSubmissionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,3 +17,4 @@ if (app()->environment('local')) {
 }
 
 Route::view('/professor/projects/create', 'projects.create')->name('professor.projects.create');
+Route::get('/professor/submissions', [ProfessorSubmissionController::class, 'index'])->name('professor.submissions.index');

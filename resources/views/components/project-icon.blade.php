@@ -8,6 +8,8 @@ $paths = [
     'check' => 'm8 11 3 3 8-9M21 12a9 9 0 1 1-7-9',
     'trash' => 'M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7',
     'upload' => 'M12 16V3m-5 5 5-5 5 5M3 15v6h18v-6',
+    'download' => 'M12 3v13m-5-5 5 5 5-5M3 18v3h18v-3',
+    'file' => 'M5 2h9l5 5v15H5ZM14 2v6h5M8 12h8M8 16h8',
     'bell' => 'M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4',
 ];
 @endphp
