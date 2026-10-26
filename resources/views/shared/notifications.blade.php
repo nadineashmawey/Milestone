@@ -1,14 +1,6 @@
 @extends('layouts.app')
 
 @section('title', 'Notifications')
-@section('workspace-name', 'Notifications')
-
-@section('navigation')
-    <a href="{{ url('/') }}">Dashboard</a>
-    <span class="ms-navigation-placeholder">Reviews <b>5</b></span>
-    <span class="ms-navigation-placeholder">Issues</span>
-    <span class="ms-navigation-placeholder">Invitations <b>1</b></span>
-@endsection
 
 @push('styles')
     @vite('resources/css/pages/notifications.css')

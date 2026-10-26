@@ -3,17 +3,6 @@
 .ta-issues .ms-page-header > div:first-child > p:first-child { margin: 0 0 .35rem; color: var(--issue-blue); font-size: .73rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .ta-issues .ms-page-header h1 { margin: 0 0 .35rem; font-size: 1.65rem; }
 .ta-issues .ms-page-header > div:first-child > p:last-child { margin: 0; color: var(--issue-muted); font-size: .88rem; }
-.ms-shell:has(.ta-issues) .ms-topbar { position: absolute; inset: 0 0 auto auto; z-index: var(--z-navigation); min-height: 3.5rem; padding: .35rem 1rem; border: 0; background: transparent; }
-.ms-shell:has(.ta-issues) .ms-topbar > span:first-child { display: none; }
-.ms-shell:has(.ta-issues) .ms-sidebar { margin: 0; padding: .35rem 1rem; border-radius: 0; border-bottom: 1px solid var(--issue-border); background: #fff; }
-.ms-shell:has(.ta-issues) .ms-sidebar .ms-brand { margin: 0 1.25rem 0 0; font-size: .95rem; color: #20223e; }
-.ms-shell:has(.ta-issues) .ms-sidebar .ms-brand::before { content: '⌁ '; color: var(--issue-blue); font-size: 1.4rem; }
-.ms-shell:has(.ta-issues) .ms-navigation { display: inline-flex; vertical-align: middle; gap: .2rem; }
-.ms-shell:has(.ta-issues) .ms-navigation a { padding: .55rem .7rem; font-size: .78rem; }
-.ms-shell:has(.ta-issues) .ms-navigation a[aria-current='page'] { background: #e5ebff; color: var(--issue-blue); }
-.issues-nav-count { display: inline-grid; min-width: 1.05rem; height: 1.05rem; place-items: center; margin-left: .2rem; border-radius: 50%; background: #b565f0; color: #fff; font-size: .65rem; }
-.issues-role, .issues-icon-button, .issues-avatar { display: inline-grid; width: 1.8rem; height: 1.8rem; place-items: center; border: 1px solid var(--issue-border); border-radius: 50%; background: #fff; color: var(--issue-muted); font-size: .72rem; }
-.issues-icon-button { border-color: transparent; cursor: pointer; }.issues-avatar { border: 0; background: #ffe2a8; color: #754d00; font-weight: 800; }
 .issues-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(17rem, .95fr); align-items: start; gap: var(--space-4); }
 .issues-list-panel, .report-panel { min-width: 0; padding: 1.25rem; border: 1px solid #edf0f7; border-radius: 1rem; background: #fff; box-shadow: var(--shadow-card); }
 .issues-panel-heading, .report-heading { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
@@ -43,19 +32,10 @@
 .issues-empty { margin: 1rem 0; color: var(--issue-muted); font-size: .75rem; text-align: center; }.issues-toast { position: fixed; inset-inline-end: 1.25rem; inset-block-end: 1.25rem; z-index: var(--z-toast); max-width: 22rem; margin: 0; padding: .8rem 1rem; border-radius: .75rem; background: var(--issue-ink); color: #fff; box-shadow: var(--shadow-raised); font-size: .8rem; }.issues-toast[hidden] { display: none; }
 .ta-issues :is(button, input, select, textarea):focus-visible { outline: var(--focus-width) solid var(--issue-blue); outline-offset: var(--focus-offset); }
 @media (max-width: 68rem) { .issues-layout { grid-template-columns: minmax(0, 1fr); }.issues-content { grid-template-columns: minmax(12rem, .8fr) minmax(15rem, 1.2fr); }.report-panel { grid-row: 2; }.report-panel form { grid-template-columns: repeat(2, minmax(0, 1fr)); }.report-panel form > :last-of-type { grid-column: 1 / -1; }.report-footer { grid-column: 1 / -1; } }
-@media (max-width: 48rem) { .ta-issues .ms-sidebar { padding: .5rem; }.ta-issues .ms-sidebar .ms-brand { display: block; margin: 0 0 .25rem; }.ta-issues .ms-navigation { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }.ta-issues .ms-navigation a { padding: .45rem .35rem; font-size: .68rem; text-align: center; }.ta-issues .ms-content { padding: 1rem; }.ta-issues .ms-topbar { padding-inline: 1rem; }.issues-content { display: block; }.issue-detail { display: none; padding: 1rem; border: 1px solid var(--issue-border); border-radius: .75rem; }.issues-content.has-detail .issue-detail { display: block; }.issues-close-detail { display: block; }.issue-card { grid-template-columns: 3px minmax(0, 1fr) auto; }.issue-card__meta { max-width: 7rem; }.issues-toolbar { grid-template-columns: 1fr 1fr; }.issues-search { grid-column: 1 / -1; }.report-panel form { grid-template-columns: 1fr; }.report-panel form > :last-of-type, .report-footer { grid-column: auto; }.detail-status-control { grid-template-columns: 1fr; } }
+@media (max-width: 48rem) {.ta-issues .ms-content { padding: 1rem; }.issues-content { display: block; }.issue-detail { display: none; padding: 1rem; border: 1px solid var(--issue-border); border-radius: .75rem; }.issues-content.has-detail .issue-detail { display: block; }.issues-close-detail { display: block; }.issue-card { grid-template-columns: 3px minmax(0, 1fr) auto; }.issue-card__meta { max-width: 7rem; }.issues-toolbar { grid-template-columns: 1fr 1fr; }.issues-search { grid-column: 1 / -1; }.report-panel form { grid-template-columns: 1fr; }.report-panel form > :last-of-type, .report-footer { grid-column: auto; }.detail-status-control { grid-template-columns: 1fr; } }
 @media (max-width: 26rem) { .issues-list-panel, .report-panel { padding: .85rem; }.issue-card { grid-template-columns: 3px minmax(0, 1fr); }.issue-card__meta { grid-column: 2; display: flex; flex-wrap: wrap; justify-items: start; }.report-footer { align-items: flex-start; flex-direction: column; }.report-footer p { max-width: none; } }
 
 /* Screenshot-matched TA workspace composition. */
-.ms-shell:has(.ta-issues) { position: relative; display: block; min-height: 100vh; }
-.ms-shell:has(.ta-issues) .ms-sidebar { display: flex; min-height: 3.5rem; align-items: center; gap: 1.25rem; padding: .35rem 1rem; }
-.ms-shell:has(.ta-issues) .ms-sidebar .ms-brand { flex: 0 0 auto; margin: 0; color: #20223e; font-size: .95rem; }
-.ms-shell:has(.ta-issues) .ms-sidebar .ms-brand::before { content: '⌁ '; font-size: 1.4rem; }
-.ms-shell:has(.ta-issues) .ms-navigation { display: flex; align-items: center; gap: .15rem; }
-.ms-shell:has(.ta-issues) .ms-navigation a { padding: .48rem .62rem; font-size: .64rem; }
-.ms-shell:has(.ta-issues) .ms-topbar { position: absolute; inset: 0 0 auto auto; z-index: var(--z-navigation); min-height: 3.5rem; padding: .35rem 1rem; border: 0; background: transparent; }
-.ms-shell:has(.ta-issues) .ms-topbar > span:first-child { display: none; }
-.ms-shell:has(.ta-issues) .ms-topbar .ms-row { gap: .3rem; }
 .ta-issues .ms-content { max-width: 59rem; padding: 1.8rem 1rem 3rem; gap: 1.35rem; }
 .issues-heading > .issues-eyebrow { margin: 0 0 .3rem; color: var(--issue-blue); font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; }
 .ta-issues .ms-page-header { align-items: flex-start; }
@@ -95,41 +75,17 @@
 .report-footer p { display: none; }
 .report-footer .ms-button { min-height: 1.9rem; padding: .35rem .7rem; border-radius: .5rem; font-size: .61rem; }
 @media (max-width: 48rem) {
-    .ms-shell:has(.ta-issues) .ms-sidebar { display: block; min-height: 3.5rem; padding: .38rem .55rem; }
-    .ms-shell:has(.ta-issues) .ms-sidebar .ms-brand { display: inline-block; margin: 0 .45rem 0 0; font-size: .9rem; }
-    .ms-shell:has(.ta-issues) .ms-navigation { display: inline-flex; width: auto; }
-    .ms-shell:has(.ta-issues) .ms-navigation a { padding: .42rem .4rem; font-size: .58rem; }
-    .ms-shell:has(.ta-issues) .ms-topbar { inset-inline-end: .4rem; padding-inline: .3rem; }
-    .ms-shell:has(.ta-issues) .ms-topbar .ms-row { gap: .12rem; }
-    .ta-issues .issues-role, .ta-issues .issues-icon-button, .ta-issues .issues-avatar { width: 1.45rem; height: 1.45rem; font-size: .58rem; }
     .ta-issues .ms-content { padding: 1.25rem .8rem 2rem; }
     .issues-layout { grid-template-columns: 1fr; gap: .8rem; }
     .report-panel { grid-row: auto; }
 }
 @media (max-width: 29rem) {
-    .ms-shell:has(.ta-issues) .ms-sidebar { padding-right: 6rem; }
-    .ms-shell:has(.ta-issues) .ms-navigation { display: grid; grid-template-columns: repeat(4, auto); justify-content: start; }
-    .ms-shell:has(.ta-issues) .ms-sidebar .ms-brand { display: block; margin-bottom: .18rem; }
-    .ms-shell:has(.ta-issues) .ms-topbar { top: .1rem; }
     .ta-issues .ms-page-header { gap: .5rem; }
     .ta-issues .ms-page-header > .ms-button { padding-inline: .5rem; font-size: .55rem; }
 }
 
 /* Match the TA reference scale and shared header details. */
 .ms-content:has(.ta-issues) { width: min(80vw, 68rem); max-width: none; margin-inline: auto; padding: 2rem 0 3rem; gap: 1.4rem; }
-.ms-shell:has(.ta-issues) .ms-sidebar { min-height: 3.25rem; padding: .35rem 1rem; gap: 1rem; }
-.ms-shell:has(.ta-issues) .ms-sidebar .ms-brand { display: inline-flex; align-items: center; gap: .12rem; color: #20223e; font-size: 0; font-weight: 800; }
-.ms-shell:has(.ta-issues) .ms-sidebar .ms-brand::before { content: ''; display: inline-block; width: 1.65rem; height: 1.35rem; flex: 0 0 auto; background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 24'%3E%3Cpath d='M2 20 9 15 15 17 23 8 29 4' fill='none' stroke='%231f4fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='3' cy='20' r='2.1' fill='%231f4fff'/%3E%3Ccircle cx='9' cy='15' r='2.1' fill='%231f4fff'/%3E%3Ccircle cx='15' cy='17' r='2.1' fill='%231f4fff'/%3E%3Ccircle cx='23' cy='8' r='2.1' fill='%231f4fff'/%3E%3Ccircle cx='29' cy='4' r='2.6' fill='%23ffd93b'/%3E%3C/svg%3E"); }
-.ms-shell:has(.ta-issues) .ms-sidebar .ms-brand::after { content: 'Milestone'; font-size: .95rem; }
-.ms-shell:has(.ta-issues) .ms-navigation { gap: .25rem; }
-.ms-shell:has(.ta-issues) .ms-navigation a { padding: .55rem .7rem; font-size: .68rem; }
-.ms-shell:has(.ta-issues) .ms-topbar { min-height: 3.25rem; padding: .35rem .9rem; }
-.ms-shell:has(.ta-issues) .ms-topbar .ms-row { gap: .45rem; }
-.ms-shell:has(.ta-issues) .issues-role, .ms-shell:has(.ta-issues) .issues-icon-button, .ms-shell:has(.ta-issues) .issues-avatar { width: 1.6rem; height: 1.6rem; font-size: .68rem; }
-.ms-shell:has(.ta-issues) .issues-role { border-color: var(--issue-border); background: #fff; }
-.ms-shell:has(.ta-issues) .issues-icon-button { width: 1.5rem; height: 1.6rem; padding: .3rem; color: #5c6784; }
-.issues-icon-button svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.issues-notification { position: relative; }.issues-notification::after { position: absolute; top: .12rem; right: .15rem; width: .3rem; height: .3rem; border: 1px solid white; border-radius: 50%; background: #ee6b6b; content: ''; }
 .ms-content:has(.ta-issues) .issues-heading > .issues-eyebrow { margin-bottom: .35rem; font-size: .68rem; }
 .ms-content:has(.ta-issues) .ms-page-header h1 { font-size: 1.45rem; }
 .ms-content:has(.ta-issues) .ms-page-header > div:first-child > p:first-child { font-size: .78rem; }
@@ -152,10 +108,7 @@
 .report-footer .ms-button { min-height: 2.05rem; padding-inline: .8rem; font-size: .68rem; }
 @media (max-width: 48rem) {
     .ms-content:has(.ta-issues) { width: auto; margin: 0; padding: 1.3rem 1rem 2rem; }
-    .ms-shell:has(.ta-issues) .ms-sidebar { padding-right: 6.5rem; }
-    .ms-shell:has(.ta-issues) .ms-sidebar .ms-brand::before { width: 1.4rem; }
 }
 @media (max-width: 29rem) {
     .ms-content:has(.ta-issues) { padding-inline: .75rem; }
-    .ms-shell:has(.ta-issues) .ms-topbar { top: 0; }
 }

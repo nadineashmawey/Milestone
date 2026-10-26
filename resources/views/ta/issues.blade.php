@@ -1,22 +1,6 @@
 @extends('layouts.app')
 
 @section('title', 'TA Issues')
-@section('workspace-name', 'Teaching assistant workspace')
-
-@section('navigation')
-    <a href="{{ url('/') }}">Dashboard</a>
-    <a href="#reported-issues">Reviews <span class="issues-nav-count">5</span></a>
-    <a href="{{ route('ta.issues') }}" aria-current="page">Issues</a>
-    <a href="#report-form">Invitations <span class="issues-nav-count">1</span></a>
-@endsection
-
-@section('topbar-actions')
-    <span class="issues-role">TA</span>
-    <button class="issues-icon-button" type="button" aria-label="Toggle theme" title="Toggle theme"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.2A8.5 8.5 0 0 1 8.8 3.8 8.7 8.7 0 1 0 20.2 15.2Z"/></svg></button>
-    <button class="issues-icon-button" type="button" aria-label="Help" title="Help"><span aria-hidden="true">?</span></button>
-    <button class="issues-icon-button issues-notification" type="button" aria-label="Notifications" title="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button>
-    <span class="issues-avatar" aria-label="Signed in as Sarah Ahmed">SA</span>
-@endsection
 
 @push('styles')
     @vite('resources/css/pages/ta-issues.css')

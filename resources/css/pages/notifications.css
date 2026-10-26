@@ -1,15 +1,4 @@
 /* Shared notifications page, scoped to its reusable role-aware view. */
-.ms-shell:has(.notifications-page) { position: relative; display: block; min-height: 100vh; }
-.ms-shell:has(.notifications-page) .ms-sidebar { display: flex; min-height: 3.25rem; align-items: center; gap: 1rem; margin: 0; padding: .35rem 1rem; border: 0; border-bottom: 1px solid var(--color-border); border-radius: 0; background: #fff; }
-.ms-shell:has(.notifications-page) .ms-sidebar .ms-brand { display: inline-flex; align-items: center; gap: .2rem; margin: 0 1.25rem 0 0; color: #20223e; font-size: .95rem; font-weight: 800; }
-.ms-shell:has(.notifications-page) .ms-navigation { display: flex; align-items: center; gap: .25rem; }
-.ms-shell:has(.notifications-page) .ms-navigation a { padding: .55rem .7rem; font-size: .68rem; }
-.ms-shell:has(.notifications-page) .ms-navigation a[aria-current='page'] { background: var(--color-info-bg); color: var(--color-primary); }
-.ms-shell:has(.notifications-page) .ms-navigation-placeholder { display: flex; align-items: center; gap: .3rem; padding: .55rem .7rem; border-radius: .55rem; color: var(--color-muted); font-size: .68rem; white-space: nowrap; }
-.ms-navigation-placeholder b { display: inline-grid; width: .85rem; height: .85rem; place-items: center; border-radius: 50%; background: #b557e8; color: #fff; font-size: .52rem; }
-.ms-shell:has(.notifications-page) .ms-topbar { position: absolute; inset: 0 0 auto auto; z-index: var(--z-navigation); min-height: 3.25rem; padding: .35rem .9rem; border: 0; background: transparent; }
-.ms-shell:has(.notifications-page) .ms-topbar > span:first-child { display: none; }
-.ms-shell:has(.notifications-page) .ms-topbar .ms-row { gap: .4rem; }
 .ms-content:has(.notifications-page) { width: min(80vw, 68rem); max-width: none; margin-inline: auto; padding: 2rem 0 3rem; gap: 1.5rem; }
 .notifications-page { display: grid; align-content: start; gap: 1.4rem; color: var(--color-ink); }
 .notifications-heading { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; }
@@ -77,21 +66,11 @@
 @media (max-width: 63.999rem) { .notifications-panel { width: min(100%, 37rem); min-width: 0; } }
 @media (max-width: 48rem) {
     .ms-content:has(.notifications-page) { width: auto; margin: 0; padding: 1.3rem 1rem 2rem; }
-    .ms-shell:has(.notifications-page) .ms-sidebar { display: block; min-height: 3.25rem; padding: .38rem .55rem; }
-    .ms-shell:has(.notifications-page) .ms-sidebar .ms-brand { display: inline-flex; margin: 0 .45rem 0 0; vertical-align: middle; }
-    .ms-shell:has(.notifications-page) .ms-sidebar .ms-brand svg { width: 1.4rem; }
-    .ms-shell:has(.notifications-page) .ms-navigation { display: inline-flex; width: auto; vertical-align: middle; }
-    .ms-shell:has(.notifications-page) .ms-navigation a { padding: .42rem .4rem; font-size: .58rem; }
-    .ms-shell:has(.notifications-page) .ms-topbar { inset-inline-end: .4rem; padding-inline: .3rem; }
     .notifications-heading { align-items: start; flex-direction: column; gap: .9rem; }
     .notifications-demo-role { width: 100%; min-width: 0; }
     .notifications-panel { width: 100%; padding: .85rem; }
 }
 @media (max-width: 29rem) {
-    .ms-shell:has(.notifications-page) .ms-sidebar { padding-right: 5rem; }
-    .ms-shell:has(.notifications-page) .ms-sidebar .ms-brand { display: block; margin-bottom: .18rem; }
-    .ms-shell:has(.notifications-page) .ms-navigation { display: flex; }
-    .ms-shell:has(.notifications-page) .ms-topbar { top: 0; }
     .notifications-panel__header { align-items: start; }
     .notification-row { grid-template-columns: minmax(0, 1fr) auto; }
     .notification-main { grid-template-columns: 2rem minmax(0, 1fr); gap: .35rem; }

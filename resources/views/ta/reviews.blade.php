@@ -1,22 +1,6 @@
 @extends('layouts.app')
 
 @section('title', 'TA Reviews')
-@section('workspace-name', 'Teaching assistant workspace')
-
-@section('navigation')
-    <a href="#dashboard">Dashboard</a>
-    <a href="{{ route('ta.reviews') }}" aria-current="page">Reviews <span class="review-nav-count">5</span></a>
-    <a href="#issues">Issues</a>
-    <a href="#invitations">Invitations <span class="review-nav-count">1</span></a>
-@endsection
-
-@section('topbar-actions')
-    <span class="review-role">TA</span>
-    <button class="review-icon-button" type="button" aria-label="Toggle theme" title="Toggle theme">☾</button>
-    <button class="review-icon-button" type="button" aria-label="Help" title="Help">?</button>
-    <button class="review-icon-button review-notification" type="button" aria-label="Notifications" title="Notifications">♧</button>
-    <span class="review-avatar" aria-label="Signed in as Sarah Ahmed">SA</span>
-@endsection
 
 @section('content')
 <div class="ta-reviews" data-review-app>
