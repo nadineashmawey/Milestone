@@ -23,3 +23,5 @@ Route::post('/prototype/context', [PrototypeContextController::class, 'update'])
 
 // ---- Profile ----
 // Added on zina/profile.
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->middleware('throttle:30,1')->name('profile.update');
