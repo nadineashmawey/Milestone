@@ -104,6 +104,8 @@
     .ml-stop { grid-template-columns: 2.5rem minmax(0, 1fr); gap: var(--space-3); }
     .ml-node { width: 2.5rem; height: 2.5rem; border-width: 5px; font-size: .75rem; }
     .ml-grade { text-align: left; }
+    .ml-feedback li { grid-template-columns: minmax(0, 1fr); padding: var(--space-3); }
+    .ml-feedback .as-avatar { display: none; }
     .ml-rubric > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
     .ml-status { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .ml-deliverables li { grid-template-columns: auto minmax(0, 1fr); }
