@@ -10,3 +10,4 @@ if (app()->environment('local')) {
     Route::view('/ui-kit', 'ui-kit')->name('ui-kit');
 }
 require __DIR__.'/home.php'; // Home page and Help center. Loaded last, so its "/" replaces the welcome route above.
+require __DIR__.'/zina.php'; // Zina's signed-in prototype pages: dashboards, milestones, team and profile.
