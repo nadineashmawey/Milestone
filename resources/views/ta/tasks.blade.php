@@ -1,0 +1,343 @@
+@extends('layouts.ta')
+
+@section('title', 'TA Tasks and Blockers')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ route('ta.assets.css', ['path' => 'pages/ta-tasks.css']) }}">
+@endpush
+
+@section('content')
+<x-ta.page-header title="Official tasks and blockers" description="Create official tasks and respond to blockers in assigned academic projects.">
+    <button class="btn" id="openTaskForm">+ Create official task</button>
+</x-ta.page-header>
+                <section id="tasksContent">
+                    <section class="task-grid">
+                        <article class="card blockers">
+                            <h2>Open blockers</h2>
+                            <p>Reported by students in assigned teams</p>
+                            <div class="blocker" data-status="Open">
+                                <div>
+                                    <span class="badge status-open">Open</span>
+                                    <h3>Database credentials unavailable</h3>
+                                    <p>
+                                        Team 3 · Software Engineering Capstone ·
+                                        Today
+                                    </p>
+                                </div>
+                                <div>
+                                    <button
+                                        class="btn secondary"
+                                        data-action="ack"
+                                    >
+                                        Acknowledge</button
+                                    ><button class="btn" data-action="resolve">
+                                        Resolve
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="blocker" data-status="Acknowledged">
+                                <div>
+                                    <span class="badge status-acknowledged"
+                                        >Acknowledged</span
+                                    >
+                                    <h3>Test server deployment failing</h3>
+                                    <p>Team 5 · Database Systems · Yesterday</p>
+                                </div>
+                                <div>
+                                    <button class="btn" data-action="resolve">
+                                        Resolve
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card task-form" id="taskFormCard">
+                            <div class="form-heading">
+                                <div>
+                                    <h2>Create official task</h2>
+                                    <p>
+                                        Visible to the selected assigned team.
+                                    </p>
+                                </div>
+                                <span class="step-label"
+                                    >Required fields marked *</span
+                                >
+                            </div>
+                            <form id="taskForm" novalidate>
+                                <div class="form-grid">
+                                    <label class="field"
+                                        >Project *<select
+                                            class="control"
+                                            id="taskProject"
+                                        >
+                                            <option value="">
+                                                Choose a project
+                                            </option>
+                                            <option>
+                                                Software Engineering Capstone
+                                            </option>
+                                            <option>
+                                                Database Systems
+                                            </option></select
+                                        ><small
+                                            class="field-error"
+                                            id="projectError"
+                                            hidden
+                                            >Select a project.</small
+                                        ></label
+                                    >
+                                    <label class="field"
+                                        >Team *<select
+                                            class="control"
+                                            id="taskTeam"
+                                        >
+                                            <option value="">
+                                                Choose a team
+                                            </option></select
+                                        ><small
+                                            class="field-error"
+                                            id="teamError"
+                                            hidden
+                                            >Select an assigned team.</small
+                                        ></label
+                                    >
+                                    <label class="field"
+                                        >Task title *<input
+                                            class="control"
+                                            id="taskTitle"
+                                            maxlength="100"
+                                            placeholder="e.g. Update architecture diagram"
+                                        /><small
+                                            class="field-error"
+                                            id="titleError"
+                                            hidden
+                                            >Enter a task title.</small
+                                        ></label
+                                    >
+                                    <label class="field"
+                                        >Assignee *<select
+                                            class="control"
+                                            id="taskAssignee"
+                                        >
+                                            <option value="">
+                                                Choose an assignee
+                                            </option>
+                                            <option>Whole team</option>
+                                            <option>Aya Hassan</option>
+                                            <option>Omar Said</option>
+                                            <option>
+                                                Salma Mostafa
+                                            </option></select
+                                        ><small
+                                            class="field-error"
+                                            id="assigneeError"
+                                            hidden
+                                            >Select who is responsible.</small
+                                        ></label
+                                    >
+                                    <label class="field"
+                                        >Priority *<select
+                                            class="control"
+                                            id="taskPriority"
+                                        >
+                                            <option value="">
+                                                Choose priority
+                                            </option>
+                                            <option>Low</option>
+                                            <option>Medium</option>
+                                            <option>High</option></select
+                                        ><small
+                                            class="field-error"
+                                            id="priorityError"
+                                            hidden
+                                            >Select a priority.</small
+                                        ></label
+                                    >
+                                    <label class="field"
+                                        >Related milestone *<select
+                                            class="control"
+                                            id="taskMilestone"
+                                        >
+                                            <option value="">
+                                                Choose a milestone
+                                            </option>
+                                            <option>
+                                                M2 · Design Document
+                                            </option>
+                                            <option>M3 · Prototype</option>
+                                            <option>
+                                                M4 · Final Delivery
+                                            </option></select
+                                        ><small
+                                            class="field-error"
+                                            id="milestoneError"
+                                            hidden
+                                            >Select a milestone.</small
+                                        ></label
+                                    >
+                                    <label class="field"
+                                        >Start date *<input
+                                            class="control"
+                                            id="taskStart"
+                                            type="date"
+                                        /><small
+                                            class="field-error"
+                                            id="startError"
+                                            hidden
+                                            >Select a start date.</small
+                                        ></label
+                                    >
+                                    <label class="field"
+                                        >Due date *<input
+                                            class="control"
+                                            id="taskDue"
+                                            type="date"
+                                        /><small
+                                            class="field-error"
+                                            id="dueError"
+                                            hidden
+                                            >Select a due date after the start
+                                            date.</small
+                                        ></label
+                                    >
+                                </div>
+                                <label class="field full-field"
+                                    >Description *<textarea
+                                        class="control"
+                                        id="taskDescription"
+                                        maxlength="500"
+                                        placeholder="Describe the expected work and completion criteria"
+                                    ></textarea
+                                    ><span class="field-meta"
+                                        ><small
+                                            class="field-error"
+                                            id="descriptionError"
+                                            hidden
+                                            >Add a useful description of at
+                                            least 10 characters.</small
+                                        ><small
+                                            ><span id="descriptionCount">0</span
+                                            >/500</small
+                                        ></span
+                                    ></label
+                                >
+                                <label class="field full-field"
+                                    >Evidence link
+                                    <input
+                                        class="control"
+                                        id="taskEvidence"
+                                        type="url"
+                                        placeholder="https://... (optional)"
+                                    /><small
+                                        class="field-error"
+                                        id="evidenceError"
+                                        hidden
+                                        >Enter a complete http:// or https://
+                                        link.</small
+                                    ></label
+                                >
+                                <fieldset class="checklist">
+                                    <legend>Completion checklist</legend>
+                                    <label
+                                        ><input
+                                            type="checkbox"
+                                            name="task-check"
+                                            value="Upload the updated file"
+                                        />
+                                        Upload the updated file</label
+                                    ><label
+                                        ><input
+                                            type="checkbox"
+                                            name="task-check"
+                                            value="Add a short explanation"
+                                        />
+                                        Add a short explanation</label
+                                    >
+                                </fieldset>
+                                <div class="form-actions">
+                                    <button class="btn secondary" type="reset">
+                                        Clear</button
+                                    ><button class="btn" type="submit">
+                                        Preview task
+                                    </button>
+                                </div>
+                            </form>
+                        </article>
+                    </section>
+                    <section class="card created-tasks">
+                        <div class="section-heading">
+                            <div>
+                                <h2>Recently created official tasks</h2>
+                                <p>Tasks published to assigned teams.</p>
+                            </div>
+                            <span class="badge info" id="taskCount"
+                                >1 task</span
+                            >
+                        </div>
+                        <div id="taskRows">
+                            <div class="task-row">
+                                <div>
+                                    <div class="task-row-title">
+                                        <strong
+                                            >Provide corrected architecture
+                                            diagram</strong
+                                        ><span class="badge warning">High</span>
+                                    </div>
+                                    <small
+                                        >Team 3 · Whole team · M2 Design
+                                        Document · Due Oct 24, 2026</small
+                                    >
+                                </div>
+                                <span class="badge info">Official TA task</span>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+                <section
+                    class="card state-card"
+                    id="tasksState"
+                    hidden
+                ></section>
+@endsection
+
+@push('overlays')
+        <dialog class="task-dialog" id="taskPreview">
+            <form method="dialog">
+                <header>
+                    <div>
+                        <p class="eyebrow">Confirm official task</p>
+                        <h2>Review before publishing</h2>
+                    </div>
+                    <button
+                        class="icon-close"
+                        value="cancel"
+                        aria-label="Close"
+                    >
+                        ×
+                    </button>
+                </header>
+                <div class="preview-body" id="previewBody"></div>
+                <aside class="preview-notice">
+                    The selected team will see this task immediately after it is
+                    published.
+                </aside>
+                <footer>
+                    <button class="btn secondary" value="cancel">
+                        Back to edit</button
+                    ><button class="btn" id="confirmTask" value="default">
+                        Publish task
+                    </button>
+                </footer>
+            </form>
+        </dialog>
+        <div class="toast" id="taskToast" hidden>
+            <div>
+                <strong id="taskToastTitle">Done</strong>
+                <p id="taskToastMessage"></p>
+            </div>
+            <button aria-label="Close">×</button>
+        </div>
+@endpush
+
+@push('scripts')
+    <script src="{{ route('ta.assets.js', ['path' => 'pages/ta-tasks.js']) }}"></script>
+@endpush
