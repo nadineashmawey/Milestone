@@ -11,6 +11,7 @@ Route::post('/prototype/context', [PrototypeContextController::class, 'update'])
 
 // ---- Student dashboard ----
 // Added on zina/student-dashboard.
+Route::get('/student/dashboard', [App\Http\Controllers\StudentDashboardController::class, 'show'])->name('student.dashboard');
 
 // ---- Milestones ----
 // Added on zina/milestones.

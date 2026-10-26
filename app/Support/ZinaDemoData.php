@@ -241,6 +241,122 @@ final class ZinaDemoData
     // ---- Student dashboard ----
     // Added on zina/student-dashboard.
 
+    /**
+     * Everything the student dashboard shows (DSH-1). $empty gives a brand-new student with no projects.
+     *
+     * @return array<string, mixed>
+     */
+    public function studentDashboard(bool $empty = false): array
+    {
+        $now = $this->now();
+        $viewer = $this->viewer();
+        $isLeader = $viewer['id'] === 'aya';
+
+        if ($empty) {
+            return [
+                'viewer' => $viewer,
+                'today' => $now->format('l, F j'),
+                'greeting' => $this->greeting(),
+                'summary' => 'You’re not in any projects yet.',
+                'actions' => [],
+                'projects' => [],
+                'deadlines' => [],
+                'tasks' => [],
+                'completed' => [],
+            ];
+        }
+
+        $capstone = $this->project('software-engineering-capstone');
+        $campus = $this->project('campus-navigation-app');
+
+        $deadlines = collect([
+            ['title' => 'M2 · Design Document', 'project' => $capstone, 'due' => $this->date('2026-10-18 17:00'), 'href' => $this->link('student.milestones.index', ['project' => $capstone['id']])],
+            ['title' => 'Prototype checkpoint', 'project' => $campus, 'due' => $this->date('2026-10-23 17:00'), 'href' => $this->link('student.projects.show', ['project' => $campus['id']])],
+            ['title' => 'M3 · Final Demo', 'project' => $capstone, 'due' => $this->date('2026-11-08 17:00'), 'href' => $this->link('student.milestones.index', ['project' => $capstone['id']])],
+        ])->sortBy(fn ($deadline) => $deadline['due'])->map(fn ($deadline) => [
+            ...$deadline,
+            'day' => $deadline['due']->format('j'),
+            'month' => $deadline['due']->format('M'),
+            'when' => $deadline['due']->format('D, M j · g:i A'),
+            'countdown' => $this->countdown($deadline['due']),
+        ])->values();
+
+        $tasks = collect($isLeader ? [
+            ['title' => 'Research summary', 'project' => $capstone, 'due' => $this->date('2026-10-11 17:00'), 'priority' => 'High', 'blocked' => null, 'href' => $this->link('student.tasks.index')],
+            ['title' => 'Upload design document', 'project' => $capstone, 'due' => $this->date('2026-10-18 17:00'), 'priority' => 'Medium', 'blocked' => null, 'href' => $this->link('student.tasks.show', ['task' => 'design-document'])],
+            ['title' => 'Share interactive prototype', 'project' => $campus, 'due' => $this->date('2026-10-19 17:00'), 'priority' => 'Medium', 'blocked' => 'Waiting on Wireframes (Nour Saleh)', 'href' => $this->link('student.tasks.show', ['task' => 'interactive-prototype'])],
+            ['title' => 'Submit API implementation', 'project' => $capstone, 'due' => $this->date('2026-10-20 17:00'), 'priority' => 'High', 'blocked' => null, 'href' => $this->link('student.tasks.show', ['task' => 'api-implementation'])],
+        ] : [
+            // Malek's own work, for the team-member view.
+            ['title' => 'API contract', 'project' => $capstone, 'due' => $this->date('2026-10-14 17:00'), 'priority' => 'Medium', 'blocked' => null, 'href' => $this->link('student.tasks.index')],
+            ['title' => 'Indoor map data', 'project' => $campus, 'due' => $this->date('2026-10-21 17:00'), 'priority' => 'Low', 'blocked' => null, 'href' => $this->link('student.tasks.index')],
+        ])->map(fn ($task) => [
+            ...$task,
+            'when' => $task['due']->format('M j · g:i A'),
+            'overdue' => $task['due']->lessThan($now),
+            'priority_tone' => ['High' => 'danger', 'Medium' => 'warning', 'Low' => 'neutral'][$task['priority']],
+        ])->sortBy(fn ($task) => $task['due'])->values();
+
+        // Items that need the student to act (DSH-1). Each one goes away once it's handled on its own page this session.
+        $actions = [];
+        if (! $this->get('milestones.software-engineering-capstone.versions')) {
+            $actions[] = [
+                'kind' => 'Changes requested',
+                'tone' => 'review',
+                'icon' => 'file',
+                'title' => 'M2 Design Document needs a resubmission',
+                'detail' => 'Sara Ahmed asked for ERD cardinality labels and testing owners. Due Oct 18, 5:00 PM.',
+                'href' => $this->link('student.milestones.index', ['project' => $capstone['id']]),
+                'cta' => $isLeader ? 'Resubmit M2' : 'See the feedback',
+            ];
+        }
+        foreach ($tasks->where('overdue', true) as $task) {
+            $actions[] = [
+                'kind' => 'Overdue task',
+                'tone' => 'danger',
+                'icon' => 'clock',
+                'title' => $task['title'].' is overdue',
+                'detail' => $task['project']['title'].' · was due '.$task['due']->format('M j').'. No penalty is applied.',
+                'href' => $task['href'],
+                'cta' => 'Open task',
+            ];
+        }
+        if ($isLeader && ! $this->get('team.campus-navigation-app.join_requests.karim')) {
+            $actions[] = [
+                'kind' => 'Join request',
+                'tone' => 'warning',
+                'icon' => 'users',
+                'title' => 'Karim Saleh asked to join Campus Navigation App',
+                'detail' => 'Independent project · 4 of 10 members. Approve or decline the request.',
+                'href' => $this->link('student.team.show', ['project' => $campus['id']]),
+                'cta' => 'Review request',
+            ];
+        }
+
+        $projects = [
+            [...$capstone, 'ring_tone' => 'green', 'subtitle' => $capstone['course'].' · '.$capstone['team'], 'next' => 'M2 Design Document · Oct 18', 'next_countdown' => $this->countdown($this->date('2026-10-18 17:00')), 'href' => $this->link('student.projects.show', ['project' => $capstone['id']])],
+            [...$campus, 'ring_tone' => 'blue', 'subtitle' => 'Independent · 4 of 10 members · No grading', 'next' => 'Prototype checkpoint · Oct 23', 'next_countdown' => $this->countdown($this->date('2026-10-23 17:00')), 'href' => $this->link('student.projects.show', ['project' => $campus['id']])],
+        ];
+
+        $thisWeek = $deadlines->filter(fn ($deadline) => ! $deadline['countdown']['overdue'] && $deadline['due']->lessThanOrEqualTo($now->addDays(7)))->count();
+        $taskCount = $tasks->count();
+
+        return [
+            'viewer' => $viewer,
+            'today' => $now->format('l, F j'),
+            'greeting' => $this->greeting(),
+            'summary' => "{$taskCount} ".($taskCount === 1 ? 'task' : 'tasks').' to focus on, '.$thisWeek.' '.($thisWeek === 1 ? 'deadline' : 'deadlines').' this week.',
+            'actions' => $actions,
+            'projects' => $projects,
+            'deadlines' => $deadlines->all(),
+            'tasks' => $tasks->all(),
+            'completed' => [
+                ['title' => 'Human-Centered Design Study', 'type' => 'Academic', 'term' => 'CS 380 · Spring 2026', 'result' => '47 / 50', 'note' => 'Grade released by Professor Lee'],
+                ['title' => 'Student Budget Planner', 'type' => 'Independent', 'term' => 'Summer 2026', 'result' => 'No grade', 'note' => 'Independent projects aren’t graded'],
+            ],
+        ];
+    }
+
     // ---- Milestones ----
     // Added on zina/milestones.
 
