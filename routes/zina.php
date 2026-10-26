@@ -20,6 +20,7 @@ Route::post('/prototype/context', [PrototypeContextController::class, 'update'])
 
 // ---- Professor dashboard ----
 // Added on zina/professor-dashboard.
+Route::get('/professor/dashboard', [App\Http\Controllers\ProfessorDashboardController::class, 'show'])->name('professor.dashboard');
 
 // ---- Profile ----
 // Added on zina/profile.

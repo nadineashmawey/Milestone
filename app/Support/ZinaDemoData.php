@@ -250,6 +250,101 @@ final class ZinaDemoData
     // ---- Professor dashboard ----
     // Added on zina/professor-dashboard.
 
+    /**
+     * Professor Lee's dashboard (PROF-1). $empty gives a new professor with no projects.
+     * Links to teammates' pages resolve once their routes exist; each item names the page owner.
+     *
+     * @return array<string, mixed>
+     */
+    public function professorDashboard(bool $empty = false): array
+    {
+        $now = $this->now();
+        $professor = $this->person('lee');
+        $base = [
+            'professor' => $professor,
+            'today' => $now->format('l, F j'),
+            'greeting' => $this->greeting(),
+            'create_href' => $this->link('professor.projects.create'),
+        ];
+
+        if ($empty) {
+            return [...$base, 'summary' => 'You don’t have any projects yet.', 'stats' => [], 'attention' => [], 'projects' => [], 'deadlines' => [], 'activity' => []];
+        }
+
+        $submissions = ['href' => $this->link('professor.submissions.index'), 'owner' => 'Nadine', 'page' => 'Submissions'];
+        $teams = ['href' => $this->link('professor.teams.index'), 'owner' => 'Jana', 'page' => 'Professor Teams'];
+        $risk = ['href' => $this->link('professor.risk-radar.index'), 'owner' => 'Nadine', 'page' => 'Risk Radar'];
+        $extensions = ['href' => $this->link('professor.extensions.index'), 'owner' => 'Nadine', 'page' => 'Extensions'];
+        $notifications = ['href' => $this->link('notifications'), 'owner' => 'Raghad', 'page' => 'Notifications'];
+
+        // What students did this session on the other pages shows up here too.
+        $resubmissions = $this->get('milestones.software-engineering-capstone.versions', []);
+        $leave = $this->get('team.software-engineering-capstone.leave');
+
+        $attention = [];
+        if ($resubmissions) {
+            $latest = end($resubmissions);
+            $attention[] = ['tone' => 'danger', 'priority' => 'Due soon', 'title' => 'Team 1 resubmitted M2 Design Document', 'meta' => 'Software Engineering Capstone · version '.$latest['number'].' by '.$latest['submitter'], 'action' => 'Review', ...$submissions];
+        }
+        $attention[] = ['tone' => 'danger', 'priority' => 'Due soon', 'title' => 'Team 3 submitted M2 Design Document', 'meta' => 'Database Systems · 42 minutes ago · M2 closes Oct 14', 'action' => 'Review', ...$submissions];
+        if ($leave) {
+            $attention[] = ['tone' => 'warning', 'priority' => 'Waiting on you', 'title' => $leave['by'].' asked to leave Team 1', 'meta' => 'Software Engineering Capstone · “'.\Illuminate\Support\Str::limit($leave['reason'], 60).'”', 'action' => 'Decide', ...$teams];
+        }
+        $attention[] = ['tone' => 'warning', 'priority' => 'Waiting on you', 'title' => 'Karim Saleh and Dina Nasser are unassigned', 'meta' => 'Software Engineering Capstone · formation closed in Manual mode', 'action' => 'Place students', ...$teams];
+        $attention[] = ['tone' => 'review', 'priority' => 'Watch', 'title' => 'Team Delta has been inactive for 6 days', 'meta' => 'Database Systems · simulated High risk · M2 at risk', 'action' => 'Inspect', ...$risk];
+        $attention[] = ['tone' => 'review', 'priority' => 'Watch', 'title' => 'Team 3 emailed you about an M2 extension', 'meta' => 'Software Engineering Capstone · request arrived by email Oct 12', 'action' => 'Record extension', ...$extensions];
+        $attention[] = ['tone' => 'neutral', 'priority' => 'FYI', 'title' => 'Sara Ahmed reported an issue: Team 3 has no active leader', 'meta' => 'Software Engineering Capstone · reported by your TA yesterday', 'action' => 'View', ...$notifications];
+
+        $projects = [
+            ['title' => 'Software Engineering Capstone', 'type' => 'Academic', 'course' => 'CS 490 · 8 teams', 'progress' => 62, 'risk' => 'Low', 'risk_tone' => 'success', 'reason' => 'All teams active this week', 'next' => 'M2 Design Document', 'next_due' => $this->date('2026-10-18 17:00'), 'extended' => '1 team extended', ...$teams],
+            ['title' => 'Database Systems', 'type' => 'Academic', 'course' => 'CS 342 · 6 teams', 'progress' => 35, 'risk' => 'High', 'risk_tone' => 'danger', 'reason' => '3 teams inactive for 4+ days', 'next' => 'M2 Design Document', 'next_due' => $this->date('2026-10-14 17:00'), 'extended' => null, ...$teams],
+            ['title' => 'Web Development Workshop', 'type' => 'Academic', 'course' => 'CS 210 · 5 teams', 'progress' => 88, 'risk' => 'Medium', 'risk_tone' => 'warning', 'reason' => '2 reviews waiting', 'next' => 'M3 Demo', 'next_due' => $this->date('2026-10-22 17:00'), 'extended' => null, ...$teams],
+        ];
+        $projects = array_map(fn ($project) => [...$project, 'next_label' => $project['next_due']->format('M j'), 'countdown' => $this->countdown($project['next_due'])], $projects);
+
+        $deadlines = collect([
+            ['title' => 'M2 · Design Document', 'project' => 'Database Systems', 'due' => $this->date('2026-10-14 17:00'), 'note' => '6 teams · 2 submitted'],
+            ['title' => 'M2 · Design Document', 'project' => 'Software Engineering Capstone', 'due' => $this->date('2026-10-18 17:00'), 'note' => '8 teams · 3 submitted · Team 3 extended to Oct 21'],
+            ['title' => 'M3 · Demo', 'project' => 'Web Development Workshop', 'due' => $this->date('2026-10-22 17:00'), 'note' => '5 teams'],
+            ['title' => 'M3 · Final Demo', 'project' => 'Software Engineering Capstone', 'due' => $this->date('2026-11-08 17:00'), 'note' => 'Opens after M2 review'],
+        ])->sortBy(fn ($deadline) => $deadline['due'])->map(fn ($deadline) => [
+            ...$deadline,
+            'day' => $deadline['due']->format('j'),
+            'month' => $deadline['due']->format('M'),
+            'when' => $deadline['due']->format('D, M j · g:i A'),
+            'countdown' => $this->countdown($deadline['due']),
+        ])->values()->all();
+
+        $activity = [
+            ['who' => 'Aya Hassan', 'text' => 'moved “API contract” to In Review', 'meta' => 'Team 1 · Capstone · 12 minutes ago', 'avatar' => 0],
+            ['who' => 'Sara Ahmed', 'text' => 'drafted feedback on M2 Design Document', 'meta' => 'Team 3 · Database Systems · 38 minutes ago', 'avatar' => 2],
+            ['who' => 'Team 2', 'text' => 'submitted M1 Proposal', 'meta' => 'Web Development Workshop · 1 hour ago', 'avatar' => 3],
+            ['who' => 'Nour Saleh', 'text' => 'completed “User interviews”', 'meta' => 'Team 1 · Capstone · 2 hours ago', 'avatar' => 1],
+        ];
+        if ($resubmissions) {
+            array_unshift($activity, ['who' => end($resubmissions)['submitter'], 'text' => 'submitted M2 Design Document, version '.end($resubmissions)['number'], 'meta' => 'Team 1 · Capstone · just now', 'avatar' => 0]);
+        }
+
+        $waiting = 7 + count($resubmissions);
+        $needsYou = collect($attention)->whereIn('priority', ['Due soon', 'Waiting on you'])->count();
+
+        return [
+            ...$base,
+            'summary' => "3 supervised projects across 19 teams. {$needsYou} ".($needsYou === 1 ? 'item needs' : 'items need').' you today.',
+            'stats' => [
+                ['label' => 'Active projects', 'value' => 3, 'note' => 'Across 3 courses', 'icon' => 'folder', 'tone' => ''],
+                ['label' => 'Teams', 'value' => 19, 'note' => '2 students unassigned', 'icon' => 'users', 'tone' => 'success'],
+                ['label' => 'Waiting for review', 'value' => $waiting, 'note' => '2 due before Oct 14', 'icon' => 'check', 'tone' => 'review'],
+                ['label' => 'At-risk projects', 'value' => 2, 'note' => 'Simulated risk · 1 High, 1 Medium', 'icon' => 'chart', 'tone' => 'danger'],
+            ],
+            'attention' => $attention,
+            'projects' => $projects,
+            'deadlines' => $deadlines,
+            'activity' => $activity,
+            'notifications_href' => $notifications['href'],
+        ];
+    }
+
     // ---- Profile ----
     // Added on zina/profile.
 }
