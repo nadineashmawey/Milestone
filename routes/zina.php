@@ -17,6 +17,23 @@ Route::post('/prototype/context', [PrototypeContextController::class, 'update'])
 
 // ---- Student team ----
 // Added on zina/student-team.
+Route::prefix('/student/projects/{project}/team')->name('student.team.')
+    ->controller(App\Http\Controllers\StudentTeamController::class)->group(function () {
+        Route::get('/', 'show')->name('show');
+        // Academic team formation (TEAM-1–3) and leave requests (TEAM-8).
+        Route::post('/requests/{item}/accept', 'act')->name('accept');
+        Route::post('/requests/{item}/decline', 'act')->name('decline');
+        Route::post('/outgoing', 'act')->middleware('throttle:20,1')->name('send');
+        Route::post('/outgoing/{item}/withdraw', 'act')->name('withdraw');
+        Route::post('/leave', 'act')->name('leave');
+        Route::post('/leave/withdraw', 'act')->name('withdraw-leave');
+        // Independent projects (TEAM-12–13).
+        Route::post('/invitations', 'act')->middleware('throttle:20,1')->name('invite');
+        Route::post('/invitations/{item}/cancel', 'act')->name('cancel-invitation');
+        Route::post('/join-requests/{item}/approve', 'act')->name('approve-join');
+        Route::post('/join-requests/{item}/decline', 'act')->name('decline-join');
+        Route::post('/members/{item}/remove', 'act')->name('remove-member');
+    });
 
 // ---- Professor dashboard ----
 // Added on zina/professor-dashboard.
