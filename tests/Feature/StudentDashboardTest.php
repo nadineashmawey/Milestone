@@ -91,6 +91,12 @@ class StudentDashboardTest extends TestCase
 
     public function test_links_to_teammates_pages_fall_back_safely_until_they_exist(): void
     {
-        $this->get('/student/dashboard')->assertOk()->assertSee('aria-disabled="true"', false);
+        $this->assertSame('#', \App\Support\AppShellNavigation::href('a.route.nobody.has'));
+
+        // Jana's task pages: linked once her routes are registered, "#" before that.
+        $expected = \Illuminate\Support\Facades\Route::has('student.tasks.show')
+            ? route('student.tasks.show', 'design-document')
+            : '#';
+        $this->get('/student/dashboard')->assertOk()->assertSee('href="'.$expected.'"', false);
     }
 }

@@ -24,11 +24,16 @@ class ProfessorDashboardTest extends TestCase
 
     public function test_needs_attention_is_prioritised_and_names_the_page_owner_until_it_exists(): void
     {
-        $this->get('/professor/dashboard')
+        $response = $this->get('/professor/dashboard')
             ->assertSeeInOrder(['Due soon', 'Waiting on you', 'Watch', 'FYI'])
-            ->assertSee('Team 3 submitted M2 Design Document')
-            ->assertSee('Submissions is Nadine’s page, coming soon')
-            ->assertSee('Notifications is Raghad’s page, coming soon');
+            ->assertSee('Team 3 submitted M2 Design Document');
+
+        // Each item links to its owner's page once that route exists, and says whose page it is until then.
+        foreach (['professor.submissions.index' => 'Submissions is Nadine’s page', 'notifications' => 'Notifications is Raghad’s page'] as $route => $note) {
+            \Illuminate\Support\Facades\Route::has($route)
+                ? $response->assertSee('href="'.route($route).'"', false)->assertDontSee($note)
+                : $response->assertSee($note.', coming soon');
+        }
     }
 
     public function test_project_cards_label_risk_as_simulated_and_show_the_type(): void
