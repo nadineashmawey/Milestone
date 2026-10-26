@@ -60,7 +60,7 @@
 
 /* Page frame */
 .as-main { max-width: calc(var(--as-max) + 2 * var(--as-gutter)); margin: auto; padding: var(--space-10) var(--as-gutter) var(--space-16); }
-.as-page { display: grid; gap: var(--space-6); }
+.as-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
 .as-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-5); margin-bottom: var(--space-2); }
 .as-head > div:first-child { max-width: 46rem; }
 .as-eyebrow { color: var(--color-primary); font-size: var(--font-caption); font-weight: var(--weight-semibold); letter-spacing: .08em; text-transform: uppercase; }
@@ -185,7 +185,7 @@
     .as-stats { grid-template-columns: minmax(0, 1fr); }
     .as-error { flex-direction: column; padding: var(--space-6) var(--space-5); }
     .as-empty { padding: var(--space-8) var(--space-5); }
-    .as-empty-actions .ms-button, .as-error-actions .ms-button { flex: 1 1 100%; }
+    .as-empty-actions .ms-button, .as-error-actions .ms-button { flex: 1 1 100%; white-space: normal; text-align: center; }
     .as-dialog-panel { padding: var(--space-6) var(--space-5); }
     .as-dialog-actions .ms-button { flex: 1 1 100%; }
 }
