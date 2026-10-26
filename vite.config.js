@@ -22,6 +22,8 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/student-project-board.js',
                 'resources/js/student-project-portal.js',
+                'resources/css/pages/ta-issues.css',
+                'resources/js/ta-issues.js',
             ],
             refresh: true,
         }),
