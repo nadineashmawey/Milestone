@@ -190,6 +190,23 @@ final class ZinaDemoData
         return CarbonImmutable::parse($value);
     }
 
+    public function greeting(): string
+    {
+        $hour = (int) $this->now()->format('G');
+
+        return $hour < 12 ? 'Good morning' : ($hour < 18 ? 'Good afternoon' : 'Good evening');
+    }
+
+    /**
+     * A link that may point at a teammate's page. Resolves to "#" until that route is registered.
+     *
+     * @param  array<string, mixed>  $parameters
+     */
+    public function link(string $route, array $parameters = []): string
+    {
+        return AppShellNavigation::href($route, $parameters);
+    }
+
     /**
      * Initials for avatars, e.g. "Aya Hassan" → "AH", "Professor Lee" → "PL".
      */
