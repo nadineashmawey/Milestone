@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.app')
 
 
 @section('title', 'My Projects')
@@ -8,7 +8,7 @@
 @endpush
 
 
-@section('body')
+@section('page')
     <main class="projects-page">
         <div class="projects-container">
             <header class="projects-heading">

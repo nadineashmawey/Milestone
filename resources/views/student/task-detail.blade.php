@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.app')
 
 @section('title', $task['name'])
 
@@ -6,7 +6,7 @@
     @vite('resources/css/student-tasks.css')
 @endpush
 
-@section('body')
+@section('page')
     <main class="tasks-page"><div class="tasks-container task-detail">
         <a class="tasks-back" href="{{ route('student.tasks.index') }}">← Back to tasks</a>
         <header class="tasks-heading"><div><div class="task-title-badges"><i class="task-badge task-badge--{{ $task['mode'] === 'Team' ? 'info' : 'success' }}">{{ $task['mode'] }}</i><i class="task-badge task-badge--{{ $submitted ? 'review' : $task['tone'] }}">{{ $submitted ? 'In review' : $task['status'] }}</i></div><h1>{{ $task['name'] }}</h1><p>{{ $task['project'] }} · Due {{ $task['due'] }}</p></div></header>

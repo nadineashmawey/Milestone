@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.app')
 
 @section('title', 'Tasks')
 
@@ -6,7 +6,7 @@
     @vite('resources/css/student-tasks.css')
 @endpush
 
-@section('body')
+@section('page')
     <main class="tasks-page"><div class="tasks-container">
         <a class="tasks-back" href="{{ route('projects.index') }}">← My Projects</a>
         <header class="tasks-heading"><div><p class="projects-eyebrow">Student · Work queue</p><h1>Tasks</h1><p>Individual and team work across your active projects.</p></div></header>

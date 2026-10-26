@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.app')
 
 @section('title', 'Professor Teams')
 
@@ -6,7 +6,7 @@
     @vite('resources/css/academic-admin.css')
 @endpush
 
-@section('body')
+@section('page')
 <main class="workspace-page"><div class="workspace-container"><header class="workspace-heading"><div><p class="projects-eyebrow">Software Engineering Capstone</p><h1>Teams</h1><p>Formation locks October 11 at 5:00 PM · 2–4 students per team</p></div><form method="post" action="{{ route('professor.teams.auto-place') }}">@csrf<button class="ms-button ms-button--primary" type="submit">Auto-place randomly</button></form></header>
     @if(session('status'))<p class="workspace-flash" role="status">{{ session('status') }}</p>@endif
     @if($errors->any())<p class="workspace-error" role="alert">{{ $errors->first() }}</p>@endif

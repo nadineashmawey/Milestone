@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.app')
 
 @section('title', 'New independent project')
 
@@ -6,7 +6,7 @@
     @vite('resources/css/student-projects.css')
 @endpush
 
-@section('body')
+@section('page')
     <main class="projects-page">
         <div class="projects-container">
             <a class="back-link" href="{{ route('projects.index') }}"><span aria-hidden="true">←</span> Back to My Projects</a>

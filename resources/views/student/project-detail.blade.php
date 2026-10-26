@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.app')
 
 
 @section('title', $project['title'])
@@ -14,7 +14,7 @@
 @endpush
 
 
-@section('body')
+@section('page')
     <main class="detail-page" data-project-board data-project-id="{{ $project['id'] }}">
         <div class="detail-container">
             <a class="back-link" href="{{ route('projects.index') }}"><span aria-hidden="true">←</span> My Projects</a>
