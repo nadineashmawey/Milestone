@@ -1,0 +1,67 @@
+/* Professor dashboard (Zina). Loaded only by zina/professor-dashboard/show.blade.php; scoped under .pd. Shell pieces come from app-shell.css. */
+
+/* Hero, after the App.tsx professor banner */
+.pd-hero { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-6); padding: var(--space-8) var(--space-10); overflow: hidden; border-radius: 24px; background: var(--color-ink); color: var(--color-white); }
+.pd-hero::after { content: ''; position: absolute; width: 190px; height: 190px; right: 14%; top: -110px; border-radius: 50%; background: var(--color-yellow); }
+.pd-hero > * { position: relative; z-index: 1; }
+.pd-hero > div { max-width: 40rem; }
+.pd-hero-eyebrow { color: #9fb4ff; font-size: var(--font-caption); font-weight: var(--weight-semibold); letter-spacing: .08em; text-transform: uppercase; }
+.pd-hero h1 { margin-top: var(--space-2); font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: var(--weight-bold); line-height: 1.12; letter-spacing: -.03em; }
+.pd-hero p:not(.pd-hero-eyebrow) { margin-top: var(--space-3); color: #c3c9d9; font-size: 1.0625rem; }
+
+/* Needs attention */
+.pd-attention-item { --tone: var(--color-border); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-4); padding: var(--space-4) 0; }
+.pd-attention-item--danger { --tone: var(--color-coral); --tone-text: var(--color-danger-text); }
+.pd-attention-item--warning { --tone: var(--color-yellow); --tone-text: var(--color-warning-text); }
+.pd-attention-item--review { --tone: var(--color-violet); --tone-text: var(--color-review-text); }
+.pd-mark { width: 5px; height: 2.75rem; border-radius: 5px; background: var(--tone); }
+.pd-priority { display: block; color: var(--tone-text, var(--color-muted)); font-size: .75rem; font-weight: var(--weight-bold); letter-spacing: .06em; text-transform: uppercase; }
+.pd-attention-body strong, .pd-attention-body small { display: block; }
+.pd-attention-body strong { margin-top: 2px; font-size: 1rem; }
+.pd-attention-body small { margin-top: 2px; color: var(--color-muted); font-size: var(--font-caption); }
+.pd-attention-action { display: grid; justify-items: end; gap: 4px; text-align: right; }
+.pd-attention-action .as-note { max-width: 12rem; }
+
+/* Project cards */
+.pd-section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-2) var(--space-4); margin-bottom: var(--space-4); }
+.pd-section-head h2 { font-size: 1.1875rem; font-weight: var(--weight-semibold); letter-spacing: -.015em; }
+.pd-projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.pd-project { display: flex; flex-direction: column; padding: var(--space-6); border: var(--border-width) solid var(--as-line); border-radius: 18px; background: var(--color-surface); }
+.pd-project h3 { margin-top: var(--space-4); font-size: 1.125rem; letter-spacing: -.015em; }
+.pd-reason { margin-top: var(--space-2); color: var(--as-ink-2); font-size: var(--font-small); }
+.pd-progress { display: grid; grid-template-columns: 1fr auto; gap: var(--space-2); margin-top: var(--space-5); font-size: var(--font-caption); }
+.pd-progress span:first-child { color: var(--color-muted); }
+.pd-progress .as-bar { grid-column: 1 / -1; }
+.pd-next { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: var(--space-4); padding-top: var(--space-4); border-top: var(--border-width) solid var(--as-line); color: var(--as-ink-2); font-size: var(--font-caption); }
+.pd-next svg { color: var(--color-muted); }
+.pd-open { margin-top: auto; padding-top: var(--space-4); }
+
+/* Deadlines and activity */
+.pd-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); align-items: start; }
+.pd-deadlines > li, .pd-activity > li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; }
+.pd-activity > li { grid-template-columns: auto minmax(0, 1fr); }
+.pd-deadlines strong, .pd-deadlines small, .pd-activity small { display: block; }
+.pd-deadlines strong { font-size: .9375rem; }
+.pd-deadlines small, .pd-activity small { margin-top: 2px; color: var(--color-muted); font-size: var(--font-caption); }
+.pd-activity p { font-size: .9375rem; }
+.pd-date { display: grid; place-content: center; width: 2.75rem; height: 3rem; border: var(--border-width) solid var(--color-border); border-radius: 10px; text-align: center; }
+.pd-date strong { font-size: 1.0625rem; line-height: 1; }
+.pd-date small { margin-top: 2px; color: var(--color-muted); font-size: .6875rem; font-weight: var(--weight-semibold); text-transform: uppercase; }
+
+@media (max-width: 1100px) {
+    .pd-projects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pd-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+    .pd-projects { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+    .pd-hero { padding: var(--space-6) var(--space-5); border-radius: 20px; }
+    .pd-hero::after { width: 120px; height: 120px; right: -30px; top: -60px; }
+    .pd-hero-cta { width: 100%; }
+    .pd-attention-item { grid-template-columns: auto minmax(0, 1fr); }
+    .pd-attention-action { grid-column: 2; justify-items: start; text-align: left; }
+    .pd-project { padding: var(--space-5) var(--space-4); }
+    .pd-deadlines > li { grid-template-columns: auto minmax(0, 1fr); }
+    .pd-deadlines .ms-badge { grid-column: 2; }
+}
