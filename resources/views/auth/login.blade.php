@@ -43,6 +43,29 @@
             <button class="ms-button" type="submit">Sign in</button>
         </form>
         <p class="auth-switch">Don’t have an account? <a href="{{ route('register') }}">Create account</a></p>
+
+        @if (config('demo.enabled') && ! app()->environment('production'))
+            {{-- Demo accounts for testing (config/demo.php). Each button signs in through the normal login route. --}}
+            <section class="auth-demo" aria-labelledby="auth-demo-title">
+                <h3 id="auth-demo-title">Demo accounts for testing</h3>
+                <p>One click signs you in. Or type an email below with the password <code>{{ config('demo.password') }}</code>. Run <code>php artisan migrate:fresh --seed</code> if they don’t work.</p>
+                <ul>
+                    @foreach (config('demo.accounts') as $account)
+                        <li>
+                            <form method="POST" action="{{ route('login.submit') }}">
+                                @csrf
+                                <input type="hidden" name="email" value="{{ $account['email'] }}">
+                                <input type="hidden" name="password" value="{{ config('demo.password') }}">
+                                <button type="submit">
+                                    <strong>{{ $account['name'] }}</strong>
+                                    <span>{{ $account['label'] }} · {{ $account['email'] }}</span>
+                                </button>
+                            </form>
+                        </li>
+                    @endforeach
+                </ul>
+            </section>
+        @endif
     </section>
 </div>
 

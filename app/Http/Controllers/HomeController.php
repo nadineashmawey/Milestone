@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\DashboardRoute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -49,16 +50,16 @@ class HomeController extends Controller
     }
 
     /**
-     * @return array{login: string, register: string, dashboard: string}
+     * @return array{login: string, register: string, dashboard: string, logout: string|null}
      */
     private function accountLinks(): array
     {
-        // TODO(Jana): Sign in and Sign up register these routes. Until then the links use Laravel's standard paths.
-        // TODO(team): point "dashboard" at the role-based dashboard route once it exists.
+        // Until Jana's Sign in and Sign up routes exist, the links use Laravel's standard paths.
         return [
             'login' => Route::has('login') ? route('login') : url('/login'),
             'register' => Route::has('register') ? route('register') : url('/register'),
-            'dashboard' => Route::has('dashboard') ? route('dashboard') : url('/dashboard'),
+            'dashboard' => DashboardRoute::url(auth()->user()),
+            'logout' => Route::has('logout') ? route('logout') : null,
         ];
     }
 

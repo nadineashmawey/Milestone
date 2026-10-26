@@ -19,6 +19,12 @@
                 <x-button variant="ghost" :href="route('home')">@include('public.partials.icon', ['name' => 'back', 'size' => 18]) Home</x-button>
             @endunless
             @auth
+                @if ($accountLinks['logout'])
+                    <form method="POST" action="{{ $accountLinks['logout'] }}" class="hp-signout">
+                        @csrf
+                        <x-button type="submit" variant="ghost">Sign out</x-button>
+                    </form>
+                @endif
                 <x-button :href="$accountLinks['dashboard']">Go to dashboard</x-button>
             @else
                 @if ($full)
@@ -49,6 +55,12 @@
             <div class="hp-mobile-actions">
                 @auth
                     <x-button :href="$accountLinks['dashboard']">Go to dashboard</x-button>
+                    @if ($accountLinks['logout'])
+                        <form method="POST" action="{{ $accountLinks['logout'] }}" class="hp-signout">
+                            @csrf
+                            <x-button type="submit" variant="secondary">Sign out</x-button>
+                        </form>
+                    @endif
                 @else
                     <x-button variant="secondary" :href="$accountLinks['login']">Sign in</x-button>
                     <x-button :href="$accountLinks['register']">Create account</x-button>

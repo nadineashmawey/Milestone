@@ -63,6 +63,12 @@
                     <a class="as-icon-link" href="{{ AppShellNavigation::href('notifications') }}" title="Notifications">
                         @include('public.partials.icon', ['name' => 'bell', 'size' => 19])<span class="as-sr">Notifications</span>
                     </a>
+                    @if (auth()->check() && Route::has('logout'))
+                        <form method="POST" action="{{ route('logout') }}" class="as-signout">
+                            @csrf
+                            <button type="submit" class="as-icon-link" title="Sign out">@include('public.partials.icon', ['name' => 'logout', 'size' => 19])<span class="as-sr">Sign out {{ auth()->user()->name }}</span></button>
+                        </form>
+                    @endif
                     <a class="as-avatar-link" href="{{ AppShellNavigation::href('profile.edit') }}" title="Your profile">
                         <span class="as-avatar as-avatar--{{ $shellPerson['avatar'] }}" aria-hidden="true">{{ $demo->initials($shellPerson['name']) }}</span>
                         <span class="as-sr">Your profile: {{ $shellPerson['name'] }}</span>

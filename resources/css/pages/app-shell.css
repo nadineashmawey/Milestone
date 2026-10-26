@@ -36,6 +36,8 @@
 .as-icon-link, .as-avatar-link { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: var(--radius-control); color: var(--color-muted); }
 .as-icon-link:hover { background: var(--color-page); color: var(--color-primary); }
 .as-avatar-link { border-radius: 50%; }
+.as-signout { display: contents; }
+.as-signout .as-icon-link { border: 0; background: none; cursor: pointer; }
 
 /* Avatars (initials). Pairs from the UI kit's status colours. */
 .as-avatar { display: inline-grid; flex: none; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--color-info-bg); color: var(--color-info-text); font-size: .75rem; font-weight: var(--weight-bold); letter-spacing: .02em; }

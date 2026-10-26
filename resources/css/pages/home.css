@@ -59,6 +59,7 @@ html:has(.hp) { scroll-behavior: smooth; }
 .hp-mobile-menu nav { display: flex; flex-direction: column; }
 .hp-mobile-menu nav a { padding: var(--space-4) var(--space-1); border-bottom: var(--border-width) solid var(--hp-line); color: var(--hp-ink); font-size: 1.0625rem; font-weight: var(--weight-semibold); text-decoration: none; }
 .hp-mobile-actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-top: var(--space-5); }
+.hp-signout { display: contents; }
 
 /* Hero */
 .hp-hero { max-width: var(--hp-max); margin: auto; padding: 4.5rem var(--hp-gutter) var(--space-16); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: var(--space-16); align-items: center; }
