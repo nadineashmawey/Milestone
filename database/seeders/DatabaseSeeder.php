@@ -16,22 +16,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $demoAccounts = [
-            ['name' => 'Student Demo', 'email' => 'student@demo.milestone.test', 'role' => 'student', 'project_type' => 'independent'],
-            ['name' => 'TA Demo', 'email' => 'ta@demo.milestone.test', 'role' => 'ta', 'project_type' => 'miu'],
-            ['name' => 'Professor Demo', 'email' => 'professor@demo.milestone.test', 'role' => 'professor', 'project_type' => 'miu'],
-            ['name' => 'Admin Demo', 'email' => 'admin@demo.milestone.test', 'role' => 'admin', 'project_type' => 'miu'],
-        ];
+        // Demo accounts for testing (config/demo.php). Never created in production.
+        if (config('demo.enabled') && ! app()->environment('production')) {
+            foreach (config('demo.accounts') as $account) {
+                [$first, $last] = array_pad(explode(' ', $account['name'], 2), 2, '');
 
-        foreach ($demoAccounts as $account) {
-            User::updateOrCreate(
-                ['email' => $account['email']],
-                [
-                    ...$account,
-                    'password' => Hash::make('demo1234'),
-                    'status' => 'active',
-                ],
-            );
+                User::updateOrCreate(
+                    ['email' => $account['email']],
+                    [
+                        'name' => $account['name'],
+                        'first_name' => $first,
+                        'last_name' => $last,
+                        'role' => $account['role'],
+                        'project_type' => $account['project_type'],
+                        'password' => Hash::make(config('demo.password')),
+                        'status' => 'active',
+                    ],
+                );
+            }
         }
 
         $this->call(ProblemReportSeeder::class);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\DashboardRoute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,14 +26,7 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-        $dashboard = match (strtolower((string) $request->user()->role)) {
-            'ta', 'teaching assistant' => 'ta.dashboard',
-            'professor' => 'professor.dashboard',
-            'admin' => 'admin.dashboard',
-            default => 'student.dashboard',
-        };
-
-        return redirect()->intended(route($dashboard));
+        return redirect()->intended(route(DashboardRoute::name($request->user())));
     }
 
     public function register(Request $request)
