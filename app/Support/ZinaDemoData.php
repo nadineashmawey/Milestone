@@ -360,6 +360,216 @@ final class ZinaDemoData
     // ---- Milestones ----
     // Added on zina/milestones.
 
+    /** SUB-4 submission statuses, in order. */
+    public const SUBMISSION_STATUSES = ['Not started', 'Submitted', 'TA reviewed', 'Needs resubmission', 'Approved', 'Graded'];
+
+    /** DLN-7 file types for milestone deliverables. The final allowlist is still open under DEC-12. */
+    public const DELIVERABLE_EXTENSIONS = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'png', 'jpg', 'jpeg', 'zip', 'psd', 'pkt', 'txt', 'md'];
+
+    /** DLN-7: 25 MB per file, in kilobytes for Laravel's max rule. */
+    public const MAX_UPLOAD_KB = 25600;
+
+    /**
+     * The project's milestone timeline (PROF-2, SUB-1–4). Null when the project doesn't exist.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function milestones(string $projectId): ?array
+    {
+        $project = $this->project($projectId);
+        if (! $project) {
+            return null;
+        }
+
+        $viewer = $this->viewer();
+        $leader = $this->person('aya');
+        $base = [
+            'project' => $project,
+            'viewer' => $viewer,
+            'leader' => $leader,
+            'can_submit' => $viewer['id'] === $leader['id'],
+        ];
+
+        // SUB-1: Independent projects have no official milestone submissions.
+        if ($project['type'] === 'Independent') {
+            return [...$base, 'milestones' => [], 'can_submit' => false];
+        }
+
+        $m2Due = $this->date('2026-10-18 17:00');
+        $m2Versions = [
+            [
+                'number' => 1,
+                'submitted_at' => $this->date('2026-10-09 15:40'),
+                'submitter' => $leader['name'],
+                'files' => [
+                    ['label' => 'Design document', 'name' => 'team1-design-v1.pdf', 'size' => '2.1 MB'],
+                    ['label' => 'Presentation', 'name' => 'team1-design-v1.pptx', 'size' => '6.4 MB'],
+                ],
+                'link' => 'https://github.com/team-1/capstone',
+                'status' => 'Needs resubmission',
+            ],
+            ...$this->get('milestones.'.$projectId.'.versions', []),
+        ];
+        $m2Versions = array_map(fn ($version) => $this->presentVersion($version, $m2Due), $m2Versions);
+        $latest = end($m2Versions);
+        $resubmitted = $latest['number'] > 1;
+
+        $m2Timeline = [
+            ['status' => 'Submitted', 'when' => 'Oct 9, 3:40 PM', 'by' => 'Aya Hassan · version 1'],
+            ['status' => 'TA reviewed', 'when' => 'Oct 10, 11:05 AM', 'by' => 'Sara Ahmed · full review'],
+            ['status' => 'Needs resubmission', 'when' => 'Oct 11, 2:30 PM', 'by' => 'Professor Lee'],
+        ];
+        if ($resubmitted) {
+            $m2Timeline[] = ['status' => 'Submitted', 'when' => $latest['when'], 'by' => $latest['submitter'].' · version '.$latest['number']];
+        }
+
+        return [
+            ...$base,
+            'milestones' => [
+                [
+                    'code' => 'M1',
+                    'title' => 'Proposal',
+                    'state' => 'graded',
+                    'status' => 'Graded',
+                    'due' => $this->date('2026-09-24 17:00'),
+                    'due_label' => 'Thu, Sep 24 · 5:00 PM',
+                    'grade' => ['score' => 41, 'out_of' => 50, 'released' => 'Released by Professor Lee on Oct 2 · locked'],
+                    'rubric' => [
+                        ['criterion' => 'Problem framing', 'score' => 9, 'max' => 10],
+                        ['criterion' => 'Research', 'score' => 8, 'max' => 10],
+                        ['criterion' => 'Feasibility', 'score' => 8, 'max' => 10],
+                        ['criterion' => 'Team plan', 'score' => 7, 'max' => 10],
+                        ['criterion' => 'Communication', 'score' => 9, 'max' => 10],
+                    ],
+                    'feedback' => [
+                        ['author' => 'Professor Lee', 'role' => 'Professor', 'when' => 'Oct 2', 'text' => 'Strong foundation and a clear user need. Narrow the first release and make testing ownership explicit.'],
+                    ],
+                    'versions' => [
+                        $this->presentVersion([
+                            'number' => 1,
+                            'submitted_at' => $this->date('2026-09-24 17:12'),
+                            'submitter' => $leader['name'],
+                            'files' => [['label' => 'Proposal', 'name' => 'team1-proposal.pdf', 'size' => '1.4 MB']],
+                            'link' => null,
+                            'status' => 'Graded',
+                        ], $this->date('2026-09-24 17:00')),
+                    ],
+                ],
+                [
+                    'code' => 'M2',
+                    'title' => 'Design Document',
+                    'state' => 'active',
+                    'status' => $resubmitted ? 'Submitted' : 'Needs resubmission',
+                    'description' => 'Document your system architecture, data model and interface design, and explain the trade-offs your team chose. Reviewers read the document and the presentation together, so keep the two consistent.',
+                    'due' => $m2Due,
+                    'due_label' => 'Sun, Oct 18 · 5:00 PM',
+                    'countdown' => $this->countdown($m2Due),
+                    'deliverables' => $this->m2Deliverables(),
+                    'checklist' => [
+                        'final' => 'Every required deliverable is the final version.',
+                        'access' => 'The repository link is accessible to reviewers.',
+                        'approved' => 'All team members approved this version.',
+                    ],
+                    'timeline' => $m2Timeline,
+                    'feedback' => [
+                        ['author' => 'Sara Ahmed', 'role' => 'Teaching assistant', 'when' => 'Oct 10', 'text' => 'Strong architecture. Add cardinality labels to the ERD and name an owner for each testing phase.'],
+                        ['author' => 'Professor Lee', 'role' => 'Professor', 'when' => 'Oct 11', 'text' => 'I agree with Sara. Resubmit with those two changes before the deadline; the rest is ready.'],
+                    ],
+                    'versions' => array_reverse($m2Versions),
+                    'draft' => $this->get('milestones.'.$projectId.'.draft'),
+                ],
+                [
+                    'code' => 'M3',
+                    'title' => 'Final Demo',
+                    'state' => 'locked',
+                    'status' => 'Not started',
+                    'due' => $this->date('2026-11-08 17:00'),
+                    'due_label' => 'Sun, Nov 8 · 5:00 PM',
+                    'lock_reason' => 'Opens after Professor Lee reviews M2.',
+                    'requirements' => ['Live demonstration', 'Demo video link', 'Final code repository', 'Team reflection'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * The three M2 deliverables (PROF-2: files and a GitHub link).
+     *
+     * @return array<string, array{label: string, kind: string, help: string, accept?: string}>
+     */
+    public function m2Deliverables(): array
+    {
+        return [
+            'design_document' => ['label' => 'Design document', 'kind' => 'file', 'help' => 'PDF or Word document, up to 25 MB.', 'accept' => '.pdf,.doc,.docx'],
+            'presentation' => ['label' => 'Presentation', 'kind' => 'file', 'help' => 'PowerPoint or PDF, up to 25 MB.', 'accept' => '.ppt,.pptx,.pdf'],
+            'repository' => ['label' => 'GitHub repository', 'kind' => 'link', 'help' => 'For example https://github.com/team-1/capstone'],
+        ];
+    }
+
+    /**
+     * Keep the validated deliverables as a draft. Only file names and sizes are kept; the prototype stores no file contents.
+     *
+     * @param  array<string, mixed>  $draft
+     */
+    public function saveMilestoneDraft(string $projectId, array $draft): void
+    {
+        $this->put('milestones.'.$projectId.'.draft', $draft);
+    }
+
+    public function discardMilestoneDraft(string $projectId): void
+    {
+        $this->forget('milestones.'.$projectId.'.draft');
+    }
+
+    /**
+     * Turn the draft into the next version (SUB-2). Returns the stored version, or null when there's no draft.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function submitMilestoneDraft(string $projectId): ?array
+    {
+        $draft = $this->get('milestones.'.$projectId.'.draft');
+        if (! $draft) {
+            return null;
+        }
+
+        $versions = $this->get('milestones.'.$projectId.'.versions', []);
+        $version = [
+            'number' => count($versions) + 2,
+            'submitted_at' => $this->now()->addMinutes(count($versions) * 7 + 12),
+            'submitter' => $this->viewer()['name'],
+            'files' => $draft['files'],
+            'link' => $draft['link'],
+            'status' => 'Submitted',
+        ];
+
+        $this->put('milestones.'.$projectId.'.versions', [...$versions, $version]);
+        $this->discardMilestoneDraft($projectId);
+
+        return $this->presentVersion($version, $this->date('2026-10-18 17:00'));
+    }
+
+    /**
+     * @param  array<string, mixed>  $version
+     * @return array<string, mixed>
+     */
+    private function presentVersion(array $version, CarbonImmutable $due): array
+    {
+        return [
+            ...$version,
+            'when' => $version['submitted_at']->format('M j, g:i A'),
+            'late' => $version['submitted_at']->greaterThan($due),
+        ];
+    }
+
+    /**
+     * Human-readable file size, e.g. 2.1 MB.
+     */
+    public function fileSize(int $bytes): string
+    {
+        return $bytes >= 1048576 ? number_format($bytes / 1048576, 1).' MB' : max(1, (int) round($bytes / 1024)).' KB';
+    }
+
     // ---- Student team ----
     // Added on zina/student-team.
 

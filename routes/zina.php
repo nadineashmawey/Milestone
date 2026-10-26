@@ -15,6 +15,13 @@ Route::get('/student/dashboard', [App\Http\Controllers\StudentDashboardControlle
 
 // ---- Milestones ----
 // Added on zina/milestones.
+Route::prefix('/student/projects/{project}/milestones')->name('student.milestones.')
+    ->controller(App\Http\Controllers\StudentMilestoneController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/{milestone}/draft', 'draft')->middleware('throttle:20,1')->name('draft');
+        Route::post('/{milestone}/draft/discard', 'discard')->name('discard');
+        Route::post('/{milestone}/submit', 'submit')->middleware('throttle:20,1')->name('submit');
+    });
 
 // ---- Student team ----
 // Added on zina/student-team.
