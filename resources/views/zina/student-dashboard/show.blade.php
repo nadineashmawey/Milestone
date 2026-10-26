@@ -1,4 +1,4 @@
-@extends('layouts.app-shell', ['shellRole' => 'student', 'shellActive' => 'dashboard', 'shellStates' => true])
+@extends('layouts.app-shell', ['shellStates' => true])
 
 @section('title', 'Student dashboard')
 

@@ -1,4 +1,4 @@
-@extends('layouts.app-shell', ['shellRole' => 'student', 'shellActive' => 'milestones', 'shellStates' => true])
+@extends('layouts.app-shell', ['shellStates' => true])
 
 @section('title', 'Milestones · '.$timeline['project']['title'])
 

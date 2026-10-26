@@ -1,26 +1,23 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="data:">
-        <title>@yield('title', 'Admin Workspace') · Milestone</title>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'tokens.css']) }}">
-        <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'base.css']) }}">
-        <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'components.css']) }}">
-        <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'admin-static.css']) }}">
-        @stack('styles')
-    </head>
-    <body>
-        <a class="ms-skip-link" href="#main">Skip to content</a>
-        <main id="main" class="@yield('page-class', 'page')">
-            <div class="container">
-                @yield('content')
-            </div>
-            @stack('overlays')
-        </main>
-        <script src="{{ route('admin.assets.js', ['path' => 'components/admin-dropdowns.js']) }}"></script>
-        @stack('scripts')
-    </body>
-</html>
+@extends('layouts.app')
+
+{{-- Admin pages. The navbar comes from layouts.app; this layout keeps the admin stylesheets and page wrapper. --}}
+
+@prepend('styles')
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'tokens.css']) }}">
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'base.css']) }}">
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'components.css']) }}">
+    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'admin-static.css']) }}">
+@endprepend
+
+@prepend('scripts')
+    <script src="{{ route('admin.assets.js', ['path' => 'components/admin-dropdowns.js']) }}"></script>
+@endprepend
+
+@section('page')
+    <main id="main" class="@yield('page-class', 'page')">
+        <div class="container">
+            @yield('content')
+        </div>
+        @stack('overlays')
+    </main>
+@endsection

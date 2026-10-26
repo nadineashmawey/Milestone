@@ -1,4 +1,4 @@
-@extends('layouts.app-shell', ['shellRole' => 'student', 'shellActive' => 'team', 'shellStates' => true])
+@extends('layouts.app-shell', ['shellStates' => true])
 
 @section('title', 'Team · '.$team['project']['title'])
 

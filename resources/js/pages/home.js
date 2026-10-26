@@ -1,49 +1,13 @@
 // Home page and Help center. Every page works without this file; it only adds the interactive layer.
+// The header is the shared navbar (<x-navbar variant="guest" />); its script is components/navbar.js.
 
 const root = document.querySelector('.hp');
 
 if (root) {
-    initNav(root);
-    initMenu(root);
     initFaq(root);
     initTypeTabs(root);
     initHelpSearch(root);
     initReportForm(root);
-}
-
-function initNav(root) {
-    const nav = root.querySelector('[data-hp-nav]');
-    if (!nav) return;
-    const update = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-}
-
-function initMenu(root) {
-    const toggle = root.querySelector('[data-hp-menu-toggle]');
-    const menu = root.querySelector('[data-hp-menu]');
-    if (!toggle || !menu) return;
-
-    const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
-    const setOpen = (open) => {
-        toggle.setAttribute('aria-expanded', String(open));
-        menu.hidden = !open;
-    };
-
-    toggle.addEventListener('click', () => setOpen(!isOpen()));
-    menu.addEventListener('click', (event) => {
-        if (event.target.closest('a')) setOpen(false);
-    });
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && isOpen()) {
-            setOpen(false);
-            toggle.focus();
-        }
-    });
-    // Matches the 900px breakpoint in home.css, where the menu button disappears.
-    window.matchMedia('(min-width: 901px)').addEventListener('change', (event) => {
-        if (event.matches) setOpen(false);
-    });
 }
 
 function initFaq(root) {

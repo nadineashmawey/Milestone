@@ -1,8 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.app')
 
-@section('body')
-    {{-- The shared professor navbar will be added here later. --}}
-    <main id="main" class="ms-content">
-        @yield('content')
-    </main>
-@endsection
+{{-- Professor pages. The navbar comes from layouts.app; pages keep the same <main class="ms-content">. --}}
+@section('main-class', 'ms-content')

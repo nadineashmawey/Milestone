@@ -39,27 +39,7 @@ html:has(.hp) { scroll-behavior: smooth; }
 .hp .ms-button { white-space: nowrap; }
 .hp .ms-button svg { flex: none; }
 
-/* Nav */
-.hp-nav { position: sticky; top: 0; z-index: var(--z-navigation); background: rgb(245 246 251 / 88%); backdrop-filter: saturate(1.4) blur(12px); border-bottom: var(--border-width) solid transparent; transition: border-color .2s; }
-.hp-nav.is-scrolled { border-bottom-color: var(--hp-line); }
-.hp-nav-inner { max-width: var(--hp-max); height: var(--hp-nav-h); margin: auto; padding: 0 var(--hp-gutter); display: flex; align-items: center; gap: var(--space-6); }
-.hp-logo { display: block; flex: none; border-radius: var(--space-2); }
-.hp-logo img, .hp-footer-logo { display: block; width: auto; height: 2.25rem; }
-.hp-nav-links { display: flex; gap: 2px; margin-right: auto; }
-.hp-nav-links a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-control); color: var(--hp-muted); font-size: var(--font-small); font-weight: var(--weight-semibold); text-decoration: none; white-space: nowrap; }
-.hp-nav-links a:hover { color: var(--hp-ink); background: rgb(30 31 59 / 4%); }
-.hp-nav-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
-.hp-menu-toggle { display: none; position: relative; width: 2.75rem; height: 2.75rem; padding: 0; border: var(--border-width) solid var(--hp-line-2); border-radius: var(--radius-control); background: var(--hp-surface); cursor: pointer; }
-.hp-menu-bar { position: absolute; left: 12px; right: 12px; height: 2px; border-radius: 2px; background: var(--hp-ink); transition: transform .2s, top .2s; }
-.hp-menu-bar:nth-of-type(2) { top: 17px; }
-.hp-menu-bar:nth-of-type(3) { top: 25px; }
-.hp-menu-toggle[aria-expanded='true'] .hp-menu-bar:nth-of-type(2) { top: 21px; transform: rotate(45deg); }
-.hp-menu-toggle[aria-expanded='true'] .hp-menu-bar:nth-of-type(3) { top: 21px; transform: rotate(-45deg); }
-.hp-mobile-menu { border-top: var(--border-width) solid var(--hp-line); background: var(--color-page); padding: var(--space-3) var(--hp-gutter) var(--space-5); }
-.hp-mobile-menu nav { display: flex; flex-direction: column; }
-.hp-mobile-menu nav a { padding: var(--space-4) var(--space-1); border-bottom: var(--border-width) solid var(--hp-line); color: var(--hp-ink); font-size: 1.0625rem; font-weight: var(--weight-semibold); text-decoration: none; }
-.hp-mobile-actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-top: var(--space-5); }
-.hp-signout { display: contents; }
+.hp-footer-logo { display: block; width: auto; height: 2.25rem; }
 
 /* Hero */
 .hp-hero { max-width: var(--hp-max); margin: auto; padding: 4.5rem var(--hp-gutter) var(--space-16); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: var(--space-16); align-items: center; }
@@ -258,8 +238,6 @@ html:has(.hp) { scroll-behavior: smooth; }
     .hp-report { position: static; }
 }
 @media (max-width: 900px) {
-    .hp-nav-links { display: none; }
-    .hp-menu-toggle { display: block; }
     .hp-steps { grid-template-columns: 1fr; gap: var(--space-8); }
     .hp-steps li, .hp-steps li + li { padding: 0 0 0 var(--space-16); border-left: 0; }
     .hp-step-num { position: absolute; left: 0; top: 0; }
@@ -273,15 +251,9 @@ html:has(.hp) { scroll-behavior: smooth; }
     .hp-type:not(.active) { display: none; }
     .hp-footer { grid-template-columns: 1fr; }
 }
-@media (min-width: 901px) {
-    .hp-mobile-menu { display: none; }
-}
 /* Phone */
 @media (max-width: 600px) {
     .hp { --hp-gutter: var(--space-4); --hp-nav-h: 4rem; }
-    .hp-nav-actions:not(.always) .ms-button { display: none; }
-    .hp-nav-actions.always .ms-button { min-height: 2.5rem; padding-inline: var(--space-3); }
-    .hp-logo img { height: 1.875rem; }
     .hp-hero { padding: 2.25rem var(--hp-gutter) var(--space-12); gap: var(--space-10); }
     .hp-lede { font-size: 1.0625rem; }
     .hp-hero-actions .ms-button { flex: 1 1 100%; }
@@ -309,5 +281,4 @@ html:has(.hp) { scroll-behavior: smooth; }
     .hp-footer-nav { grid-template-columns: 1fr 1fr; gap: 28px; }
     .hp-help-hero { padding: var(--space-10) var(--hp-gutter) 28px; }
     .hp-report { padding: 22px; }
-    .hp-mobile-actions { grid-template-columns: 1fr; }
 }

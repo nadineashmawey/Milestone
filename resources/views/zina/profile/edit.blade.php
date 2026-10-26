@@ -1,19 +1,10 @@
-@extends('layouts.app-shell', ['shellRole' => $profile['role'], 'shellActive' => null, 'shellStates' => true])
+@extends('layouts.app-shell', ['shellStates' => true])
 
 @section('title', 'Profile')
 
 @push('styles')
     @vite('resources/css/pages/profile.css')
 @endpush
-
-@section('prototype-controls')
-    @include('zina.partials.context-switch', [
-        'field' => 'role',
-        'label' => 'Role',
-        'options' => ['student' => 'Student', 'professor' => 'Professor', 'ta' => 'TA', 'admin' => 'Admin'],
-        'current' => $context['role'],
-    ])
-@endsection
 
 @section('content')
     @php
