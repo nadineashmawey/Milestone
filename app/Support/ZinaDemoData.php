@@ -941,4 +941,93 @@ final class ZinaDemoData
 
     // ---- Profile ----
     // Added on zina/profile.
+
+    /** Notification categories × channels (DLN-6). */
+    public const NOTIFICATION_CATEGORIES = [
+        'tasks' => ['Tasks', 'Assignments, status changes and comments that mention you'],
+        'deadlines' => ['Deadlines', 'Reminders 3 days and 1 day before a due date'],
+        'announcements' => ['Announcements', 'Messages from professors and administrators'],
+        'team_requests' => ['Team requests', 'Requests, invitations and leave decisions'],
+        'feedback' => ['Feedback', 'Reviews, resubmission requests and released grades'],
+    ];
+
+    public const NOTIFICATION_CHANNELS = ['in_app' => 'In-app', 'email' => 'Email'];
+
+    public const DISPLAY_OPTIONS = [
+        'date_format' => ['M j, Y' => 'Oct 18, 2026', 'j M Y' => '18 Oct 2026', 'Y-m-d' => '2026-10-18'],
+        'time_format' => ['12h' => '12-hour (5:00 PM)', '24h' => '24-hour (17:00)'],
+        'week_start' => ['saturday' => 'Saturday', 'sunday' => 'Sunday', 'monday' => 'Monday'],
+    ];
+
+    /**
+     * The shared Profile page for the role picked in the prototype controls (ACC-9–10, DLN-6).
+     *
+     * @return array<string, mixed>
+     */
+    public function profile(bool $newAccount = false): array
+    {
+        $role = $this->context()['role'];
+        $person = match ($role) {
+            'professor' => $this->person('lee'),
+            'ta' => $this->person('sara'),
+            'admin' => $this->person('admin'),
+            default => $this->viewer(),
+        };
+
+        $defaults = [
+            'first_name' => $person['first'],
+            'last_name' => $person['last'],
+            'date_format' => 'M j, Y',
+            'time_format' => '12h',
+            'week_start' => 'saturday',
+            'notifications' => collect(self::NOTIFICATION_CATEGORIES)->map(fn ($label, $key) => [
+                'in_app' => true,
+                'email' => in_array($key, ['deadlines', 'feedback'], true),
+            ])->all(),
+        ];
+
+        $saved = $newAccount ? [] : $this->get('profile.'.$role.'.'.$person['id'], []);
+        $values = array_replace_recursive($defaults, $saved);
+
+        $details = match ($role) {
+            'professor' => [
+                ['label' => 'Department', 'value' => 'Software Engineering'],
+                ['label' => 'Courses', 'list' => ['CS 490 · Software Engineering', 'CS 342 · Database Systems', 'CS 210 · Web Development']],
+            ],
+            'ta' => [
+                ['label' => 'Assigned courses', 'list' => ['CS 490 · Software Engineering Capstone · Full review', 'CS 342 · Database Systems · Comment only']],
+            ],
+            'admin' => [
+                ['label' => 'Two-factor authentication', 'value' => 'Off', 'tone' => 'warning', 'link' => ['label' => 'Manage in Security', 'href' => $this->link('admin.security'), 'owner' => 'Habiba']],
+            ],
+            default => [
+                ['label' => 'Program', 'value' => $newAccount ? 'Not set yet' : 'Computer Science'],
+            ],
+        };
+
+        return [
+            'role' => $role,
+            'role_label' => ['student' => 'Student', 'professor' => 'Professor', 'ta' => 'Teaching assistant', 'admin' => 'Admin'][$role],
+            'person' => $person,
+            'display_name' => trim($values['first_name'].' '.$values['last_name']),
+            'values' => $values,
+            'saved_at' => $saved['saved_at'] ?? null,
+            'locked' => array_values(array_filter([
+                ['label' => 'University email', 'value' => $person['email']],
+                $role === 'student' ? ['label' => 'Student ID', 'value' => $person['id'] === 'malek' ? '20230047' : '20230012'] : null,
+                ['label' => 'Role', 'value' => ['student' => 'Student', 'professor' => 'Professor', 'ta' => 'Teaching assistant', 'admin' => 'Admin'][$role]],
+            ])),
+            'details' => $details,
+            'dashboard_href' => $this->link(['student' => 'student.dashboard', 'professor' => 'professor.dashboard', 'ta' => 'ta.dashboard', 'admin' => 'admin.dashboard'][$role]),
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $values
+     */
+    public function saveProfile(array $values): void
+    {
+        $profile = $this->profile();
+        $this->put('profile.'.$profile['role'].'.'.$profile['person']['id'], [...$values, 'saved_at' => $this->now()->format('g:i A')]);
+    }
 }
