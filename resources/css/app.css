@@ -9,6 +9,7 @@
 @import './pages/submissions.css';
 @import './pages/risk-radar.css';
 @import './pages/extensions.css';
+@import './pages/auth.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
