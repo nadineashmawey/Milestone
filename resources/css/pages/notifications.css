@@ -1,0 +1,100 @@
+/* Shared notifications page, scoped to its reusable role-aware view. */
+.ms-shell:has(.notifications-page) { position: relative; display: block; min-height: 100vh; }
+.ms-shell:has(.notifications-page) .ms-sidebar { display: flex; min-height: 3.25rem; align-items: center; gap: 1rem; margin: 0; padding: .35rem 1rem; border: 0; border-bottom: 1px solid var(--color-border); border-radius: 0; background: #fff; }
+.ms-shell:has(.notifications-page) .ms-sidebar .ms-brand { display: inline-flex; align-items: center; gap: .2rem; margin: 0 1.25rem 0 0; color: #20223e; font-size: .95rem; font-weight: 800; }
+.ms-shell:has(.notifications-page) .ms-navigation { display: flex; align-items: center; gap: .25rem; }
+.ms-shell:has(.notifications-page) .ms-navigation a { padding: .55rem .7rem; font-size: .68rem; }
+.ms-shell:has(.notifications-page) .ms-navigation a[aria-current='page'] { background: var(--color-info-bg); color: var(--color-primary); }
+.ms-shell:has(.notifications-page) .ms-navigation-placeholder { display: flex; align-items: center; gap: .3rem; padding: .55rem .7rem; border-radius: .55rem; color: var(--color-muted); font-size: .68rem; white-space: nowrap; }
+.ms-navigation-placeholder b { display: inline-grid; width: .85rem; height: .85rem; place-items: center; border-radius: 50%; background: #b557e8; color: #fff; font-size: .52rem; }
+.ms-shell:has(.notifications-page) .ms-topbar { position: absolute; inset: 0 0 auto auto; z-index: var(--z-navigation); min-height: 3.25rem; padding: .35rem .9rem; border: 0; background: transparent; }
+.ms-shell:has(.notifications-page) .ms-topbar > span:first-child { display: none; }
+.ms-shell:has(.notifications-page) .ms-topbar .ms-row { gap: .4rem; }
+.ms-content:has(.notifications-page) { width: min(80vw, 68rem); max-width: none; margin-inline: auto; padding: 2rem 0 3rem; gap: 1.5rem; }
+.notifications-page { display: grid; align-content: start; gap: 1.4rem; color: var(--color-ink); }
+.notifications-heading { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; }
+.notifications-eyebrow { margin: 0 0 .35rem; color: var(--color-primary); font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; }
+.notifications-heading .ms-page-header h1 { margin: 0 0 .35rem; font-size: 1.45rem; }
+.notifications-heading .ms-page-header p { margin: 0; color: var(--color-muted); font-size: .78rem; }
+.notifications-demo-role { display: grid; min-width: 14rem; gap: .25rem; padding: .55rem .7rem; border: 1px solid var(--color-border); border-radius: .7rem; background: #fff; }
+.notifications-demo-role label { color: var(--color-muted); font-size: .58rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.notifications-demo-role select { width: 100%; min-height: 1.9rem; padding: .25rem .45rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #fff; color: var(--color-ink); font: inherit; font-size: .7rem; }
+.notifications-demo-role small { color: var(--color-muted); font-size: .56rem; line-height: 1.35; }
+.notifications-channels { display: flex; gap: .3rem; margin-top: -.45rem; }
+.notifications-channels button { min-height: 1.8rem; padding: .3rem .65rem; border: 1px solid transparent; border-radius: .5rem; background: #fff; color: var(--color-muted); font: inherit; font-size: .65rem; cursor: pointer; }
+.notifications-channels button[aria-pressed='true'] { color: var(--color-primary); box-shadow: var(--shadow-card); }
+.notifications-panel { width: min(64%, 37rem); min-width: min(100%, 34rem); padding: 1rem; border: 0; border-radius: .9rem; box-shadow: var(--shadow-card); }
+.notifications-panel__header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-bottom: .6rem; border-bottom: 1px solid var(--color-border); }
+.notifications-panel__header h2 { margin: 0 0 .2rem; font-size: .96rem; }
+.notifications-unread-count { margin: 0; color: var(--color-muted); font-size: .67rem; }
+.notifications-panel__header .ms-button { min-height: 1.9rem; padding: .32rem .65rem; font-size: .64rem; }
+.notifications-panel__header .ms-button:disabled { opacity: .55; }
+.notifications-filters { display: flex; gap: .35rem; padding: .55rem 0; border-bottom: 1px solid var(--color-border); }
+.notifications-filters button { display: inline-flex; align-items: center; gap: .35rem; min-height: 1.75rem; padding: .28rem .55rem; border: 1px solid transparent; border-radius: .5rem; background: transparent; color: var(--color-muted); font: inherit; font-size: .65rem; cursor: pointer; }
+.notifications-filters button[aria-pressed='true'] { border-color: var(--color-info-bg); background: var(--color-info-bg); color: var(--color-info-text); font-weight: 600; }
+.notifications-filters button span { display: inline-grid; min-width: 1rem; height: 1rem; place-items: center; border-radius: 999px; background: rgb(30 31 59 / 7%); font-size: .56rem; }
+.notifications-list { display: grid; }
+.notification-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .35rem; min-height: 4rem; padding: .45rem 0; border-bottom: 1px solid var(--color-border); }
+.notification-row:last-child { border-bottom: 0; }
+.notification-main { display: grid; grid-template-columns: 2.35rem minmax(0, 1fr); align-items: center; gap: .55rem; min-width: 0; padding: .2rem; border: 0; border-radius: .5rem; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.notification-main:hover { background: #f8f9fd; }
+.notification-leading { position: relative; display: grid; place-items: center; }
+.notification-icon, .notification-detail__icon { display: grid; width: 2rem; height: 2rem; place-items: center; border-radius: .55rem; color: var(--color-ink); }
+.notification-icon svg, .notification-detail__icon svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.notification-icon--blue { background: var(--color-info-bg); color: var(--color-info-text); }
+.notification-icon--violet { background: var(--color-review-bg); color: var(--color-review-text); }
+.notification-icon--green { background: var(--color-success-bg); color: var(--color-success-text); }
+.notification-icon--yellow { background: var(--color-warning-bg); color: var(--color-warning-text); }
+.notification-icon--coral { background: var(--color-danger-bg); color: var(--color-danger-text); }
+.notification-unread-dot { position: absolute; inset-block-start: -.08rem; inset-inline-end: -.08rem; width: .45rem; height: .45rem; border: 1px solid #fff; border-radius: 50%; background: var(--color-primary); }
+.notification-row.is-read .notification-unread-dot { display: none; }
+.notification-copy { display: grid; min-width: 0; gap: .12rem; }
+.notification-copy strong { overflow: hidden; color: var(--color-ink); font-size: .7rem; font-weight: 600; text-overflow: ellipsis; }
+.notification-copy > span { overflow: hidden; color: var(--color-muted); font-size: .62rem; line-height: 1.4; text-overflow: ellipsis; }
+.notification-copy small { color: var(--color-muted); font-size: .58rem; }
+.notification-row.is-unread .notification-copy strong { font-weight: 700; }
+.notification-actions { display: flex; align-items: center; gap: .12rem; }
+.notification-action { display: inline-grid; width: 1.55rem; height: 1.55rem; place-items: center; border: 1px solid transparent; border-radius: .45rem; background: transparent; color: var(--color-muted); cursor: pointer; }
+.notification-action:hover:not(:disabled) { border-color: var(--color-border); background: #f8f9fd; color: var(--color-primary); }
+.notification-action:disabled { color: var(--color-green); cursor: default; }
+.notification-action svg { width: .9rem; height: .9rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.notifications-empty { margin: 0; padding: 1.8rem .5rem; color: var(--color-muted); font-size: .75rem; text-align: center; }
+.notifications-empty[hidden] { display: none; }
+.notification-detail { position: fixed; inset: 50% auto auto 50%; transform: translate(-50%, -50%); width: min(27rem, calc(100vw - 2rem)); max-height: calc(100vh - 2rem); overflow: auto; margin: 0; padding: 1.25rem; border: 1px solid var(--color-border); border-radius: 1rem; color: var(--color-ink); box-shadow: var(--shadow-raised); }
+.notification-detail::backdrop { background: rgb(22 23 43 / 48%); }
+.notification-detail__topline { display: flex; justify-content: space-between; align-items: start; margin-bottom: .8rem; }
+.notification-detail__icon { width: 2.2rem; height: 2.2rem; }.notification-detail__icon svg { width: 1.15rem; height: 1.15rem; }
+.notification-detail__close { width: 1.7rem; height: 1.7rem; border: 0; border-radius: 50%; background: transparent; color: var(--color-muted); font-size: 1.3rem; cursor: pointer; }
+.notification-detail > .notifications-eyebrow { margin-bottom: .35rem; }
+.notification-detail h2 { margin: 0 0 .45rem; font-size: 1.05rem; }
+.notification-detail__description { margin: 0; color: var(--color-muted); font-size: .78rem; line-height: 1.55; }
+.notification-detail__time { margin: .7rem 0 0; color: var(--color-muted); font-size: .65rem; }
+.notification-detail__actions { display: flex; justify-content: flex-end; gap: .5rem; margin-top: 1rem; padding-top: .75rem; border-top: 1px solid var(--color-border); }
+.notification-detail__actions .ms-button { min-height: 2rem; padding: .38rem .65rem; font-size: .67rem; }
+.notifications-toast { position: fixed; inset-inline-end: 1rem; inset-block-end: 1rem; z-index: var(--z-toast); margin: 0; padding: .7rem .9rem; border-radius: .7rem; background: var(--color-ink); color: #fff; box-shadow: var(--shadow-raised); font-size: .72rem; }
+.notifications-toast[hidden] { display: none; }
+.notifications-page :is(button, select, a):focus-visible { outline: var(--focus-width) solid var(--color-primary); outline-offset: var(--focus-offset); }
+@media (max-width: 63.999rem) { .notifications-panel { width: min(100%, 37rem); min-width: 0; } }
+@media (max-width: 48rem) {
+    .ms-content:has(.notifications-page) { width: auto; margin: 0; padding: 1.3rem 1rem 2rem; }
+    .ms-shell:has(.notifications-page) .ms-sidebar { display: block; min-height: 3.25rem; padding: .38rem .55rem; }
+    .ms-shell:has(.notifications-page) .ms-sidebar .ms-brand { display: inline-flex; margin: 0 .45rem 0 0; vertical-align: middle; }
+    .ms-shell:has(.notifications-page) .ms-sidebar .ms-brand svg { width: 1.4rem; }
+    .ms-shell:has(.notifications-page) .ms-navigation { display: inline-flex; width: auto; vertical-align: middle; }
+    .ms-shell:has(.notifications-page) .ms-navigation a { padding: .42rem .4rem; font-size: .58rem; }
+    .ms-shell:has(.notifications-page) .ms-topbar { inset-inline-end: .4rem; padding-inline: .3rem; }
+    .notifications-heading { align-items: start; flex-direction: column; gap: .9rem; }
+    .notifications-demo-role { width: 100%; min-width: 0; }
+    .notifications-panel { width: 100%; padding: .85rem; }
+}
+@media (max-width: 29rem) {
+    .ms-shell:has(.notifications-page) .ms-sidebar { padding-right: 5rem; }
+    .ms-shell:has(.notifications-page) .ms-sidebar .ms-brand { display: block; margin-bottom: .18rem; }
+    .ms-shell:has(.notifications-page) .ms-navigation { display: flex; }
+    .ms-shell:has(.notifications-page) .ms-topbar { top: 0; }
+    .notifications-panel__header { align-items: start; }
+    .notification-row { grid-template-columns: minmax(0, 1fr) auto; }
+    .notification-main { grid-template-columns: 2rem minmax(0, 1fr); gap: .35rem; }
+    .notification-icon { width: 1.75rem; height: 1.75rem; }
+    .notification-actions { flex-direction: column; }
+}
