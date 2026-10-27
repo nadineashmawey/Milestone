@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Support\Navigation;
 use App\Support\ZinaDemoData;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,9 +18,9 @@ class NavbarTest extends TestCase
     /** Labels only one role's menu has. */
     private const OWN = [
         'student' => ['My projects', 'Tasks', 'Milestones', 'Team'],
-        'professor' => ['Courses', 'Create project', 'Teams', 'Submissions', 'Risk Radar', 'Extensions', 'Replay'],
+        'professor' => ['Courses', 'My projects', 'Create project', 'Teams', 'Submissions', 'Risk Radar', 'Extensions'],
         'ta' => ['Reviews', 'Issues', 'Invitations'],
-        'admin' => ['Users', 'Imports', 'Courses &amp; terms', 'Project records', 'Announcements', 'Audit log'],
+        'admin' => ['Users', 'Imports', 'Courses & terms', 'Project records', 'Announcements', 'Audit log'],
     ];
 
     private function asDemoRole(string $role): static
@@ -45,7 +46,7 @@ class NavbarTest extends TestCase
     {
         preg_match_all('#<span class="ms-navbar__label">(.*?)</span>#', $nav, $matches);
 
-        return $matches[1];
+        return array_map(fn (string $label) => html_entity_decode($label, ENT_QUOTES), $matches[1]);
     }
 
     public function test_each_role_gets_only_its_own_items(): void
@@ -110,7 +111,6 @@ class NavbarTest extends TestCase
 
     public function test_a_missing_route_renders_as_coming_soon_without_errors(): void
     {
-        $this->assertFalse(Route::has('professor.replay.index'));
         config(['navigation.roles.student' => [
             ['label' => 'Dashboard', 'icon' => 'grid', 'route' => 'student.dashboard'],
             ['label' => 'Not built yet', 'icon' => 'folder', 'route' => 'a.route.nobody.has', 'params' => ['x' => 1], 'badge' => 'missing-badge'],
@@ -120,9 +120,78 @@ class NavbarTest extends TestCase
 
         $this->assertMatchesRegularExpression('#<span class="ms-navbar__link is-disabled" aria-disabled="true" title="Coming soon"[^>]*>.*?Not built yet#s', $nav);
         $this->assertStringNotContainsString('href="#"', $nav);
+    }
 
-        $replay = $this->navOf($this->asDemoRole('professor')->get('/professor/dashboard')->getContent());
-        $this->assertMatchesRegularExpression('#aria-disabled="true" title="Coming soon"[^>]*>.*?Replay#s', $replay);
+    public function test_replay_is_gone_from_the_project(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $this->assertFalse(Route::has('professor.replay.index'));
+        $this->actingAs(User::where('email', 'professor@demo.milestone.test')->first())
+            ->get('/professor/replay')->assertNotFound();
+
+        $html = $this->get('/professor/dashboard')->assertOk()->getContent();
+        $this->assertStringNotContainsStringIgnoringCase('replay', $html);
+        $this->assertNotContains('Replay', array_column(config('navigation.roles.professor'), 'label'));
+    }
+
+    /**
+     * Each role's menu only uses that role's route names (shared pages aren't in any menu).
+     */
+    public function test_every_menu_item_uses_its_own_roles_routes(): void
+    {
+        foreach (config('navigation.roles') as $role => $items) {
+            foreach ($items as $item) {
+                $this->assertStringStartsWith($role.'.', $item['route'], "{$role} › {$item['label']}");
+                $this->assertTrue(Route::has($item['route']), "{$role} › {$item['label']} has no route");
+            }
+        }
+    }
+
+    public function test_every_navbar_link_keeps_the_same_role_and_other_roles_pages_are_denied(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        foreach (Navigation::ROLES as $role) {
+            $this->actingAs(User::where('email', $role.'@demo.milestone.test')->first());
+            $label = Navigation::roleLabel($role);
+
+            foreach (Navigation::items($role) as $item) {
+                $html = $this->get($item['href'])->assertOk()->getContent();
+                $this->assertStringContainsString('data-navbar-role="'.$role.'"', $html, "{$role} › {$item['label']}");
+                $this->assertStringContainsString('<span class="ms-navbar__role ms-navbar__wide">'.$label.'</span>', $html);
+                $this->assertSame(array_column(Navigation::items($role), 'label'), $this->labels($this->navOf($html)));
+                // The logo goes to this role's own dashboard.
+                $this->assertMatchesRegularExpression('#<a class="ms-navbar__brand" href="'.preg_quote(route($role.'.dashboard'), '#').'">#', $html);
+            }
+
+            foreach (array_diff(Navigation::ROLES, [$role]) as $other) {
+                $denied = $this->get(route($other.'.dashboard'))->assertForbidden()->assertSee('You don’t have access to this page')->getContent();
+                $this->assertStringContainsString('data-navbar-role="'.$role.'"', $denied, "{$role} opening {$other} keeps its own navbar");
+            }
+        }
+    }
+
+    public function test_shared_pages_keep_the_current_roles_navbar(): void
+    {
+        foreach (['/profile', '/notifications', '/help'] as $path) {
+            $html = $this->asDemoRole('admin')->get($path)->assertOk()->getContent();
+            if ($path !== '/help') {
+                $this->assertStringContainsString('data-navbar-role="admin"', $html, $path);
+            }
+        }
+
+        // Notifications shows the current role's alerts; it no longer has its own role picker.
+        $this->asDemoRole('ta')->get('/notifications?role=admin')
+            ->assertSee('id="notification-role" value="ta"', false)
+            ->assertDontSee('Preview role');
+    }
+
+    public function test_the_dev_role_switcher_opens_the_new_roles_dashboard(): void
+    {
+        $this->asDemoRole('admin')
+            ->post(route('prototype.context'), ['role' => 'professor', 'redirect' => '/admin/users'])
+            ->assertRedirect(route('professor.dashboard'));
     }
 
     public function test_the_right_side_has_role_theme_help_notifications_and_account(): void
@@ -169,9 +238,9 @@ class NavbarTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
         $pages = [
-            'student@demo.milestone.test' => ['/student/dashboard', '/student/projects/software-engineering-capstone/milestones', '/student/projects/software-engineering-capstone/team', '/my-projects', '/my-projects/software-engineering-capstone', '/student-tasks', '/student-tasks/design-document', '/profile', '/notifications'],
-            'independent@demo.milestone.test' => ['/my-projects/create'],
-            'professor@demo.milestone.test' => ['/professor/dashboard', '/professor/courses', '/professor/projects/create', '/professor/teams', '/professor/submissions', '/professor/risk-radar', '/professor/extensions'],
+            'student@demo.milestone.test' => ['/student/dashboard', '/student/projects/software-engineering-capstone/milestones', '/student/projects/software-engineering-capstone/team', '/student/projects', '/student/projects/software-engineering-capstone', '/student/tasks', '/student/tasks/design-document', '/profile', '/notifications'],
+            'independent@demo.milestone.test' => ['/student/projects/create'],
+            'professor@demo.milestone.test' => ['/professor/dashboard', '/professor/courses', '/professor/projects', '/professor/projects/1', '/professor/projects/create', '/professor/teams', '/professor/submissions', '/professor/risk-radar', '/professor/extensions'],
             'ta@demo.milestone.test' => ['/ta/dashboard', '/ta/reviews', '/ta/issues', '/ta/invitations', '/ta/tasks'],
             'admin@demo.milestone.test' => ['/admin/dashboard', '/admin/users', '/admin/imports', '/admin/courses', '/admin/projects', '/admin/announcements', '/admin/audit'],
         ];
