@@ -21,13 +21,13 @@
     place-items: center;
     flex: none;
     border-radius: 50%;
-    background: #e8ecf5;
+    background: var(--color-info-bg);
 }
 .steps span {
     display: grid;
 }
 .steps small {
-    font-size: 0.78rem;
+    font-size: var(--font-xs);
 }
 .steps li.active {
     color: var(--color-ink);
@@ -35,7 +35,7 @@
 .steps li.active b,
 .steps li.done b {
     background: var(--color-primary);
-    color: white;
+    color: var(--color-white);
 }
 .import-card {
     padding: 30px;
@@ -50,8 +50,8 @@
     height: 44px;
     display: grid;
     place-items: center;
-    border-radius: 13px;
-    background: #edf2ff;
+    border-radius: var(--radius-control);
+    background: var(--color-info-bg);
     color: var(--color-primary);
 }
 .card-heading svg {
@@ -76,14 +76,14 @@
     position: relative;
     margin-top: 22px;
     padding: 42px 20px;
-    border: 2px dashed #bcc8de;
-    border-radius: 16px;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-lg);
     text-align: center;
-    background: #fafbfe;
+    background: var(--color-page);
 }
 .dropzone.drag {
     border-color: var(--color-primary);
-    background: #f0f4ff;
+    background: var(--color-info-bg);
 }
 .dropzone input {
     position: absolute;
@@ -115,16 +115,16 @@
 .file-summary button {
     border: 0;
     background: none;
-    font-size: 1.4rem;
+    font-size: var(--font-title-lg);
 }
 .notice {
     display: flex;
     gap: 13px;
     margin-top: 20px;
     padding: 16px;
-    border-radius: 13px;
-    background: #edf3ff;
-    color: #29416f;
+    border-radius: var(--radius-control);
+    background: var(--color-info-bg);
+    color: var(--color-ink-2);
 }
 .actions {
     display: flex;
@@ -147,23 +147,23 @@
     gap: 2px;
     padding: 15px;
     border: 1px solid var(--color-border);
-    border-radius: 12px;
-    background: #fafbfe;
+    border-radius: var(--radius-control);
+    background: var(--color-page);
 }
 .validation-totals strong,
 .confirmation-summary strong {
-    font-size: 1.35rem;
+    font-size: var(--font-title-lg);
 }
 .validation-totals span,
 .confirmation-summary span {
     color: var(--color-muted);
-    font-size: 0.82rem;
+    font-size: var(--font-caption);
 }
 .validation-totals .accepted strong {
     color: var(--color-success-text);
 }
 .validation-totals .duplicates strong {
-    color: #8a6200;
+    color: var(--color-warning-text);
 }
 .validation-totals .rejected strong {
     color: var(--color-danger-text);
@@ -176,27 +176,27 @@
     min-height: 0;
     margin: 4px 0 22px;
     padding: 28px 22px;
-    border: 1px solid #f1d1d6;
-    border-radius: 16px;
-    background: #fffafb;
+    border: 1px solid var(--color-danger-bg);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
 }
 .import-card .page-state .state-icon {
     width: 46px;
     height: 46px;
     margin-bottom: 12px;
-    border-radius: 13px;
+    border-radius: var(--radius-control);
 }
 .import-card .page-state h2 {
-    font-size: 1.2rem;
+    font-size: var(--font-title);
 }
 .import-card .page-state p {
     margin-bottom: 17px;
 }
 .preview tr.row-rejected {
-    background: #fffafb;
+    background: var(--color-white);
 }
 .preview tr.row-duplicate {
-    background: #fffdf6;
+    background: var(--color-white);
 }
 .complete {
     text-align: center;
@@ -215,9 +215,9 @@
     height: 66px;
     margin: auto;
     border-radius: 50%;
-    background: #e8f7f0;
+    background: var(--color-success-bg);
     color: var(--color-success);
-    font-size: 2rem;
+    font-size: var(--font-heading);
 }
 @media (max-width: 780px) {
     .imports .layout {

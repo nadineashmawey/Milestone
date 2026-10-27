@@ -3,9 +3,7 @@
 {{-- Admin pages. The navbar comes from layouts.app; this layout keeps the admin stylesheets and page wrapper. --}}
 
 @prepend('styles')
-    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'tokens.css']) }}">
-    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'base.css']) }}">
-    <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'components.css']) }}">
+    {{-- Tokens, base and components already load once through app.css. --}}
     <link rel="stylesheet" href="{{ route('admin.assets.css', ['path' => 'admin-static.css']) }}">
 @endprepend
 

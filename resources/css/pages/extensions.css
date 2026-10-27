@@ -19,7 +19,7 @@
 .extensions-stats article > div { display: grid; grid-template-columns: 1fr auto; gap: 0 var(--space-2); min-width: 0; width: 100%; }
 .extensions-stats small { color: var(--color-muted); font-size: var(--font-caption); }
 .extensions-stats strong { grid-row: 2; font-size: var(--font-title); }
-.extensions-stats article > div > span { grid-column: 2; grid-row: 2; align-self: end; text-align: right; color: var(--color-muted); font-size: .65rem; }
+.extensions-stats article > div > span { grid-column: 2; grid-row: 2; align-self: end; text-align: right; color: var(--color-muted); font-size: var(--font-xs); }
 .extensions-columns { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(22rem,.95fr); gap: var(--space-4); align-items: start; }
 .extensions-page .ms-card { min-width: 0; padding: var(--space-5); }
 .extensions-form-heading { align-items: center; padding-bottom: var(--space-4); border-bottom: var(--border-width) solid var(--color-border); }
@@ -95,7 +95,7 @@
 .extensions-aside { display: grid; gap: var(--space-3); }
 .extension-side-heading { align-items: center; }
 .extension-side-heading .ms-button { font-size: var(--font-caption); padding-inline: var(--space-3); }
-.timeline-axis { display: flex; justify-content: space-between; padding: var(--space-4) 0 var(--space-2) 4.5rem; color: var(--color-muted); font-size: .65rem; }
+.timeline-axis { display: flex; justify-content: space-between; padding: var(--space-4) 0 var(--space-2) 4.5rem; color: var(--color-muted); font-size: var(--font-xs); }
 .timeline-rows { position: relative; margin-inline-start: 4.5rem; }
 .timeline-row { position: relative; display: block; min-height: var(--space-8); border-top: var(--border-width) solid var(--color-border); }
 .timeline-row > strong { position: absolute; left: -4.5rem; top: 50%; transform: translateY(-50%); font-weight: var(--weight-regular); font-size: var(--font-caption); }
@@ -106,8 +106,8 @@
 .timeline-milestone-dot { position: absolute; left: var(--milestone-x); top: 50%; transform: translate(-50%,-50%); width: var(--space-2); height: var(--space-2); border-radius: 50%; background: var(--color-ink); }
 .timeline-milestone-dot--selected { background: var(--color-violet); width: var(--space-2); height: var(--space-2); }
 .timeline-today { position: absolute; z-index: 2; top: 0; bottom: 0; left: var(--today-x); border-left: 1px dashed var(--color-coral); pointer-events: none; }
-.timeline-today span { position: absolute; top: 0; left: var(--space-1); color: var(--color-coral); font-size: .6rem; white-space: nowrap; }
-.timeline-legend { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); color: var(--color-muted); font-size: .65rem; }
+.timeline-today span { position: absolute; top: 0; left: var(--space-1); color: var(--color-coral); font-size: var(--font-xs); white-space: nowrap; }
+.timeline-legend { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); color: var(--color-muted); font-size: var(--font-xs); }
 .timeline-legend span { display: flex; align-items: center; gap: var(--space-1); }
 .timeline-legend i { width: var(--space-2); height: 2px; background: var(--color-ink); }
 .timeline-legend .timeline-legend-extension { background: var(--color-violet); }
@@ -132,3 +132,6 @@
 @media (max-width: 75rem) { .extensions-columns { grid-template-columns: minmax(0,1.15fr) minmax(20rem,.85fr); } .extensions-stats { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 58rem) { .extensions-columns { grid-template-columns: minmax(0,1fr); } .extensions-aside { grid-template-columns: repeat(2,minmax(0,1fr)); } .extension-history { grid-column: 1/-1; } }
 @media (max-width: 42rem) { .extensions-header { flex-direction: column; } .extensions-header-actions { flex-wrap: wrap; } .extensions-stats { grid-template-columns: minmax(0,1fr); } .extensions-aside { grid-template-columns: minmax(0,1fr); } .extension-history { grid-column: auto; } .extension-meta { grid-template-columns: repeat(2,minmax(0,1fr)); } .extension-meta > div:nth-child(2) { border-right: 0; } .extension-meta > div:nth-child(-n+2) { border-bottom: var(--border-width) solid var(--color-border); } .extension-notifications { grid-template-columns: minmax(0,1fr); } .extension-date-fields { grid-template-columns: minmax(0,1fr); } .extensions-page .ms-card { padding: var(--space-4); } .extension-form-heading { flex-direction: column; } }
+
+/* Responsive fix (theme pass): the date comparison wraps on phones instead of pushing the page sideways. */
+@media (max-width: 600px) { .extension-comparison { flex-wrap: wrap; } }

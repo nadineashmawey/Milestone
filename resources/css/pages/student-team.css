@@ -3,23 +3,23 @@
 .st .ms-alert p + p { margin-top: var(--space-1); }
 
 /* Summary strip */
-.st-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border: var(--border-width) solid var(--as-line); border-radius: 18px; background: var(--color-surface); }
+.st-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border: var(--border-width) solid var(--as-line); border-radius: var(--radius-xl); background: var(--color-surface); }
 .st-summary > div { padding: var(--space-5) var(--space-6); }
 .st-summary > div + div { border-left: var(--border-width) solid var(--as-line); }
-.st-summary dt { color: var(--as-faint); font-size: .8125rem; font-weight: var(--weight-semibold); letter-spacing: .05em; text-transform: uppercase; }
+.st-summary dt { color: var(--as-faint); font-size: var(--font-caption); font-weight: var(--weight-semibold); letter-spacing: .05em; text-transform: uppercase; }
 .st-summary dd { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-top: var(--space-2); }
-.st-summary dd strong { font-size: 1.25rem; letter-spacing: -.02em; }
+.st-summary dd strong { font-size: var(--font-title); letter-spacing: -.02em; }
 .st-summary dd .as-bar { flex: 1 1 100%; }
 .st-summary dd small { flex: 1 1 100%; color: var(--color-muted); font-size: var(--font-caption); }
 
 .st-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); align-items: start; }
-.st-subhead { margin: var(--space-5) 0 var(--space-2); color: var(--as-faint); font-size: .8125rem; font-weight: var(--weight-semibold); letter-spacing: .05em; text-transform: uppercase; }
+.st-subhead { margin: var(--space-5) 0 var(--space-2); color: var(--as-faint); font-size: var(--font-caption); font-weight: var(--weight-semibold); letter-spacing: .05em; text-transform: uppercase; }
 .as-panel-head + .st-subhead { margin-top: 0; }
 .st-break { overflow-wrap: anywhere; }
 
 /* People rows */
 .st-members > li, .st-requests > li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; }
-.st-members strong, .st-requests strong { display: block; font-size: .9375rem; }
+.st-members strong, .st-requests strong { display: block; font-size: var(--font-ui); }
 .st-members small, .st-requests small { display: block; color: var(--color-muted); font-size: var(--font-caption); }
 .st-you { color: var(--color-muted); font-weight: var(--weight-regular); }
 .st-none { display: block !important; padding: var(--space-3) 0; color: var(--color-muted); font-size: var(--font-small); }
@@ -40,12 +40,12 @@
 .st-code { margin-top: var(--space-5); padding-top: var(--space-4); border-top: var(--border-width) solid var(--as-line); }
 .st-code .st-subhead { margin-top: 0; }
 .st-code-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
-.st-code code { padding: var(--space-2) var(--space-4); border: 1.5px dashed var(--color-border); border-radius: var(--radius-control); background: var(--color-page); font-size: 1.125rem; font-weight: var(--weight-bold); letter-spacing: .12em; }
+.st-code code { padding: var(--space-2) var(--space-4); border: 1.5px dashed var(--color-border); border-radius: var(--radius-control); background: var(--color-page); font-size: var(--font-large); font-weight: var(--weight-bold); letter-spacing: .12em; }
 .st-code .as-note { margin-top: var(--space-2); }
 
 /* Leave request */
-.st-leave { margin-top: var(--space-5); padding: var(--space-4); border: var(--border-width) solid #d9c2f0; border-radius: 14px; background: #fcf9ff; }
-.st-leave h3 { font-size: 1rem; }
+.st-leave { margin-top: var(--space-5); padding: var(--space-4); border: var(--border-width) solid var(--color-review-bg); border-radius: var(--radius-lg); background: var(--color-page); }
+.st-leave h3 { font-size: var(--font-body); }
 .st-leave p { margin-top: var(--space-1); color: var(--color-muted); font-size: var(--font-small); }
 .st-leave blockquote { margin: var(--space-3) 0; color: var(--as-ink-2); font-size: var(--font-small); }
 

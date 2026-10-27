@@ -8,13 +8,13 @@
 .pf-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
 .pf-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
 .pf-fields--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.pf-subhead { margin: var(--space-6) 0 var(--space-3); color: var(--as-faint); font-size: .8125rem; font-weight: var(--weight-semibold); letter-spacing: .05em; text-transform: uppercase; }
+.pf-subhead { margin: var(--space-6) 0 var(--space-3); color: var(--as-faint); font-size: var(--font-caption); font-weight: var(--weight-semibold); letter-spacing: .05em; text-transform: uppercase; }
 
 /* Read-only account details */
 .pf-locked { display: grid; margin: 0; }
 .pf-locked > div { display: grid; gap: 4px; padding: var(--space-3) 0; }
 .pf-locked > div + div { border-top: var(--border-width) solid var(--as-line); }
-.pf-locked dt { color: var(--as-faint); font-size: .8125rem; font-weight: var(--weight-semibold); }
+.pf-locked dt { color: var(--as-faint); font-size: var(--font-caption); font-weight: var(--weight-semibold); }
 .pf-locked dd { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
 .pf-locked-value { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; font-weight: var(--weight-semibold); overflow-wrap: anywhere; }
 .pf-locked-value svg { flex: none; color: var(--color-muted); }
@@ -23,11 +23,11 @@
 
 /* Notification matrix */
 .pf-notify { width: 100%; border-collapse: collapse; }
-.pf-notify thead th { padding: var(--space-2) var(--space-3); border-bottom: var(--border-width) solid var(--as-line); color: var(--as-faint); font-size: .75rem; font-weight: var(--weight-semibold); letter-spacing: .05em; text-align: left; text-transform: uppercase; }
+.pf-notify thead th { padding: var(--space-2) var(--space-3); border-bottom: var(--border-width) solid var(--as-line); color: var(--as-faint); font-size: var(--font-xs); font-weight: var(--weight-semibold); letter-spacing: .05em; text-align: left; text-transform: uppercase; }
 .pf-notify thead th:not(:first-child) { width: 7rem; text-align: center; }
 .pf-notify tbody th, .pf-notify td { padding: var(--space-4) var(--space-3); border-bottom: var(--border-width) solid var(--as-line); font-weight: var(--weight-regular); text-align: left; vertical-align: middle; }
 .pf-notify tbody tr:last-child > * { border-bottom: 0; }
-.pf-notify tbody tr.has-error { background: rgb(248 206 206 / 25%); }
+.pf-notify tbody tr.has-error { background: color-mix(in srgb, var(--color-danger-bg) 25%, transparent); }
 .pf-notify strong, .pf-notify small { display: block; }
 .pf-notify small { margin-top: 2px; color: var(--color-muted); font-size: var(--font-caption); }
 .pf-notify td { text-align: center; }
@@ -37,7 +37,7 @@
 .pf-toggle-text { display: none; }
 
 /* Save bar */
-.pf-actions { position: sticky; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-3) var(--space-5); padding: var(--space-4) var(--space-5); border: var(--border-width) solid var(--as-line); border-radius: 18px; background: rgb(255 255 255 / 96%); box-shadow: 0 -10px 30px -20px rgb(30 31 59 / 30%); }
+.pf-actions { position: sticky; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-3) var(--space-5); padding: var(--space-4) var(--space-5); border: var(--border-width) solid var(--as-line); border-radius: var(--radius-xl); background: color-mix(in srgb, var(--color-white) 96%, transparent); box-shadow: var(--shadow-card); }
 .pf-actions .as-unsaved, .pf-actions .as-note { margin-right: auto; }
 .pf-buttons { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 
@@ -57,7 +57,7 @@
 }
 @media (max-width: 600px) {
     .pf-identity { align-items: flex-start; gap: var(--space-4); }
-    .pf-identity .as-avatar--lg { width: 3rem; height: 3rem; font-size: 1rem; }
+    .pf-identity .as-avatar--lg { width: 3rem; height: 3rem; font-size: var(--font-body); }
     .pf-fields { grid-template-columns: minmax(0, 1fr); }
     .pf-actions { padding: var(--space-3) var(--space-4); }
     .pf-buttons, .pf-buttons .ms-button { width: 100%; }

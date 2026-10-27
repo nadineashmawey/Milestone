@@ -3,7 +3,7 @@
 .ms-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .ms-navbar {
-    --nb-line: #e1e5ef;
+    --nb-line: var(--color-line);
     --nb-height: 4.75rem;
     position: sticky;
     top: 0;
@@ -28,22 +28,22 @@
 .ms-navbar__list { display: flex; flex-wrap: nowrap; gap: 2px; }
 .ms-navbar__link { position: relative; display: inline-flex; align-items: center; gap: var(--space-2); min-height: 2.75rem; padding: 0 var(--space-3); border-radius: var(--radius-control); color: var(--color-muted); font-size: var(--font-small); font-weight: var(--weight-semibold); text-decoration: none; white-space: nowrap; }
 .ms-navbar__link svg { opacity: .85; }
-a.ms-navbar__link:hover { background: rgb(77 124 255 / 9%); color: var(--color-primary); }
+a.ms-navbar__link:hover { background: color-mix(in srgb, var(--color-light-blue) 9%, transparent); color: var(--color-primary); }
 .ms-navbar__link.is-active { background: var(--color-info-bg); color: var(--color-info-text); }
 .ms-navbar__link.is-active svg { opacity: 1; }
-.ms-navbar__link.is-disabled, .ms-navbar__panel-link.is-disabled { color: #8a93ab; cursor: not-allowed; }
-.ms-navbar__badge { display: inline-grid; place-items: center; min-width: 1.25rem; height: 1.25rem; padding: 0 6px; border-radius: var(--radius-pill); background: var(--color-violet); color: var(--color-ink); font-size: .6875rem; font-weight: var(--weight-bold); }
+.ms-navbar__link.is-disabled, .ms-navbar__panel-link.is-disabled { color: var(--color-icon); cursor: not-allowed; }
+.ms-navbar__badge { display: inline-grid; place-items: center; min-width: 1.25rem; height: 1.25rem; padding: 0 6px; border-radius: var(--radius-pill); background: var(--color-violet); color: var(--color-ink); font-size: var(--font-micro); font-weight: var(--weight-bold); }
 /* Tooltips: "Coming soon" on disabled items, and the label when only icons show. */
 .ms-navbar [data-tooltip]:hover::after,
-.ms-navbar--app.is-compact .ms-navbar__nav [data-label]:is(:hover, :focus-visible)::after { content: attr(data-tooltip); position: absolute; top: calc(100% + 4px); left: 50%; z-index: 3; padding: 3px 8px; border-radius: 6px; background: var(--color-ink); color: var(--color-surface); font-size: .75rem; font-weight: var(--weight-semibold); white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
+.ms-navbar--app.is-compact .ms-navbar__nav [data-label]:is(:hover, :focus-visible)::after { content: attr(data-tooltip); position: absolute; top: calc(100% + 4px); left: 50%; z-index: 3; padding: 3px 8px; border-radius: var(--radius-xs); background: var(--color-ink); color: var(--color-surface); font-size: var(--font-xs); font-weight: var(--weight-semibold); white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
 .ms-navbar--app.is-compact .ms-navbar__nav [data-label]:is(:hover, :focus-visible)::after { content: attr(data-label); }
 .ms-navbar--app.is-compact .ms-navbar__nav .is-disabled:hover::after { content: attr(data-label) ' · ' attr(data-tooltip); }
 
 /* Right side */
 .ms-navbar__actions { display: flex; flex: none; align-items: center; gap: var(--space-1); margin-left: auto; }
 .ms-navbar__form { display: contents; }
-.ms-navbar__role { padding: 5px 10px; border: var(--border-width) solid var(--color-border); border-radius: var(--radius-pill); color: var(--color-muted); font-size: .75rem; font-weight: var(--weight-semibold); white-space: nowrap; }
-.ms-navbar__switch select { min-height: 2.25rem; margin: 0 var(--space-1); padding: 0 var(--space-2); border: var(--border-width) dashed var(--color-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-muted); font: inherit; font-size: .8125rem; cursor: pointer; }
+.ms-navbar__role { padding: 5px 10px; border: var(--border-width) solid var(--color-border); border-radius: var(--radius-pill); color: var(--color-muted); font-size: var(--font-xs); font-weight: var(--weight-semibold); white-space: nowrap; }
+.ms-navbar__switch select { min-height: 2.25rem; margin: 0 var(--space-1); padding: 0 var(--space-2); border: var(--border-width) dashed var(--color-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-muted); font: inherit; font-size: var(--font-caption); cursor: pointer; }
 .ms-navbar__icon, .ms-navbar__avatar-button, .ms-navbar__menu-button { position: relative; display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; padding: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--color-muted); font: inherit; text-decoration: none; cursor: pointer; }
 .ms-navbar__icon:hover, .ms-navbar__menu-button:hover { background: var(--color-page); color: var(--color-primary); }
 .ms-navbar__avatar-button { border-radius: 50%; }
@@ -52,7 +52,7 @@ a.ms-navbar__link:hover { background: rgb(77 124 255 / 9%); color: var(--color-p
 :root[data-theme='dark'] .ms-navbar__theme-light { display: inline; }
 .ms-navbar__dot { display: none; position: absolute; top: 9px; right: 9px; width: 7px; height: 7px; border: 1.5px solid var(--color-surface); border-radius: 50%; background: var(--color-coral); }
 .ms-navbar__bell.has-unread .ms-navbar__dot { display: block; }
-.ms-navbar__avatar { display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--color-info-bg); color: var(--color-info-text); font-size: .75rem; font-weight: var(--weight-bold); }
+.ms-navbar__avatar { display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--color-info-bg); color: var(--color-info-text); font-size: var(--font-xs); font-weight: var(--weight-bold); }
 .ms-navbar__avatar--1 { background: var(--color-warning-bg); color: var(--color-warning-text); }
 .ms-navbar__avatar--2 { background: var(--color-review-bg); color: var(--color-review-text); }
 .ms-navbar__avatar--3 { background: var(--color-success-bg); color: var(--color-success-text); }
@@ -61,9 +61,9 @@ a.ms-navbar__link:hover { background: rgb(77 124 255 / 9%); color: var(--color-p
 
 /* Dropdowns: notifications and account */
 .ms-navbar__dropdown { position: relative; display: inline-flex; }
-.ms-navbar__popover { position: absolute; top: calc(100% + 8px); right: 0; z-index: 4; width: 20rem; max-width: calc(100vw - 2rem); padding: var(--space-3); border: var(--border-width) solid var(--color-border); border-radius: var(--space-4); background: var(--color-surface); box-shadow: 0 18px 50px rgb(30 31 59 / 16%); color: var(--color-ink); }
+.ms-navbar__popover { position: absolute; top: calc(100% + 8px); right: 0; z-index: 4; width: 20rem; max-width: calc(100vw - 2rem); padding: var(--space-3); border: var(--border-width) solid var(--color-border); border-radius: var(--space-4); background: var(--color-surface); box-shadow: var(--shadow-popover); color: var(--color-ink); }
 .ms-navbar__popover[hidden] { display: none; }
-.ms-navbar__popover > header { display: flex; justify-content: space-between; align-items: center; padding: var(--space-1) var(--space-2) var(--space-3); font-size: .9375rem; }
+.ms-navbar__popover > header { display: flex; justify-content: space-between; align-items: center; padding: var(--space-1) var(--space-2) var(--space-3); font-size: var(--font-ui); }
 .ms-navbar__popover > header a { color: var(--color-primary); font-size: var(--font-caption); font-weight: var(--weight-semibold); text-decoration: none; }
 .ms-navbar__popover > header [aria-disabled='true'] { color: var(--color-muted); font-size: var(--font-caption); }
 .ms-notification-preview__item { display: grid; grid-template-columns: .5rem minmax(0, 1fr); gap: var(--space-2); align-items: start; padding: var(--space-3) var(--space-2); border-top: var(--border-width) solid var(--color-border); color: inherit; text-decoration: none; }
@@ -78,7 +78,7 @@ a.ms-navbar__link:hover { background: rgb(77 124 255 / 9%); color: var(--color-p
 .ms-navbar__account-name { display: grid; padding: var(--space-1) var(--space-2) var(--space-3); border-bottom: var(--border-width) solid var(--color-border); }
 .ms-navbar__account-name small { color: var(--color-muted); font-size: var(--font-caption); overflow-wrap: anywhere; }
 .ms-navbar__account ul { padding-top: var(--space-2); }
-.ms-navbar__account a, .ms-navbar__account button, .ms-navbar__account [aria-disabled='true'] { display: flex; align-items: center; gap: var(--space-3); width: 100%; min-height: 2.75rem; padding: 0 var(--space-2); border: 0; border-radius: 10px; background: none; color: var(--color-ink); font: inherit; font-size: var(--font-small); font-weight: var(--weight-semibold); text-align: left; text-decoration: none; cursor: pointer; }
+.ms-navbar__account a, .ms-navbar__account button, .ms-navbar__account [aria-disabled='true'] { display: flex; align-items: center; gap: var(--space-3); width: 100%; min-height: 2.75rem; padding: 0 var(--space-2); border: 0; border-radius: var(--radius-md); background: none; color: var(--color-ink); font: inherit; font-size: var(--font-small); font-weight: var(--weight-semibold); text-align: left; text-decoration: none; cursor: pointer; }
 .ms-navbar__account a:hover, .ms-navbar__account button:hover { background: var(--color-page); color: var(--color-primary); }
 .ms-navbar__account [aria-disabled='true'] { color: var(--color-muted); cursor: not-allowed; }
 
@@ -86,7 +86,7 @@ a.ms-navbar__link:hover { background: rgb(77 124 255 / 9%); color: var(--color-p
 .ms-navbar__panel { border-top: var(--border-width) solid var(--nb-line); background: var(--color-surface); padding: var(--space-3) var(--space-4) var(--space-5); }
 .ms-navbar__panel[hidden] { display: none; }
 .ms-navbar__panel-list, .ms-navbar__panel nav { display: grid; gap: 2px; }
-.ms-navbar__panel-link { display: flex; align-items: center; gap: var(--space-3); min-height: 3rem; padding: 0 var(--space-3); border-radius: var(--radius-control); color: var(--color-ink); font-size: 1rem; font-weight: var(--weight-semibold); text-decoration: none; }
+.ms-navbar__panel-link { display: flex; align-items: center; gap: var(--space-3); min-height: 3rem; padding: 0 var(--space-3); border-radius: var(--radius-control); color: var(--color-ink); font-size: var(--font-body); font-weight: var(--weight-semibold); text-decoration: none; }
 a.ms-navbar__panel-link:hover { background: var(--color-page); }
 .ms-navbar__panel-link.is-active { background: var(--color-info-bg); color: var(--color-info-text); }
 .ms-navbar__panel-link .ms-navbar__badge { margin-left: auto; }
@@ -96,36 +96,37 @@ a.ms-navbar__panel-link:hover { background: var(--color-page); }
 .ms-navbar__panel-actions .ms-button { width: 100%; }
 
 /* Guest variant (Home and Help) */
-.ms-navbar--guest { --nb-height: 4.5rem; border-bottom-color: transparent; background: rgb(245 246 251 / 88%); transition: border-color .2s; }
+.ms-navbar--guest { --nb-height: 4.5rem; border-bottom-color: transparent; background: color-mix(in srgb, var(--color-page) 88%, transparent); transition: border-color .2s; }
 .ms-navbar--guest.is-scrolled { border-bottom-color: var(--nb-line); }
 .ms-navbar--guest .ms-navbar__inner { max-width: 72.5rem; gap: var(--space-6); }
 .ms-navbar--guest .ms-navbar__brand img { height: 2.25rem; }
 .ms-navbar__nav--guest { display: flex; flex: 0 1 auto; gap: 2px; margin-right: auto; }
 .ms-navbar__nav--guest .ms-navbar__link { min-height: auto; padding: var(--space-2) var(--space-3); }
-.ms-navbar__nav--guest .ms-navbar__link:hover { background: rgb(30 31 59 / 4%); color: var(--color-ink); }
+.ms-navbar__nav--guest .ms-navbar__link:hover { background: color-mix(in srgb, var(--color-ink) 4%, transparent); color: var(--color-ink); }
 .ms-navbar--guest .ms-navbar__actions { gap: var(--space-2); }
 .ms-navbar--guest .ms-navbar__panel { background: var(--color-page); }
-.ms-navbar--guest .ms-navbar__panel nav a { display: block; padding: var(--space-4) var(--space-1); border-bottom: var(--border-width) solid var(--nb-line); color: var(--color-ink); font-size: 1.0625rem; font-weight: var(--weight-semibold); text-decoration: none; }
+.ms-navbar--guest .ms-navbar__panel nav a { display: block; padding: var(--space-4) var(--space-1); border-bottom: var(--border-width) solid var(--nb-line); color: var(--color-ink); font-size: var(--font-lead); font-weight: var(--weight-semibold); text-decoration: none; }
 .ms-navbar .ms-button { white-space: nowrap; }
 
 /* Dark mode: the toggle saves the choice and sets data-theme="dark" on <html>. Only the navbar is dark so far, because
    pages use --color-ink both as text and as a dark background; a page opts in with its own :root[data-theme='dark'] rules. */
 :root[data-theme='dark'] .ms-navbar {
-    --nb-line: #353a58;
-    --color-ink: #f7f8ff;
-    --color-muted: #adb6cd;
-    --color-border: #353a58;
-    --color-page: #181a2b;
-    --color-surface: #24263c;
-    --color-primary: #9fb4ff;
-    --color-info-bg: #2d3a6b;
-    --color-info-text: #dbe4ff;
+    --nb-line: var(--color-dark-border);
+    --color-ink: var(--color-dark-ink);
+    --color-muted: var(--color-dark-muted);
+    --color-border: var(--color-dark-border);
+    --color-page: var(--color-dark-page);
+    --color-surface: var(--color-dark-surface);
+    --color-primary: var(--color-dark-primary);
+    --color-info-bg: var(--color-dark-info-bg);
+    --color-info-text: var(--color-dark-ink);
     color-scheme: dark;
-    background: rgb(36 38 60 / 96%);
+    background: color-mix(in srgb, var(--color-dark-surface) 96%, transparent);
 }
-:root[data-theme='dark'] .ms-navbar--guest { background: rgb(24 26 43 / 92%); }
-:root[data-theme='dark'] .ms-navbar__brand { background: #fff; }
-:root[data-theme='dark'] .ms-navbar__badge { color: #1e1f3b; }
+:root[data-theme='dark'] .ms-navbar--guest { background: color-mix(in srgb, var(--color-dark-page) 92%, transparent); }
+:root[data-theme='dark'] .ms-navbar__brand { background: var(--color-white); }
+/* The badge stays violet with dark ink text, as in light mode. --color-text is resolved at :root, so it stays ink here. */
+:root[data-theme='dark'] .ms-navbar__badge { color: var(--color-text); }
 
 /* When the labels don't fit (navbar.js adds .is-compact; the 1180px query is the no-JavaScript fallback): icons only.
    Labels stay for screen readers, and show as a tooltip on hover and focus. */
@@ -134,11 +135,11 @@ a.ms-navbar__panel-link:hover { background: var(--color-page); }
 .ms-navbar--app.is-tight .ms-navbar__link { gap: 6px; padding: 0 var(--space-2); }
 .ms-navbar--app.is-tight .ms-navbar__actions > .ms-navbar__role { display: none; }
 .ms-navbar--app.is-compact .ms-navbar__nav .ms-navbar__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.ms-navbar--app.is-compact .ms-navbar__nav .ms-navbar__badge { position: absolute; top: 2px; right: 0; min-width: 1.1rem; height: 1.1rem; padding: 0 4px; font-size: .625rem; }
+.ms-navbar--app.is-compact .ms-navbar__nav .ms-navbar__badge { position: absolute; top: 2px; right: 0; min-width: 1.1rem; height: 1.1rem; padding: 0 4px; font-size: var(--font-xs); }
 @media (max-width: 1180px) {
     .ms-navbar--app .ms-navbar__nav .ms-navbar__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-    .ms-navbar--app .ms-navbar__nav a[data-label]:is(:hover, :focus-visible)::after { content: attr(data-label); position: absolute; top: calc(100% + 4px); left: 50%; z-index: 3; padding: 3px 8px; border-radius: 6px; background: var(--color-ink); color: var(--color-surface); font-size: .75rem; font-weight: var(--weight-semibold); white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
-    .ms-navbar--app .ms-navbar__nav .ms-navbar__badge { position: absolute; top: 2px; right: 0; min-width: 1.1rem; height: 1.1rem; padding: 0 4px; font-size: .625rem; }
+    .ms-navbar--app .ms-navbar__nav a[data-label]:is(:hover, :focus-visible)::after { content: attr(data-label); position: absolute; top: calc(100% + 4px); left: 50%; z-index: 3; padding: 3px 8px; border-radius: var(--radius-xs); background: var(--color-ink); color: var(--color-surface); font-size: var(--font-xs); font-weight: var(--weight-semibold); white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
+    .ms-navbar--app .ms-navbar__nav .ms-navbar__badge { position: absolute; top: 2px; right: 0; min-width: 1.1rem; height: 1.1rem; padding: 0 4px; font-size: var(--font-xs); }
 }
 @media (min-width: 901px) {
     .ms-navbar__panel { display: none !important; }

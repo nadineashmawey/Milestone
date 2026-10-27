@@ -7,8 +7,8 @@
 .sd-action--danger { --tone-bg: var(--color-danger-bg); --tone-text: var(--color-danger-text); }
 .sd-action--warning { --tone-bg: var(--color-warning-bg); --tone-text: var(--color-warning-text); }
 .sd-action-icon { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: var(--radius-control); background: var(--tone-bg); color: var(--tone-text); }
-.sd-action-kind { display: block; color: var(--tone-text); font-size: .75rem; font-weight: var(--weight-bold); letter-spacing: .06em; text-transform: uppercase; }
-.sd-action-body strong { display: block; margin-top: 2px; font-size: 1rem; }
+.sd-action-kind { display: block; color: var(--tone-text); font-size: var(--font-xs); font-weight: var(--weight-bold); letter-spacing: .06em; text-transform: uppercase; }
+.sd-action-body strong { display: block; margin-top: 2px; font-size: var(--font-body); }
 .sd-action-body p { margin-top: 2px; color: var(--color-muted); font-size: var(--font-small); }
 .sd-clear { display: flex; align-items: center; gap: var(--space-2); color: var(--color-success-text); font-weight: var(--weight-semibold); }
 
@@ -16,27 +16,27 @@
 .sd-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
 .sd-project { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-4); padding: var(--space-4) 0; }
 .sd-project:first-child { padding-top: 0; }
-.sd-project h3 { margin-top: var(--space-2); font-size: 1.0625rem; letter-spacing: -.01em; }
+.sd-project h3 { margin-top: var(--space-2); font-size: var(--font-lead); letter-spacing: -.01em; }
 .sd-next { margin-top: var(--space-2); color: var(--as-ink-2); font-size: var(--font-small); }
 .sd-next svg { margin-right: 4px; color: var(--color-muted); vertical-align: -3px; }
 .sd-next-count { color: var(--color-muted); }
 .sd-deadline { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-2); margin: 0 calc(-1 * var(--space-2)); border-radius: var(--radius-control); color: inherit; text-decoration: none; }
 .sd-deadline:hover { background: var(--color-page); }
 .sd-deadline:hover strong { color: var(--color-primary); }
-.sd-date { display: grid; place-content: center; width: 2.75rem; height: 3rem; border: var(--border-width) solid var(--color-border); border-radius: 10px; text-align: center; }
-.sd-date strong { font-size: 1.0625rem; line-height: 1; }
-.sd-date small { margin-top: 2px; color: var(--color-muted); font-size: .6875rem; font-weight: var(--weight-semibold); text-transform: uppercase; }
+.sd-date { display: grid; place-content: center; width: 2.75rem; height: 3rem; border: var(--border-width) solid var(--color-border); border-radius: var(--radius-md); text-align: center; }
+.sd-date strong { font-size: var(--font-lead); line-height: 1; }
+.sd-date small { margin-top: 2px; color: var(--color-muted); font-size: var(--font-micro); font-weight: var(--weight-semibold); text-transform: uppercase; }
 .sd-deadline-main strong, .sd-deadline-main small { display: block; }
-.sd-deadline-main strong { font-size: .9375rem; }
+.sd-deadline-main strong { font-size: var(--font-ui); }
 .sd-deadline-main small { margin-top: 2px; color: var(--color-muted); font-size: var(--font-caption); }
 
 /* Tasks: a table on wide screens, cards on phones */
 .sd-task-table { width: 100%; border-collapse: collapse; font-size: var(--font-small); }
-.sd-task-table thead th { padding: var(--space-2) var(--space-3); border-bottom: var(--border-width) solid var(--as-line); color: var(--as-faint); font-size: .75rem; font-weight: var(--weight-semibold); letter-spacing: .05em; text-align: left; text-transform: uppercase; }
+.sd-task-table thead th { padding: var(--space-2) var(--space-3); border-bottom: var(--border-width) solid var(--as-line); color: var(--as-faint); font-size: var(--font-xs); font-weight: var(--weight-semibold); letter-spacing: .05em; text-align: left; text-transform: uppercase; }
 .sd-task-table td, .sd-task-table tbody th { padding: var(--space-4) var(--space-3); border-bottom: var(--border-width) solid var(--as-line); text-align: left; vertical-align: middle; font-weight: var(--weight-regular); }
 .sd-task-table tbody tr:last-child > * { border-bottom: 0; }
-.sd-task-table tbody tr:hover { background: #fafbfe; }
-.sd-task-name a { color: var(--color-ink); font-size: .9375rem; font-weight: var(--weight-semibold); text-decoration: none; }
+.sd-task-table tbody tr:hover { background: var(--color-page); }
+.sd-task-name a { color: var(--color-ink); font-size: var(--font-ui); font-weight: var(--weight-semibold); text-decoration: none; }
 .sd-task-name a:hover { color: var(--color-primary); text-decoration: underline; }
 .sd-flags { display: inline-flex; flex-wrap: wrap; gap: 6px; margin-left: var(--space-2); vertical-align: middle; }
 .sd-blocked-why { display: block; margin-top: 4px; }
@@ -45,13 +45,13 @@
 
 /* Completed */
 .sd-completed { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
-.sd-completed li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-4); padding: var(--space-4); border: var(--border-width) solid var(--as-line); border-radius: 14px; }
-.sd-completed h3 { margin-top: var(--space-2); font-size: 1rem; }
+.sd-completed li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-4); padding: var(--space-4); border: var(--border-width) solid var(--as-line); border-radius: var(--radius-lg); }
+.sd-completed h3 { margin-top: var(--space-2); font-size: var(--font-body); }
 .sd-completed-icon { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: var(--radius-control); background: var(--color-success-bg); color: var(--color-success-text); }
 .sd-result { text-align: right; }
-.sd-result strong { display: block; font-size: 1.375rem; letter-spacing: -.02em; }
-.sd-result strong.is-none { color: var(--color-muted); font-size: 1rem; }
-.sd-result small { display: block; max-width: 11rem; color: var(--color-muted); font-size: .75rem; }
+.sd-result strong { display: block; font-size: var(--font-title-lg); letter-spacing: -.02em; }
+.sd-result strong.is-none { color: var(--color-muted); font-size: var(--font-body); }
+.sd-result small { display: block; max-width: 11rem; color: var(--color-muted); font-size: var(--font-xs); }
 
 @media (max-width: 1100px) {
     .sd-grid, .sd-completed { grid-template-columns: minmax(0, 1fr); }
@@ -59,12 +59,12 @@
 @media (max-width: 760px) {
     .sd-task-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
     .sd-task-table, .sd-task-table tbody, .sd-task-table tr, .sd-task-table td, .sd-task-table tbody th { display: block; }
-    .sd-task-table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2) var(--space-3); margin-bottom: var(--space-3); padding: var(--space-4); border: var(--border-width) solid var(--as-line); border-radius: 14px; }
+    .sd-task-table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2) var(--space-3); margin-bottom: var(--space-3); padding: var(--space-4); border: var(--border-width) solid var(--as-line); border-radius: var(--radius-lg); }
     .sd-task-table tbody tr.is-overdue { border-left: 4px solid var(--color-coral); }
     .sd-task-table td, .sd-task-table tbody th { padding: 0; border: 0; }
     .sd-task-table tbody th { grid-column: 1 / -1; }
     .sd-flags { display: flex; margin: var(--space-2) 0 0; }
-    .sd-task-table td[data-label]::before { content: attr(data-label); display: block; color: var(--as-faint); font-size: .75rem; font-weight: var(--weight-semibold); letter-spacing: .04em; text-transform: uppercase; }
+    .sd-task-table td[data-label]::before { content: attr(data-label); display: block; color: var(--as-faint); font-size: var(--font-xs); font-weight: var(--weight-semibold); letter-spacing: .04em; text-transform: uppercase; }
     .sd-task-table td[data-label='Project'] { grid-column: 1 / -1; }
     .sd-task-go { display: none !important; }
 }
