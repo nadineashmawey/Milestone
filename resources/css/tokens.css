@@ -1,74 +1,127 @@
-/* Milestone foundations. Palette: supplied UI Kit. Additional values: docs/ui-kit.md. */
+/* Milestone design tokens: the only source of the theme (SRS §12.3, the Figma reference and the approved Home page).
+   Every colour, font, size, radius and shadow in resources/css uses these. See docs/ui-kit.md, "Theme rules". */
 :root {
-  --color-royal-blue: #1f4fff;
-  --color-violet: #b565f0;
-  --color-yellow: #ffd93b;
-  --color-coral: #ee6b6b;
-  --color-light-blue: #4d7cff;
-  --color-green: #8fd18a;
-  --color-ink: #1e1f3b;
-  --color-lavender: #e8ebf5;
-  --color-white: #ffffff;
-  --color-muted: #5b6580;
-  --color-icon: #9aa3b8;
-  --color-primary: var(--color-royal-blue);
-  --color-primary-hover: #173cbb;
-  --color-page: #f5f6fb;
-  --color-surface: var(--color-white);
-  --color-text: var(--color-ink);
-  --color-border: #d5dae8;
-  --color-control-border: var(--color-muted);
-  --color-info-bg: #dbe4ff;
-  --color-info-text: #173cbb;
-  --color-success-bg: #d8efd6;
-  --color-success-text: #275b29;
-  --color-warning-bg: #fff1a5;
-  --color-warning-text: #6b5500;
-  --color-danger-bg: #f8cece;
-  --color-danger-text: #8c2929;
-  --color-review-bg: #ead4fa;
-  --color-review-text: #7032a2;
-  --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-caption: .8125rem;
-  --font-small: .875rem;
-  --font-body: 1rem;
-  --font-title: 1.25rem;
-  --font-heading: 1.75rem;
-  --font-display: 2.75rem;
-  --weight-regular: 400;
-  --weight-semibold: 600;
-  --weight-bold: 800;
-  --line-body: 1.5;
-  --line-heading: 1.2;
-  --space-0: 0;
-  --space-1: .25rem;
-  --space-2: .5rem;
-  --space-3: .75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --radius-control: .75rem;
-  --radius-card: 1.25rem;
-  --radius-sidebar: 1.75rem;
-  --radius-pill: 999px;
-  --shadow-card: 0 10px 30px rgb(30 31 59 / 6%);
-  --shadow-raised: 0 6px 14px rgb(30 31 59 / 10%);
-  --border-width: 1px;
-  --focus-width: 3px;
-  --focus-offset: 3px;
-  --control-height: 2.75rem;
-  --sidebar-width: 14.375rem;
-  --content-width: 90rem;
-  --dialog-width: 36rem;
-  --duration-fast: 150ms;
-  --ease-standard: ease-out;
-  --z-navigation: 10;
-  --z-overlay: 20;
-  --z-dialog: 30;
-  --z-toast: 40;
-}
+    /* Brand colours (SRS §12.3) */
+    --color-royal-blue: #1f4fff;
+    --color-violet: #b565f0;
+    --color-yellow: #ffd93b;
+    --color-coral: #ee6b6b;
+    --color-light-blue: #4d7cff;
+    --color-green: #8fd18a;
 
+    /* Text and surfaces */
+    --color-ink: #1e1f3b;
+    --color-ink-2: #3a3d5c;
+    --color-muted: #5b6580;
+    --color-faint: #707a93;
+    --color-icon: #9aa3b8;
+    --color-border: #d5dae8;
+    --color-line: #e1e5ef;
+    --color-lavender: #e8ebf5;
+    --color-page: #f5f6fb;
+    --color-white: #ffffff;
+    --color-surface: var(--color-white);
+    --color-text: var(--color-ink);
+    --color-control-border: var(--color-muted);
+
+    /* Roles */
+    --color-primary: var(--color-royal-blue);
+    --color-primary-hover: #173cbb;
+
+    /* Soft tints, always used as a pair: -text on -bg */
+    --color-info-bg: #dbe4ff;
+    --color-info-text: #173cbb;
+    --color-success-bg: #d8efd6;
+    --color-success-text: #275b29;
+    --color-warning-bg: #fff1a5;
+    --color-warning-text: #6b5500;
+    --color-danger-bg: #f8cece;
+    --color-danger-text: #8c2929;
+    --color-review-bg: #ead4fa;
+    --color-review-text: #7032a2;
+
+    /* Dark mode (the navbar's toggle sets data-theme="dark" on <html>) */
+    --color-dark-ink: #f7f8ff;
+    --color-dark-muted: #adb6cd;
+    --color-dark-border: #353a58;
+    --color-dark-page: #181a2b;
+    --color-dark-surface: #24263c;
+    --color-dark-primary: #9fb4ff;
+    --color-dark-info-bg: #2d3a6b;
+
+    /* Type: Plus Jakarta Sans only, weights 400 to 800 */
+    --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-micro: .6875rem;      /* 11px, decorative previews only */
+    --font-xs: .75rem;           /* 12px, the smallest readable text */
+    --font-caption: .8125rem;    /* 13px, captions, badges, help text */
+    --font-small: .875rem;       /* 14px, labels, nav, secondary text */
+    --font-ui: .9375rem;         /* 15px, dense body text */
+    --font-body: 1rem;           /* 16px */
+    --font-lead: 1.0625rem;      /* 17px */
+    --font-large: 1.125rem;      /* 18px, intros */
+    --font-title: 1.25rem;       /* 20px, h2 and h3 */
+    --font-title-lg: 1.375rem;   /* 22px */
+    --font-subheading: 1.5rem;   /* 24px */
+    --font-heading: 1.75rem;     /* 28px, h1 */
+    --font-heading-lg: 2.25rem;  /* 36px */
+    --font-display: 2.75rem;     /* 44px */
+    --font-page-title: clamp(1.75rem, 3vw, 2.25rem);  /* every page's h1 */
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-strong: 700;
+    --weight-bold: 800;
+    --line-tight: 1.12;
+    --line-heading: 1.2;
+    --line-snug: 1.35;
+    --line-body: 1.5;
+    --line-relaxed: 1.65;
+
+    /* Spacing */
+    --space-0: 0;
+    --space-1: .25rem;
+    --space-2: .5rem;
+    --space-3: .75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+    /* Radii */
+    --radius-xs: .375rem;        /* 6px */
+    --radius-sm: .5rem;          /* 8px */
+    --radius-md: .625rem;        /* 10px */
+    --radius-control: .75rem;    /* 12px, buttons and fields */
+    --radius-lg: .875rem;        /* 14px */
+    --radius-xl: 1.125rem;       /* 18px, panels */
+    --radius-card: 1.25rem;      /* 20px */
+    --radius-2xl: 1.5rem;        /* 24px */
+    --radius-sidebar: 1.75rem;   /* 28px */
+    --radius-pill: 999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgb(30 31 59 / 12%);
+    --shadow-raised: 0 6px 14px rgb(30 31 59 / 10%);
+    --shadow-card: 0 10px 30px rgb(30 31 59 / 6%);
+    --shadow-popover: 0 18px 50px rgb(30 31 59 / 16%);
+    --shadow-lg: 0 30px 60px -20px rgb(30 31 59 / 25%);
+    --focus-ring: 0 0 0 4px rgb(31 79 255 / 14%);
+
+    /* Layout */
+    --border-width: 1px;
+    --focus-width: 3px;
+    --focus-offset: 3px;
+    --control-height: 2.75rem;
+    --sidebar-width: 14.375rem;
+    --content-width: 90rem;
+    --dialog-width: 36rem;
+    --duration-fast: 150ms;
+    --ease-standard: ease-out;
+    --z-navigation: 10;
+    --z-overlay: 20;
+    --z-dialog: 30;
+    --z-toast: 40;
+}

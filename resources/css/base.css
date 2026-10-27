@@ -52,8 +52,9 @@ h3 {
 }
 
 h1 {
-    font-size: var(--font-heading);
+    font-size: var(--font-page-title);
     font-weight: var(--weight-bold);
+    letter-spacing: -.02em;
 }
 
 h2,
