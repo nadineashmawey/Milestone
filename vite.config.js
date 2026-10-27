@@ -18,6 +18,7 @@ export default defineConfig({
                 'resources/css/pages/milestones.css',
                 'resources/css/pages/student-team.css',
                 'resources/css/pages/professor-dashboard.css',
+                'resources/css/pages/professor-projects.css',
                 'resources/css/pages/profile.css',
                 'resources/css/pages/notifications.css',
                 'resources/js/notifications.js',

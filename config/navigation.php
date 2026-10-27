@@ -4,12 +4,13 @@
 // Each item: label, icon (public/partials/icon), route name, optional route params, optional
 // "active" route patterns (defaults to the route itself) and an optional badge key from "badges".
 // Items whose route doesn't exist yet render as a disabled "Coming soon" entry.
+// Each role lists only its own routes (student.*, professor.*, ta.*, admin.*); NavbarTest checks this.
 
 return [
     'roles' => [
         'student' => [
             ['label' => 'Dashboard', 'icon' => 'grid', 'route' => 'student.dashboard'],
-            ['label' => 'My projects', 'icon' => 'folder', 'route' => 'projects.index', 'active' => ['projects.*', 'student.projects.*']],
+            ['label' => 'My projects', 'icon' => 'folder', 'route' => 'student.projects.index', 'active' => ['student.projects.*']],
             ['label' => 'Tasks', 'icon' => 'check', 'route' => 'student.tasks.index', 'active' => ['student.tasks.*']],
             ['label' => 'Milestones', 'icon' => 'clock', 'route' => 'student.milestones.index', 'params' => ['project' => 'software-engineering-capstone'], 'active' => ['student.milestones.*']],
             ['label' => 'Team', 'icon' => 'users', 'route' => 'student.team.show', 'params' => ['project' => 'software-engineering-capstone'], 'active' => ['student.team.*']],
@@ -17,12 +18,12 @@ return [
         'professor' => [
             ['label' => 'Dashboard', 'icon' => 'grid', 'route' => 'professor.dashboard'],
             ['label' => 'Courses', 'icon' => 'folder', 'route' => 'professor.courses.index'],
+            ['label' => 'My projects', 'icon' => 'file', 'route' => 'professor.projects.index', 'active' => ['professor.projects.index', 'professor.projects.show', 'professor.projects.edit']],
             ['label' => 'Create project', 'icon' => 'plus', 'route' => 'professor.projects.create'],
             ['label' => 'Teams', 'icon' => 'users', 'route' => 'professor.teams.index', 'active' => ['professor.teams.*']],
             ['label' => 'Submissions', 'icon' => 'check', 'route' => 'professor.submissions.index', 'badge' => 'submissions'],
             ['label' => 'Risk Radar', 'icon' => 'chart', 'route' => 'professor.risk-radar.index'],
             ['label' => 'Extensions', 'icon' => 'calendar', 'route' => 'professor.extensions.index'],
-            ['label' => 'Replay', 'icon' => 'clock', 'route' => 'professor.replay.index'],
         ],
         'ta' => [
             ['label' => 'Dashboard', 'icon' => 'grid', 'route' => 'ta.dashboard'],
