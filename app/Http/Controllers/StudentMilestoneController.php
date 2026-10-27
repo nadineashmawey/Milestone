@@ -16,6 +16,11 @@ class StudentMilestoneController extends Controller
 {
     public function index(Request $request, ZinaDemoData $demo, string $project): View
     {
+        // The sample timeline is only for the demo accounts; a real account has no course team yet.
+        if ($demo->ownAccount()) {
+            return view('zina.not-on-a-team', ['page' => 'Milestones']);
+        }
+
         $timeline = $demo->milestones($project);
         abort_if($timeline === null, 404);
 
@@ -35,6 +40,7 @@ class StudentMilestoneController extends Controller
      */
     public function draft(StoreMilestoneDraftRequest $request, ZinaDemoData $demo, string $project, string $milestone): RedirectResponse
     {
+        abort_if($demo->ownAccount() !== null, 404); // Sample actions are for the demo accounts only.
         $deliverables = $demo->m2Deliverables();
 
         $demo->saveMilestoneDraft($project, [
@@ -52,6 +58,7 @@ class StudentMilestoneController extends Controller
 
     public function discard(DiscardMilestoneDraftRequest $request, ZinaDemoData $demo, string $project, string $milestone): RedirectResponse
     {
+        abort_if($demo->ownAccount() !== null, 404); // Sample actions are for the demo accounts only.
         $demo->discardMilestoneDraft($project);
 
         return redirect()->to(route('student.milestones.index', $project).'#submit');
@@ -62,6 +69,7 @@ class StudentMilestoneController extends Controller
      */
     public function submit(SubmitMilestoneRequest $request, ZinaDemoData $demo, string $project, string $milestone): RedirectResponse
     {
+        abort_if($demo->ownAccount() !== null, 404); // Sample actions are for the demo accounts only.
         $back = route('student.milestones.index', $project);
 
         if ($demo->statesEnabled() && $request->boolean('simulate_failure')) {

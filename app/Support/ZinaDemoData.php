@@ -295,16 +295,15 @@ final class ZinaDemoData
         $viewer = $this->viewer();
         $isLeader = $viewer['id'] === 'aya';
 
-        // A real account sees only its own projects: the independent projects it created this session.
+        // A real account sees only its own projects: the independent projects it created (stored in the database).
         if ($user = $this->ownAccount()) {
-            $own = collect(session('independent_projects', []))
-                ->where('owner_id', $user->id)
-                ->map(fn (array $project) => [
-                    'id' => $project['id'], 'title' => $project['title'], 'type' => 'Independent',
+            $own = \App\Models\Project::independentFor($user)->latest()->latest('id')->get()
+                ->map(fn (\App\Models\Project $project) => [
+                    'id' => (string) $project->id, 'title' => $project->title, 'type' => 'Independent',
                     'status' => 'Just started', 'status_tone' => 'info', 'progress' => 0, 'ring_tone' => 'blue',
                     'subtitle' => 'Independent · 1 of '.self::INDEPENDENT_MEMBER_LIMIT.' members · No grading',
                     'next' => 'Add your first task', 'next_countdown' => null,
-                    'href' => $this->link('student.projects.show', ['project' => $project['id']]),
+                    'href' => $this->link('student.projects.show', ['project' => $project->id]),
                 ])->values()->all();
 
             if ($own !== [] && ! $empty) {

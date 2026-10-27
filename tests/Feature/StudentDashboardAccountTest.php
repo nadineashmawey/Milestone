@@ -37,9 +37,9 @@ class StudentDashboardAccountTest extends TestCase
     public function test_it_lists_the_projects_the_account_created(): void
     {
         $user = $this->account();
+        \App\Models\Project::create(['type' => 'independent', 'owner_id' => $user->id, 'title' => 'Recipe Planner', 'status' => 'active']);
 
         $this->actingAs($user)
-            ->withSession(['independent_projects' => [['id' => 'p-1', 'title' => 'Recipe Planner', 'description' => '', 'owner_id' => $user->id]]])
             ->get('/student/dashboard')
             ->assertOk()
             ->assertSee('Recipe Planner')

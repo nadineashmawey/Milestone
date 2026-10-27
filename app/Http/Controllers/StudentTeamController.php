@@ -12,6 +12,11 @@ class StudentTeamController extends Controller
 {
     public function show(Request $request, ZinaDemoData $demo, string $project): View
     {
+        // The sample team is only for the demo accounts; a real account has no course team yet.
+        if ($demo->ownAccount()) {
+            return view('zina.not-on-a-team', ['page' => 'Team']);
+        }
+
         $team = $demo->team($project);
         abort_if($team === null, 404);
 
@@ -34,6 +39,7 @@ class StudentTeamController extends Controller
      */
     public function act(TeamActionRequest $request, ZinaDemoData $demo, string $project, ?string $item = null): RedirectResponse
     {
+        abort_if($demo->ownAccount() !== null, 404); // Sample actions are for the demo accounts only.
         $message = $demo->applyTeamAction($project, $request->action(), $item, $request->validated());
 
         // TODO: notify the people involved (team, professor) once notifications exist. Email stays simulated.
