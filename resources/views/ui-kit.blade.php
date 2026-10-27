@@ -8,10 +8,72 @@
     <x-card title="What you are looking at">
         <p>The bar at the top is the shared navbar for your current role. The sample controls below do not save, delete or submit anything.</p>
         <p class="ms-muted">On this page:
-            <a href="#navbar">Navbar</a> · <a href="#buttons">Buttons</a> · <a href="#fields">Inputs</a> · <a href="#badges">Badges</a> ·
+            <a href="#theme">Typography and colour</a> · <a href="#navbar">Navbar</a> · <a href="#buttons">Buttons</a> · <a href="#fields">Inputs</a> · <a href="#badges">Badges</a> ·
             <a href="#more-buttons">Button options</a> · <a href="#more-fields">Select and textarea</a> · <a href="#feedback">Alerts and empty states</a> ·
             <a href="#section-headings">Section heading</a>
         </p>
+    </x-card>
+
+    @php
+        $typeScale = [
+            ['--font-page-title', 'Page title (h1)', 'bold'], ['--font-display', 'Display 44', 'bold'], ['--font-heading-lg', 'Heading 36', 'bold'],
+            ['--font-heading', 'Heading 28', 'bold'], ['--font-subheading', 'Subheading 24', 'semibold'], ['--font-title', 'Title 20 (h2, h3)', 'semibold'],
+            ['--font-large', 'Large 18', 'regular'], ['--font-body', 'Body 16', 'regular'], ['--font-ui', 'UI 15', 'regular'], ['--font-small', 'Small 14 (labels)', 'semibold'],
+            ['--font-caption', 'Caption 13', 'regular'], ['--font-xs', 'Extra small 12', 'regular'],
+        ];
+        $colourGroups = [
+            'Brand (SRS §12.3)' => ['royal-blue', 'violet', 'yellow', 'coral', 'light-blue', 'green'],
+            'Text and surfaces' => ['ink', 'ink-2', 'muted', 'faint', 'icon', 'border', 'line', 'lavender', 'page', 'white'],
+            'Soft tints (use -text on -bg)' => ['info-bg', 'info-text', 'success-bg', 'success-text', 'warning-bg', 'warning-text', 'danger-bg', 'danger-text', 'review-bg', 'review-text'],
+        ];
+        $radii = ['xs', 'sm', 'md', 'control', 'lg', 'xl', 'card', '2xl', 'sidebar', 'pill'];
+        $shadows = ['sm', 'raised', 'card', 'popover', 'lg'];
+    @endphp
+    <x-card title="Typography and colour" id="theme" class="ms-stack">
+        <p>Every page uses these tokens from <code>resources/css/tokens.css</code> and nothing else. See “Theme rules” in <code>docs/ui-kit.md</code>.</p>
+
+        <h3>Type scale <span class="ms-muted ms-caption">Plus Jakarta Sans, weights 400 to 800</span></h3>
+        <div class="grid gap-2">
+            @foreach ($typeScale as [$token, $label, $weight])
+                <div class="grid gap-1 border-b border-line pb-2">
+                    <span style="font-size: var({{ $token }}); font-weight: var(--weight-{{ $weight }}); line-height: var(--line-heading);">{{ $label }}</span>
+                    <code class="ms-caption ms-muted">{{ $token }}</code>
+                </div>
+            @endforeach
+        </div>
+        <p class="ms-muted">Weights: <span style="font-weight: var(--weight-regular)">Regular 400</span> · <span style="font-weight: var(--weight-medium)">Medium 500</span> · <span style="font-weight: var(--weight-semibold)">Semibold 600</span> · <span style="font-weight: var(--weight-strong)">Strong 700</span> · <span style="font-weight: var(--weight-bold)">Bold 800</span></p>
+
+        @foreach ($colourGroups as $group => $colours)
+            <h3>{{ $group }}</h3>
+            <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" role="list">
+                @foreach ($colours as $colour)
+                    <li class="grid gap-1">
+                        <span class="block h-12 rounded-md border border-border" style="background: var(--color-{{ $colour }});" aria-hidden="true"></span>
+                        <code class="ms-caption">--color-{{ $colour }}</code>
+                    </li>
+                @endforeach
+            </ul>
+        @endforeach
+
+        <h3>Radii</h3>
+        <ul class="grid grid-cols-2 gap-3 sm:grid-cols-5" role="list">
+            @foreach ($radii as $radius)
+                <li class="grid gap-1">
+                    <span class="block h-12 border border-border bg-info-soft" style="border-radius: var(--radius-{{ $radius }});" aria-hidden="true"></span>
+                    <code class="ms-caption">--radius-{{ $radius }}</code>
+                </li>
+            @endforeach
+        </ul>
+
+        <h3>Shadows</h3>
+        <ul class="grid grid-cols-2 gap-5 sm:grid-cols-5" role="list">
+            @foreach ($shadows as $shadow)
+                <li class="grid gap-2">
+                    <span class="block h-14 rounded-xl bg-surface" style="box-shadow: var(--shadow-{{ $shadow }});" aria-hidden="true"></span>
+                    <code class="ms-caption">--shadow-{{ $shadow }}</code>
+                </li>
+            @endforeach
+        </ul>
     </x-card>
 
     <x-card title="Navbar" id="navbar" class="ms-stack">

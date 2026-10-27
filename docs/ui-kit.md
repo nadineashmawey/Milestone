@@ -9,13 +9,36 @@ All values live in `resources/css/tokens.css` as CSS custom properties. Use them
 | Group | Examples |
 | --- | --- |
 | Brand colours (SRS §12.3) | `--color-royal-blue` `#1F4FFF`, `--color-violet` `#B565F0`, `--color-yellow` `#FFD93B`, `--color-coral` `#EE6B6B`, `--color-light-blue` `#4D7CFF`, `--color-green` `#8FD18A` |
-| Text and surfaces | `--color-ink` `#1E1F3B`, `--color-muted` `#5B6580`, `--color-border` `#D5DAE8`, `--color-page` `#F5F6FB`, `--color-surface` `#FFFFFF` |
-| Roles | `--color-primary`, `--color-text`, and the paired status colours `--color-{info,success,warning,danger,review}-{bg,text}` |
-| Type | `--font-family` (Plus Jakarta Sans 400/600/800), `--font-caption` to `--font-display`, `--weight-regular/semibold/bold` |
+| Text and surfaces | `--color-ink` `#1E1F3B`, `--color-ink-2` `#3A3D5C`, `--color-muted` `#5B6580`, `--color-faint` `#707A93`, `--color-icon` `#9AA3B8`, `--color-border` `#D5DAE8`, `--color-line` `#E1E5EF`, `--color-lavender` `#E8EBF5`, `--color-page` `#F5F6FB`, `--color-surface` `#FFFFFF` |
+| Roles | `--color-primary`, `--color-primary-hover`, `--color-text`, and the paired status colours `--color-{info,success,warning,danger,review}-{bg,text}` |
+| Dark mode | `--color-dark-{ink,muted,border,page,surface,primary,info-bg}`. Only the navbar uses them so far. |
+| Type | `--font-family` (Plus Jakarta Sans 400, 500, 600, 700, 800), sizes `--font-micro` (11px) to `--font-display` (44px), `--font-page-title` for every page's h1, weights `--weight-regular/medium/semibold/strong/bold`, line heights `--line-tight` to `--line-relaxed` |
 | Spacing | `--space-1` (4px) to `--space-16` (64px) |
-| Shape and depth | `--radius-control`, `--radius-card`, `--radius-pill`, `--shadow-card`, `--shadow-raised` |
+| Radii | `--radius-xs` (6px), `-sm` (8), `-md` (10), `-control` (12), `-lg` (14), `-xl` (18), `-card` (20), `-2xl` (24), `-sidebar` (28), `-pill` |
+| Shadows | `--shadow-sm`, `--shadow-raised`, `--shadow-card`, `--shadow-popover`, `--shadow-lg`, and `--focus-ring` |
 
 Status colours always come as a pair: put `-text` on `-bg`, never on white or on another background.
+
+## Theme rules
+
+The whole frontend uses one theme: the Milestone design system from SRS §12.3 and the Figma reference. `tokens.css` is its only source.
+
+**Do**
+
+- Use a token for every colour, font size, weight, radius and shadow: `color: var(--color-muted)`, `font-size: var(--font-small)`, `border-radius: var(--radius-control)`, `box-shadow: var(--shadow-card)`.
+- For a transparent tint of a token, use `color-mix(in srgb, var(--color-ink) 6%, transparent)`.
+- Give a page's main heading `var(--font-page-title)`. The base `h1` already does.
+- In markup, Tailwind utilities map to the tokens: `font-sans`, `text-ink`, `text-muted`, `bg-page`, `bg-surface`, `text-blue`, `rounded-md`, `rounded-2xl`, `shadow-lg`. The default Tailwind palette is switched off, so classes like `text-gray-500` do nothing.
+- Need a new value everyone shares? Add it to `tokens.css`, agree it with the team, and use it from there.
+
+**Don't**
+
+- Write hex, `rgb()` or named colours outside `tokens.css`.
+- Set another `font-family`, or load a font anywhere except the single Google Fonts import in `app.css`. Weights 400 to 800 are loaded, so don't use 900 or in-between weights like 650.
+- Redefine a token (`--color-…`, `--font-…`, `--radius-…`) in a page stylesheet. Use your own page-prefixed variable instead, set from a token: `--issue-blue: var(--color-royal-blue)`.
+- Go below `--font-xs` (12px) for real text. `--font-micro` is for decorative previews only.
+
+`tests/Feature/ThemeTest.php` enforces these rules: one font, loaded once, colours only from tokens, and no redefined tokens. If something genuinely can't use a token, add it to the short, commented allowlist in that test and tell the team why. Today the only entries are the corkboard's wood tones on Jana's task board.
 
 ## Components
 
