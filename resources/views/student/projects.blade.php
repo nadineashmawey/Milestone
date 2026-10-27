@@ -50,7 +50,14 @@
                     @endforeach
                 </section>
             @else
-                <section class="projects-empty"><span class="project-folder" aria-hidden="true">＋</span><h2>No projects yet</h2><p>When you join a project, it will appear here.</p></section>
+                <section class="projects-empty"><span class="project-folder" aria-hidden="true">＋</span><h2>No projects yet</h2>
+                    @if (auth()->user()->project_type === 'independent')
+                        <p>Start an independent project and it will appear here.</p>
+                        <p><a class="ms-button ms-button--primary" href="{{ route('student.projects.create') }}">Create an independent project</a></p>
+                    @else
+                        <p>When you join a project, it will appear here.</p>
+                    @endif
+                </section>
             @endif
         </div>
     </main>

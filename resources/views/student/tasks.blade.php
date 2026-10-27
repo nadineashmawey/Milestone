@@ -10,6 +10,9 @@
     <main id="main" class="tasks-page"><div class="tasks-container">
         <a class="tasks-back" href="{{ route('student.projects.index') }}">← My Projects</a>
         <header class="tasks-heading"><div><p class="projects-eyebrow">Student · Work queue</p><h1>Tasks</h1><p>Individual and team work across your active projects.</p></div></header>
+        @if (count($tasks) === 0)
+            <section class="tasks-empty"><h2>No tasks yet</h2><p>Tasks from your projects will appear here once your team adds them.</p></section>
+        @else
         <section class="tasks-panel"><div class="tasks-tools"><div class="tasks-filters" role="group" aria-label="Filter tasks"><button type="button" class="is-active" data-task-filter="all">All tasks</button><button type="button" data-task-filter="Individual">Individual</button><button type="button" data-task-filter="Team">Team</button><button type="button" data-task-filter="week">Due this week</button></div><span>{{ count($tasks) }} open tasks</span></div>
             <div class="task-table" role="table" aria-label="Student tasks"><div class="task-row task-row--head" role="row"><span>Task</span><span>Type</span><span>Mode</span><span>Due date</span><span>Status</span><span></span></div>
                 @foreach ($tasks as $task)
@@ -17,6 +20,7 @@
                 @endforeach
             </div>
         </section>
+        @endif
     </div></main>
 @endsection
 

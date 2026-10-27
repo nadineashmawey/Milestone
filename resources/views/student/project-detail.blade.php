@@ -8,10 +8,13 @@
 @endpush
 
 
-@push('scripts')
-    @vite('resources/js/student-project-board.js')
-    @vite('resources/js/student-project-portal.js')
-@endpush
+{{-- The sample board and portal only run on the demo projects; a student's own project has its own page below. --}}
+@unless ($own ?? false)
+    @push('scripts')
+        @vite('resources/js/student-project-board.js')
+        @vite('resources/js/student-project-portal.js')
+    @endpush
+@endunless
 
 
 @section('page')
@@ -26,6 +29,33 @@
                 </div>
             </header>
 
+            @if (session('success'))
+                <x-alert tone="success" :title="session('success')" />
+            @endif
+
+            @if ($own ?? false)
+                @php($me = auth()->user())
+                <section class="detail-panel portal-panel" aria-labelledby="own-overview-title">
+                    <header class="portal-heading"><div><p class="projects-eyebrow">Independent project</p><h2 id="own-overview-title">Your project</h2><p>Created {{ $project['created'] }} · No grading · Up to 10 members</p></div><span class="portal-badge portal-badge--green">Active</span></header>
+                    <div class="portal-grid portal-grid--formation">
+                        <article class="portal-card">
+                            <h3>Team</h3>
+                            <div class="member-list">
+                                <div class="portal-member">
+                                    <span class="portal-avatar" aria-hidden="true">{{ app(\App\Support\ZinaDemoData::class)->initials($me->name) }}</span>
+                                    <div class="portal-member-info"><strong>{{ $me->name }}</strong><small>{{ $me->email }}</small></div>
+                                    <span class="portal-role portal-role--leader">Team leader</span>
+                                </div>
+                            </div>
+                            <p class="portal-note">1 of 10 members. Inviting teammates isn’t available yet.</p>
+                        </article>
+                        <article class="portal-card">
+                            <h3>Board</h3>
+                            <section class="projects-empty"><span class="project-folder" aria-hidden="true">＋</span><h2>No tasks yet</h2><p>Your tasks, files and activity will show up here. Adding tasks isn’t available yet.</p></section>
+                        </article>
+                    </div>
+                </section>
+            @else
 
             <nav class="project-tabs" aria-label="Project sections" role="tablist">
                 <button class="project-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="board-panel" data-tab="board">Board</button>
@@ -100,7 +130,8 @@
             <section class="detail-panel portal-panel" id="calendar-panel" role="tabpanel" data-panel="calendar" hidden><header class="portal-heading"><div><p class="projects-eyebrow">Team schedule</p><h2 data-calendar-title>October 2026</h2><p>Internal project calendar · Tasks and academic milestones</p></div><span class="portal-badge portal-badge--lavender">External sync planned later</span></header><div class="portal-card"><div class="portal-calendar-controls"><button class="ms-button ms-button--secondary" type="button" data-calendar-prev aria-label="Previous period">←</button><button class="ms-button ms-button--secondary" type="button" data-calendar-next aria-label="Next period">→</button><div class="portal-segmented"><button type="button" class="is-active" data-calendar-view="timeline">Timeline</button><button type="button" data-calendar-view="list">List</button></div></div><div data-calendar></div><p class="portal-calendar-summary" data-calendar-summary></p></div></section>
             <section class="detail-panel portal-panel" id="risk-panel" role="tabpanel" data-panel="risk" hidden><header class="portal-heading"><div><p class="projects-eyebrow">Delivery oversight</p><h2>Risk register</h2><p>Track blockers and potential delivery risks while there is time to respond.</p></div><button class="ms-button" type="button" data-add-risk>＋ Add risk</button></header><div class="portal-risk-stats" data-risk-stats></div><div class="portal-card"><div class="portal-file-tools"><input class="ms-input" type="search" placeholder="Search risks..." data-risk-search aria-label="Search risks"><select class="ms-input" data-risk-filter aria-label="Filter risk status"><option value="all">All statuses</option><option>Open</option><option>Mitigating</option><option>Resolved</option></select></div><div data-risk-list></div></div></section>
             <section class="detail-panel portal-panel" id="activity-panel" role="tabpanel" data-panel="activity" hidden><header class="portal-heading"><div><p class="projects-eyebrow">Project history</p><h2>Recent activity</h2><p>Changes across tasks, files, submissions, and risks.</p></div><select class="ms-input" data-activity-filter aria-label="Filter activity"><option value="all">All activity</option><option>Tasks</option><option>Files</option><option>Submissions</option><option>Risks</option></select></header><div class="portal-card"><div class="portal-activity" data-activity></div></div></section>
+            @endif
         </div>
-        <dialog class="portal-dialog" data-portal-dialog aria-labelledby="dialog-title"><form method="dialog"><button class="portal-dialog-close" value="cancel" aria-label="Close dialog">×</button></form><div data-dialog-content></div></dialog>
+        @unless ($own ?? false)<dialog class="portal-dialog" data-portal-dialog aria-labelledby="dialog-title"><form method="dialog"><button class="portal-dialog-close" value="cancel" aria-label="Close dialog">×</button></form><div data-dialog-content></div></dialog>@endunless
     </main>
 @endsection

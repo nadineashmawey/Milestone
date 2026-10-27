@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Support\StudentProjectCatalog;
+use App\Support\ZinaDemoData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
@@ -20,42 +21,53 @@ class ProjectController extends Controller
 
     public function index(): View
     {
-        $created = collect(session('independent_projects', []))
-            ->where('owner_id', auth()->id())
-            ->map(fn (array $project) => [
-                'id' => $project['id'], 'title' => $project['title'], 'kind' => 'Independent',
-                'course' => 'Student-led', 'professor' => null, 'team' => null,
-                'progress' => 0, 'next' => 'No tasks yet', 'due' => $project['description'] ?: 'Your independent project.',
-                'members' => 1, 'open_tasks' => 0,
-            ])->all();
-
+        // Demo accounts keep the sample projects; a real account sees only its own.
         return view('student.projects', [
-            'projects' => array_merge(StudentProjectCatalog::all(), $created),
+            'projects' => [...($this->showsSamples() ? StudentProjectCatalog::all() : []), ...$this->ownProjects()],
         ]);
     }
 
     public function show(string $project): View
     {
-        $projectId = $project;
-        $project = StudentProjectCatalog::find($projectId);
+        $own = collect($this->ownProjects())->firstWhere('id', $project);
+        $record = $own ?? ($this->showsSamples() ? StudentProjectCatalog::find($project) : null);
 
-        if ($project === null) {
-            $created = collect(session('independent_projects', []))->firstWhere('id', $projectId);
-            if ($created && (int) $created['owner_id'] === (int) auth()->id()) {
-                $project = [
-                    'id' => $created['id'], 'title' => $created['title'], 'kind' => 'Independent',
-                    'course' => 'Student-led', 'professor' => null, 'team' => null,
-                    'progress' => 0, 'next' => 'No tasks yet', 'due' => $created['description'] ?: 'Your independent project.',
-                    'members' => 1, 'open_tasks' => 0,
-                ];
-            }
-        }
-
-        abort_if($project === null, 404);
+        abort_if($record === null, 404);
 
         return view('student.project-detail', [
-            'project' => $project,
+            'project' => $record,
+            'own' => $own !== null,
         ]);
+    }
+
+    /**
+     * The signed-in student's independent projects, from the database, in the catalog's card shape.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function ownProjects(): array
+    {
+        return Project::independentFor(auth()->user())->latest()->latest('id')->get()->map(fn (Project $project) => [
+            'id' => (string) $project->id, 'title' => $project->title, 'kind' => 'Independent',
+            'course' => 'Student-led', 'professor' => null, 'team' => null,
+            'progress' => 0, 'next' => 'No tasks yet', 'due' => $project->description ?: 'Your independent project.',
+            'members' => 1, 'open_tasks' => 0,
+            'created' => $project->created_at?->format('M j, Y'),
+        ])->all();
+    }
+
+    /** Only the demo accounts (config/demo.php) see the sample projects and tasks. */
+    private function showsSamples(): bool
+    {
+        return app(ZinaDemoData::class)->ownAccount() === null;
+    }
+
+    /**
+     * @return list<array<string, string>>
+     */
+    private function sampleTasks(): array
+    {
+        return $this->showsSamples() ? self::TASKS : [];
     }
 
     public function create(Request $request): View
@@ -72,26 +84,27 @@ class ProjectController extends Controller
             'title' => ['required', 'string', 'max:120'],
             'description' => ['nullable', 'string', 'max:2000'],
         ]);
-        $projects = $request->session()->get('independent_projects', []);
-        $projects[] = [
-            'id' => (string) Str::uuid(),
-            'title' => $data['title'],
-            'description' => $data['description'] ?? '',
+        // Saved for good: independent projects belong to the student who created them and have no professor.
+        $project = Project::create([
+            'type' => 'independent',
             'owner_id' => $request->user()->id,
-        ];
-        $request->session()->put('independent_projects', $projects);
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'status' => 'active',
+            'published_at' => now(),
+        ]);
 
-        return redirect()->route('student.projects.index')->with('success', 'Independent project created.');
+        return redirect()->route('student.projects.show', $project->id)->with('success', 'Independent project created.');
     }
 
     public function tasks(): View
     {
-        return view('student.tasks', ['tasks' => self::TASKS]);
+        return view('student.tasks', ['tasks' => $this->sampleTasks()]);
     }
 
     public function task(string $task, Request $request): View
     {
-        $record = collect(self::TASKS)->firstWhere('id', $task);
+        $record = collect($this->sampleTasks())->firstWhere('id', $task);
         abort_if($record === null, 404);
         $draft = $request->session()->get('task_drafts.'.$task, []);
         $submitted = $request->session()->get('task_submitted.'.$task, $record['status'] === 'In review');
@@ -101,7 +114,7 @@ class ProjectController extends Controller
 
     public function saveTaskDraft(string $task, Request $request): RedirectResponse
     {
-        abort_unless(collect(self::TASKS)->contains('id', $task), 404);
+        abort_unless(collect($this->sampleTasks())->contains('id', $task), 404);
         $data = $request->validate(['url' => ['nullable', 'url', 'max:2048'], 'answer' => ['nullable', 'string', 'max:10000'], 'branch' => ['nullable', 'string', 'max:120'], 'commit' => ['nullable', 'string', 'max:80'], 'criteria' => ['nullable', 'array'], 'items' => ['nullable', 'array']]);
         $request->session()->put('task_drafts.'.$task, $data);
 
@@ -110,7 +123,7 @@ class ProjectController extends Controller
 
     public function submitTask(string $task, Request $request): RedirectResponse
     {
-        $record = collect(self::TASKS)->firstWhere('id', $task);
+        $record = collect($this->sampleTasks())->firstWhere('id', $task);
         abort_if($record === null, 404);
         $data = $request->validate(['url' => ['nullable', 'url', 'max:2048'], 'answer' => ['nullable', 'string', 'max:10000'], 'branch' => ['nullable', 'string', 'max:120'], 'commit' => ['nullable', 'string', 'max:80'], 'criteria' => ['required', 'array', 'size:3'], 'criteria.*' => ['accepted'], 'items' => ['nullable', 'array']]);
         $valid = match ($record['type']) {
