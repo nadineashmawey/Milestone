@@ -7,7 +7,7 @@
 @endpush
 
 @section('page')
-    <main class="projects-page">
+    <main id="main" class="projects-page">
         <div class="projects-container">
             <a class="back-link" href="{{ route('projects.index') }}"><span aria-hidden="true">←</span> Back to My Projects</a>
             <header class="projects-heading">

@@ -7,7 +7,7 @@
 @endpush
 
 @section('page')
-<main class="workspace-page"><div class="workspace-container workspace-import-container">
+<main id="main" class="workspace-page"><div class="workspace-container workspace-import-container">
     @if($result)
         <section class="workspace-success"><span class="workspace-success-mark">✓</span><p class="projects-eyebrow">Import complete</p><h1>{{ $result['count'] }} {{ strtolower($result['account_type']) }} are ready</h1><p>{{ $result['course'] }} · {{ $result['warnings'] }} rows need attention. Review the source file and re-import any corrected records.</p><a class="ms-button ms-button--primary" href="{{ route('admin.imports') }}">Import another CSV</a></section>
     @else

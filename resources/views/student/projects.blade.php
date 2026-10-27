@@ -9,7 +9,7 @@
 
 
 @section('page')
-    <main class="projects-page">
+    <main id="main" class="projects-page">
         <div class="projects-container">
             <header class="projects-heading">
                 <div>

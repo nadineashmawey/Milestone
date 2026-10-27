@@ -7,7 +7,7 @@
 @endpush
 
 @section('page')
-    <main class="tasks-page"><div class="tasks-container">
+    <main id="main" class="tasks-page"><div class="tasks-container">
         <a class="tasks-back" href="{{ route('projects.index') }}">← My Projects</a>
         <header class="tasks-heading"><div><p class="projects-eyebrow">Student · Work queue</p><h1>Tasks</h1><p>Individual and team work across your active projects.</p></div></header>
         <section class="tasks-panel"><div class="tasks-tools"><div class="tasks-filters" role="group" aria-label="Filter tasks"><button type="button" class="is-active" data-task-filter="all">All tasks</button><button type="button" data-task-filter="Individual">Individual</button><button type="button" data-task-filter="Team">Team</button><button type="button" data-task-filter="week">Due this week</button></div><span>{{ count($tasks) }} open tasks</span></div>

@@ -7,7 +7,7 @@
 @endpush
 
 @section('page')
-<main class="workspace-page"><div class="workspace-container"><header class="workspace-heading"><div><p class="projects-eyebrow">Software Engineering Capstone</p><h1>Teams</h1><p>Formation locks October 11 at 5:00 PM · 2–4 students per team</p></div><form method="post" action="{{ route('professor.teams.auto-place') }}">@csrf<button class="ms-button ms-button--primary" type="submit">Auto-place randomly</button></form></header>
+<main id="main" class="workspace-page"><div class="workspace-container"><header class="workspace-heading"><div><p class="projects-eyebrow">Software Engineering Capstone</p><h1>Teams</h1><p>Formation locks October 11 at 5:00 PM · 2–4 students per team</p></div><form method="post" action="{{ route('professor.teams.auto-place') }}">@csrf<button class="ms-button ms-button--primary" type="submit">Auto-place randomly</button></form></header>
     @if(session('status'))<p class="workspace-flash" role="status">{{ session('status') }}</p>@endif
     @if($errors->any())<p class="workspace-error" role="alert">{{ $errors->first() }}</p>@endif
     <section class="workspace-team-grid" aria-label="Project teams">@foreach($teams as $team)<article class="workspace-card"><div class="workspace-card-head"><div><span class="workspace-badge workspace-badge--{{ $team['tone'] }}">{{ $team['tone'] === 'danger' ? 'At risk' : ($team['tone'] === 'warning' ? 'Watch' : 'On track') }}</span><h2>{{ $team['name'] }}</h2></div><div class="workspace-progress"><strong>{{ $team['progress'] }}%</strong><span><i style="width:{{ $team['progress'] }}%"></i></span></div></div>

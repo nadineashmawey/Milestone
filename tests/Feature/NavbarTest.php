@@ -181,7 +181,7 @@ class NavbarTest extends TestCase
             foreach ($paths as $path) {
                 $html = $this->get($path)->assertOk()->getContent();
                 $this->assertSame(1, preg_match_all('#<header class="ms-navbar ms-navbar--app"#', $html), "{$path} should have one navbar");
-                $this->assertLessThanOrEqual(1, substr_count($html, 'id="main"'), "{$path} must not get a second main target from the layout");
+                $this->assertSame(1, substr_count($html, 'id="main"'), "{$path} needs exactly one id=\"main\" for the skip link");
             }
         }
     }
