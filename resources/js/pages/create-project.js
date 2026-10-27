@@ -75,7 +75,25 @@ if (wizard) {
     steps.forEach(button => button.addEventListener('click', () => show(Number(button.dataset.step))));
     wizard.querySelector('[data-next]').addEventListener('click', () => show(Math.min(5, step + 1)));
     wizard.querySelector('[data-back]').addEventListener('click', () => show(Math.max(0, step - 1)));
-    form.addEventListener('submit', event => { event.preventDefault(); if (step < 5) show(step + 1); });
+    // Only "Save as draft" and the confirmed "Publish project" send the form; Enter moves to the next step.
+    let submitting = false;
+    form.addEventListener('submit', event => {
+        const intent = event.submitter?.value;
+        if (intent !== 'draft' && intent !== 'publish') { event.preventDefault(); if (step < 5) show(step + 1); return; }
+        // One project per page: a second click while the first is on its way does nothing.
+        if (submitting) { event.preventDefault(); return; }
+        submitting = true;
+        const buttons = [...wizard.querySelectorAll('[data-publish], [data-confirm-publish], [data-save-draft], [data-next], [data-back]')];
+        buttons.forEach(button => { button.disabled = true; });
+        event.submitter.setAttribute('aria-busy', 'true');
+        event.submitter.classList.add('ms-button--loading');
+        event.submitter.insertAdjacentHTML('afterbegin', '<span class="ms-spinner" aria-hidden="true"></span>');
+        status(intent === 'publish' ? 'Publishing your project…' : 'Saving your draft…');
+        // Disabled buttons aren't sent, so the chosen action travels in a hidden field.
+        const chosen = document.createElement('input');
+        chosen.type = 'hidden'; chosen.name = 'intent'; chosen.value = intent;
+        form.append(chosen);
+    });
     form.addEventListener('input', updateSummary);
     function renumber() {
         [['[data-milestones]', 'milestones'], ['[data-criteria]', 'criteria']].forEach(([selector, name]) => {
@@ -123,17 +141,18 @@ if (wizard) {
             const message = validate(i);
             if (message) { show(i); error.textContent = message; error.hidden = false; return; }
         }
+        const course = form.elements.namedItem('course');
+        wizard.querySelector('[data-confirm-text]').textContent = `“${value('title')}” goes live in ${course?.selectedOptions[0]?.textContent ?? 'the course'}. Students are invited and can start forming teams.`;
         dialog.showModal();
     });
     wizard.querySelector('[data-close]').addEventListener('click', () => dialog.close());
-    wizard.querySelector('[data-download]').addEventListener('click', () => {
-        const entries = [...new FormData(form)].filter(([, entry]) => !(entry instanceof File));
-        const draft = { status: 'draft', fields: entries, teaching_assistants: [{ name: 'Sara Ahmed', email: 'sara.ahmed@university.edu' }] };
-        const url = URL.createObjectURL(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json' }));
-        const link = document.createElement('a');
-        link.href = url; link.download = 'milestone-project-draft.json'; link.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        dialog.close(); status('Project draft downloaded. No project was published and no invitations were sent.');
-    });
+    // After a server-side error, open on the step that has it; the error summary is already shown.
+    const initial = Number(wizard.dataset.initialStep || 0);
+    const serverError = !error.hidden ? error.textContent : '';
     show(0, false);
+    if (initial > 0) { step = initial; show(initial, false); }
+    if (serverError) {
+        error.textContent = serverError; error.hidden = false;
+        (panels[step].querySelector('[aria-invalid="true"]') || error).focus?.();
+    }
 }

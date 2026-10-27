@@ -86,3 +86,9 @@
 @media (max-width: 85rem) { .cp-milestone { grid-template-columns: var(--control-height) minmax(0,1fr) minmax(0,1fr); } .cp-milestone > .cp-icon { grid-row: span 2; align-self: center; } .cp-milestone .cp-remove { justify-self: end; } }
 @media (max-width: 62rem) { .cp-layout { grid-template-columns: minmax(0,1fr) 15rem; } .cp-steps { grid-template-columns: repeat(3,minmax(0,1fr)); } }
 @media (max-width: 45rem) { .cp-layout { grid-template-columns: minmax(0,1fr); } .cp-readiness { order: 2; } .cp-fields { grid-template-columns: minmax(0,1fr); } .cp-steps { grid-template-columns: repeat(2,minmax(0,1fr)); } .cp-header { flex-wrap: wrap; } .cp-milestone { grid-template-columns: minmax(0,1fr) minmax(0,1fr); } .cp-milestone > .cp-icon { grid-row: auto; } .cp-upload { flex-wrap: wrap; } .cp-criterion { grid-template-columns: minmax(0,1fr) 4rem var(--space-6); } .cp-criterion small { display: none; } .cp-panel { padding: var(--space-5); } }
+
+/* Publishing (backend wiring): Cancel and Save as draft sit beside Continue, and fields the server rejected are marked. */
+.cp-actions { flex-wrap: wrap; gap: var(--space-3); }
+.cp-actions-end { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-3); }
+.cp-field-error { display: block; margin-top: var(--space-1); color: var(--color-danger-text); font-size: var(--font-caption); font-weight: var(--weight-semibold); }
+.create-project [aria-invalid="true"] { border-color: var(--color-danger-text); box-shadow: 0 0 0 1px var(--color-danger-text); }
