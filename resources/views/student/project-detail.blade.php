@@ -17,7 +17,7 @@
 @section('page')
     <main id="main" class="detail-page" data-project-board data-project-id="{{ $project['id'] }}">
         <div class="detail-container">
-            <a class="back-link" href="{{ route('projects.index') }}"><span aria-hidden="true">←</span> My Projects</a>
+            <a class="back-link" href="{{ route('student.projects.index') }}"><span aria-hidden="true">←</span> My Projects</a>
             <header class="detail-heading">
                 <div>
                     <p class="projects-eyebrow">{{ $project['course'] }}@if($project['team']) · {{ $project['team'] }}@endif</p>

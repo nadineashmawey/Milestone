@@ -57,13 +57,8 @@ if (app) {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
         if (saved && typeof saved === 'object') store = { ...store, ...saved, roles: saved.roles || {} };
     } catch { /* Use the defaults if localStorage is unavailable or malformed. */ }
-    if (!mockNotifications[store.activeRole]) store.activeRole = 'student';
-    roleSelect.value = store.activeRole;
-    const requestedRole = new URLSearchParams(window.location.search).get('role');
-    if (requestedRole && mockNotifications[requestedRole]) {
-        store.activeRole = requestedRole;
-        roleSelect.value = requestedRole;
-    }
+    // Always the navbar's current role, never one remembered here or taken from the address.
+    store.activeRole = mockNotifications[roleSelect.value] ? roleSelect.value : 'student';
 
     const roleState = (role = store.activeRole) => {
         if (!store.roles[role]) store.roles[role] = { read: {}, dismissed: [] };

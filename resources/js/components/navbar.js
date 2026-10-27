@@ -138,10 +138,9 @@ function initNotifications() {
         try { return JSON.parse(localStorage.getItem(notificationStorageKey) || '{}'); }
         catch { return {}; }
     };
+    // The navbar's one current role, from the server. Never the address bar or what another page remembered.
     const currentRole = () => {
-        const params = new URLSearchParams(window.location.search);
-        const selectedRole = document.querySelector('#notification-role')?.value;
-        const role = selectedRole || params.get('role') || toggle.dataset.notificationsRole || readStore().activeRole || 'student';
+        const role = toggle.dataset.notificationsRole;
         return previewNotifications[role] ? role : 'student';
     };
     const renderPreview = () => {
@@ -154,13 +153,13 @@ function initNotifications() {
         toggle.classList.toggle('has-unread', unread > 0);
         const viewAll = popover.querySelector('[data-notifications-view-all]');
         const base = viewAll?.href.split('?')[0];
-        if (viewAll) viewAll.href = `${base}?role=${encodeURIComponent(role)}&showNotifications=1`;
+        if (viewAll) viewAll.href = `${base}?showNotifications=1`;
         preview.replaceChildren();
         items.slice(0, 3).forEach((item) => {
             const link = document.createElement(base ? 'a' : 'div');
             const isRead = roleState.read?.[item.id] === true;
             link.className = `ms-notification-preview__item${isRead ? ' is-read' : ''}`;
-            if (base) link.href = `${base}?role=${encodeURIComponent(role)}&notification=${encodeURIComponent(item.id)}`;
+            if (base) link.href = `${base}?notification=${encodeURIComponent(item.id)}`;
             link.innerHTML = '<span class="ms-notification-preview__dot" aria-hidden="true"></span><span><strong></strong><small></small></span>';
             link.querySelector('strong').textContent = item.title;
             link.querySelector('small').textContent = item.time;

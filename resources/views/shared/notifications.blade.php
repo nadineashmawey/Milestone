@@ -13,16 +13,8 @@
                 <p class="notifications-eyebrow">Your updates</p>
                 <x-page-header title="Notifications" description="Personal alerts are separate from each project's activity feed." />
             </div>
-            <div class="notifications-demo-role">
-                <label for="notification-role">Preview role</label>
-                <select id="notification-role" aria-describedby="role-demo-note">
-                    <option value="student">Student</option>
-                    <option value="ta">Teaching Assistant</option>
-                    <option value="professor">Professor</option>
-                    <option value="admin">Admin</option>
-                </select>
-                <small id="role-demo-note">Demo selector only · does not change your account.</small>
-            </div>
+            {{-- The role is the navbar's one current role (Navigation::role()); this page never picks its own. --}}
+            <input type="hidden" id="notification-role" value="{{ \App\Support\Navigation::role() }}">
         </div>
 
         <div class="notifications-channels" role="group" aria-label="Notification channel">

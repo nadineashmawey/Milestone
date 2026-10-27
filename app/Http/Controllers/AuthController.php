@@ -59,7 +59,7 @@ class AuthController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
-        return redirect()->route('projects.index')->with('success', 'Your account has been created.');
+        return redirect()->route('student.projects.index')->with('success', 'Your account has been created.');
     }
 
     public function logout(Request $request)

@@ -18,7 +18,7 @@
                     <p class="projects-intro">Academic and independent projects share task tools while keeping their rules distinct.</p>
                 </div>
                 @if (auth()->user()->project_type === 'independent')
-                    <a class="ms-button ms-button--primary projects-create" href="{{ route('projects.create') }}"><span aria-hidden="true">＋</span> New independent project</a>
+                    <a class="ms-button ms-button--primary projects-create" href="{{ route('student.projects.create') }}"><span aria-hidden="true">＋</span> New independent project</a>
                 @endif
             </header>
 

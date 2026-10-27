@@ -48,7 +48,17 @@ When you add a page, register its route with the name already in the config and 
 1. If someone is signed in, it uses their role (`users.role`: Student, TA, Professor or Admin).
 2. Otherwise it uses the demo role kept in the session.
 
-In the local environment, signed-out visitors also get a "View as …" switcher in the navbar to preview all four menus.
+In the local environment, signed-out visitors also get a "View as …" switcher in the navbar to preview all four menus. Switching opens the new role's dashboard.
+
+No page, controller, view or script picks a role of its own: not from `?role=`, not from `localStorage`, not from a select on the page. The notifications bell and the Notifications page use the same role as the navbar.
+
+## Role pages and access
+
+- Every role page sits under its role's prefix and route name: `student.*` under `/student/…`, `professor.*` under `/professor/…`, `ta.*` under `/ta/…`, `admin.*` under `/admin/…`. Each role's items in `config/navigation.php` use only that role's routes; `NavbarTest` checks it.
+- Each prefix group has the `role:…` middleware (`App\Http\Middleware\EnsureRole`). Opening another role's page shows the access-denied page (DSH-4, `errors/access-denied.blade.php`, status 403) with your own navbar. It never switches the navbar to the other role.
+- Profile, Help, Notifications and `/ui-kit` are shared and keep the current role's navbar.
+- The logo and "Dashboard" go to the current role's dashboard (`DashboardRoute::forRole()`).
+- Replay was removed from the project. It isn't in any menu, not even as "Coming soon".
 
 ## What's on the right
 

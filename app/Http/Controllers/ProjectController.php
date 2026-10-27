@@ -81,7 +81,7 @@ class ProjectController extends Controller
         ];
         $request->session()->put('independent_projects', $projects);
 
-        return redirect()->route('projects.index')->with('success', 'Independent project created.');
+        return redirect()->route('student.projects.index')->with('success', 'Independent project created.');
     }
 
     public function tasks(): View

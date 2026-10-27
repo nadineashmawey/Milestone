@@ -24,9 +24,9 @@ class StudentDashboardController extends Controller
             'context' => $demo->context(),
             'canSwitchViewer' => $demo->canSwitchViewer(),
             'independent' => $demo->isIndependent(),
-            'joinHref' => $demo->link('projects.index'),
+            'joinHref' => $demo->link('student.projects.index'),
             // Only independent accounts can create projects (ProjectController@create); visitors still see the button.
-            'createHref' => ! $request->user() || $demo->isIndependent() ? $demo->link('projects.create') : null,
+            'createHref' => ! $request->user() || $demo->isIndependent() ? $demo->link('student.projects.create') : null,
         ]);
     }
 }

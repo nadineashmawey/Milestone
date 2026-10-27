@@ -2,13 +2,20 @@
 
 use App\Http\Controllers\AdminImportController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Professor\ProjectController as ProfessorProjectController;
+use App\Http\Controllers\ProfessorCourseController;
+use App\Http\Controllers\ProfessorExtensionController;
+use App\Http\Controllers\ProfessorRiskRadarController;
+use App\Http\Controllers\ProfessorSubmissionController;
 use App\Http\Controllers\ProfessorTeamController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfessorCourseController;
-use App\Http\Controllers\ProfessorSubmissionController;
-use App\Http\Controllers\ProfessorRiskRadarController;
-use App\Http\Controllers\ProfessorExtensionController;
+
+/*
+| Every role page sits under its role's prefix and name (student.*, professor.*, ta.*, admin.*) and opens only for
+| that role ("role:…" middleware, App\Http\Middleware\EnsureRole). Anyone else gets the access-denied page.
+| Shared pages (Home, Help, Profile, Notifications, /ui-kit) keep the visitor's own navbar.
+*/
 
 Route::middleware('guest')->group(function () {
     Route::get('/sign-in', [AuthController::class, 'showLogin'])->name('login');
@@ -17,50 +24,63 @@ Route::middleware('guest')->group(function () {
     Route::get('/sign-up', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/sign-up', [AuthController::class, 'register'])->name('register.submit');
 });
-Route::get('/professor/courses', [
-    ProfessorCourseController::class,
-    'index',
-])->name('professor.courses.index');
-
-if (app()->environment('local')) {
-    Route::view('/ui-kit', 'ui-kit')->name('ui-kit');
-}
-Route::view('/professor/projects/create', 'projects.create')->name('professor.projects.create');
-Route::get('/professor/submissions', [ProfessorSubmissionController::class, 'index'])->name('professor.submissions.index');
-Route::get('/professor/risk-radar', [ProfessorRiskRadarController::class, 'index'])->name('professor.risk-radar.index');
-Route::get('/professor/extensions', [ProfessorExtensionController::class, 'index'])->name('professor.extensions.index');
 
 Route::post('/sign-out', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/my-projects', [ProjectController::class, 'index'])->name('projects.index');
-    Route::get('/my-projects/create', [ProjectController::class, 'create'])->name('projects.create');
-    Route::post('/my-projects', [ProjectController::class, 'store'])->name('projects.store');
-    Route::get('/my-projects/{project}', [ProjectController::class, 'show'])->name('student.projects.show');
+if (app()->environment('local')) {
+    Route::view('/ui-kit', 'ui-kit')->name('ui-kit');
+}
 
-    Route::prefix('student-tasks')->name('student.tasks.')->group(function () {
+// ---- Student ----
+Route::prefix('student')->name('student.')->middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+
+    Route::prefix('tasks')->name('tasks.')->group(function () {
         Route::get('/', [ProjectController::class, 'tasks'])->name('index');
         Route::get('/{task}', [ProjectController::class, 'task'])->name('show');
         Route::post('/{task}/draft', [ProjectController::class, 'saveTaskDraft'])->name('draft');
         Route::post('/{task}/submit', [ProjectController::class, 'submitTask'])->name('submit');
     });
-
-    Route::prefix('professor/teams')->name('professor.teams.')->group(function () {
-        Route::get('/', [ProfessorTeamController::class, 'index'])->name('index');
-        Route::post('/auto-place', [ProfessorTeamController::class, 'autoPlace'])->name('auto-place');
-        Route::post('/members', [ProfessorTeamController::class, 'addSelectedMember'])->name('members.add');
-        Route::post('/{team}/members/{member}/remove', [ProfessorTeamController::class, 'removeMember'])->name('members.remove');
-        Route::post('/{team}/leader', [ProfessorTeamController::class, 'changeLeader'])->name('leader');
-    });
-    Route::post('/professor/leave-requests/{requestId}', [ProfessorTeamController::class, 'resolveLeaveRequest'])
-        ->name('professor.teams.leave-request');
-
-    Route::get('/admin/imports', [AdminImportController::class, 'index'])->name('admin.imports');
-    Route::post('/admin/imports/preview', [AdminImportController::class, 'preview'])->name('admin.imports.preview');
-    Route::post('/admin/imports/confirm', [AdminImportController::class, 'confirm'])->name('admin.imports.confirm');
 });
+// Old addresses of Jana's student pages, kept so bookmarks still work.
+Route::redirect('/my-projects', '/student/projects');
+Route::redirect('/student-tasks', '/student/tasks');
+
+// ---- Professor ----
+Route::prefix('professor')->name('professor.')->middleware('role:professor')->group(function () {
+    Route::get('/courses', [ProfessorCourseController::class, 'index'])->name('courses.index');
+
+    Route::prefix('projects')->name('projects.')->controller(ProfessorProjectController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->middleware('throttle:20,1')->name('store');
+        Route::get('/{project}', 'show')->whereNumber('project')->name('show');
+        Route::get('/{project}/edit', 'edit')->whereNumber('project')->name('edit');
+        Route::put('/{project}', 'update')->whereNumber('project')->middleware('throttle:20,1')->name('update');
+    });
+
+    Route::get('/submissions', [ProfessorSubmissionController::class, 'index'])->name('submissions.index');
+    Route::get('/risk-radar', [ProfessorRiskRadarController::class, 'index'])->name('risk-radar.index');
+    Route::get('/extensions', [ProfessorExtensionController::class, 'index'])->name('extensions.index');
+
+    Route::middleware('auth')->group(function () {
+        Route::prefix('teams')->name('teams.')->group(function () {
+            Route::get('/', [ProfessorTeamController::class, 'index'])->name('index');
+            Route::post('/auto-place', [ProfessorTeamController::class, 'autoPlace'])->name('auto-place');
+            Route::post('/members', [ProfessorTeamController::class, 'addSelectedMember'])->name('members.add');
+            Route::post('/{team}/members/{member}/remove', [ProfessorTeamController::class, 'removeMember'])->name('members.remove');
+            Route::post('/{team}/leader', [ProfessorTeamController::class, 'changeLeader'])->name('leader');
+        });
+        Route::post('/leave-requests/{requestId}', [ProfessorTeamController::class, 'resolveLeaveRequest'])
+            ->name('teams.leave-request');
+    });
+});
+
 /* Frontend-only prototypes: application and database logic follow in phase two. */
 Route::get('/admin/assets/css/{path}', function (string $path) {
     abort_if(str_contains($path, '..'), 404);
@@ -78,13 +98,22 @@ Route::get('/admin/assets/js/{path}', function (string $path) {
     return response()->file($file, ['Content-Type' => 'text/javascript; charset=UTF-8']);
 })->where('path', '.*')->name('admin.assets.js');
 
+// ---- Admin ----
 Route::redirect('/admin', '/admin/dashboard');
-Route::view('/admin/dashboard', 'admin.dashboard')->name('admin.dashboard');
-Route::view('/admin/users', 'admin.users')->name('admin.users');
-Route::view('/admin/courses', 'admin.courses')->name('admin.courses');
-Route::view('/admin/projects', 'admin.projects')->name('admin.projects');
-Route::view('/admin/announcements', 'admin.announcements')->name('admin.announcements');
-Route::view('/admin/audit', 'admin.audit')->name('admin.audit');
+Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
+    Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
+    Route::view('/users', 'admin.users')->name('users');
+    Route::view('/courses', 'admin.courses')->name('courses');
+    Route::view('/projects', 'admin.projects')->name('projects');
+    Route::view('/announcements', 'admin.announcements')->name('announcements');
+    Route::view('/audit', 'admin.audit')->name('audit');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/imports', [AdminImportController::class, 'index'])->name('imports');
+        Route::post('/imports/preview', [AdminImportController::class, 'preview'])->name('imports.preview');
+        Route::post('/imports/confirm', [AdminImportController::class, 'confirm'])->name('imports.confirm');
+    });
+});
 
 Route::get('/ta/assets/css/{path}', function (string $path) {
     abort_if(str_contains($path, '..'), 404);
@@ -102,12 +131,15 @@ Route::get('/ta/assets/js/{path}', function (string $path) {
     return response()->file($file, ['Content-Type' => 'text/javascript; charset=UTF-8']);
 })->where('path', '.*')->name('ta.assets.js');
 
+// ---- TA ----
 Route::redirect('/ta', '/ta/dashboard');
-Route::view('/ta/dashboard', 'ta.dashboard')->name('ta.dashboard');
-Route::view('/ta/reviews', 'ta.reviews')->name('ta.reviews');
-Route::view('/ta/issues', 'ta.issues')->name('ta.issues');
-Route::view('/ta/invitations', 'ta.assignments')->name('ta.assignments');
-Route::view('/ta/tasks', 'ta.tasks')->name('ta.tasks');
+Route::prefix('ta')->name('ta.')->middleware('role:ta')->group(function () {
+    Route::view('/dashboard', 'ta.dashboard')->name('dashboard');
+    Route::view('/reviews', 'ta.reviews')->name('reviews');
+    Route::view('/issues', 'ta.issues')->name('issues');
+    Route::view('/invitations', 'ta.assignments')->name('assignments');
+    Route::view('/tasks', 'ta.tasks')->name('tasks');
+});
 
 require __DIR__.'/home.php'; // Home page and Help center. Loaded last, so its "/" replaces the welcome route above.
 require __DIR__.'/zina.php'; // Zina's signed-in prototype pages: dashboards, milestones, team and profile.

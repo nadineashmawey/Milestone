@@ -11,11 +11,11 @@ Route::post('/prototype/context', [PrototypeContextController::class, 'update'])
 
 // ---- Student dashboard ----
 // Added on zina/student-dashboard.
-Route::get('/student/dashboard', [App\Http\Controllers\StudentDashboardController::class, 'show'])->name('student.dashboard');
+Route::get('/student/dashboard', [App\Http\Controllers\StudentDashboardController::class, 'show'])->middleware('role:student')->name('student.dashboard');
 
 // ---- Milestones ----
 // Added on zina/milestones.
-Route::prefix('/student/projects/{project}/milestones')->name('student.milestones.')
+Route::prefix('/student/projects/{project}/milestones')->name('student.milestones.')->middleware('role:student')
     ->controller(App\Http\Controllers\StudentMilestoneController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/{milestone}/draft', 'draft')->middleware('throttle:20,1')->name('draft');
@@ -25,7 +25,7 @@ Route::prefix('/student/projects/{project}/milestones')->name('student.milestone
 
 // ---- Student team ----
 // Added on zina/student-team.
-Route::prefix('/student/projects/{project}/team')->name('student.team.')
+Route::prefix('/student/projects/{project}/team')->name('student.team.')->middleware('role:student')
     ->controller(App\Http\Controllers\StudentTeamController::class)->group(function () {
         Route::get('/', 'show')->name('show');
         // Academic team formation (TEAM-1–3) and leave requests (TEAM-8).
@@ -45,7 +45,7 @@ Route::prefix('/student/projects/{project}/team')->name('student.team.')
 
 // ---- Professor dashboard ----
 // Added on zina/professor-dashboard.
-Route::get('/professor/dashboard', [App\Http\Controllers\ProfessorDashboardController::class, 'show'])->name('professor.dashboard');
+Route::get('/professor/dashboard', [App\Http\Controllers\ProfessorDashboardController::class, 'show'])->middleware('role:professor')->name('professor.dashboard');
 
 // ---- Profile ----
 // Added on zina/profile.
