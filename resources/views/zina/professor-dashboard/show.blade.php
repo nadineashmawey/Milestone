@@ -94,8 +94,8 @@
                                     <span>Overall progress</span><strong>{{ $project['progress'] }}%</strong>
                                     <span class="as-bar" aria-hidden="true"><span style="width: {{ $project['progress'] }}%"></span></span>
                                 </div>
-                                <p class="pd-next">@include('public.partials.icon', ['name' => 'calendar', 'size' => 16]) Next: {{ $project['next'] }} · {{ $project['next_label'] }} <x-badge :tone="$project['countdown']['tone']">{{ $project['countdown']['label'] }}</x-badge></p>
-                                <a class="as-text-link pd-open" href="{{ $project['href'] }}" @if ($project['href'] === '#') aria-disabled="true" @endif>Open teams<span class="as-sr"> for {{ $project['title'] }}</span> @include('public.partials.icon', ['name' => 'arrow', 'size' => 16])</a>
+                                <p class="pd-next">@include('public.partials.icon', ['name' => 'calendar', 'size' => 16]) Next: {{ $project['next'] }}@if ($project['next_label']) · {{ $project['next_label'] }}@endif <x-badge :tone="$project['countdown']['tone']">{{ $project['countdown']['label'] }}</x-badge></p>
+                                <a class="as-text-link pd-open" href="{{ $project['href'] }}" @if ($project['href'] === '#') aria-disabled="true" @endif>Open project<span class="as-sr">: {{ $project['title'] }}</span> @include('public.partials.icon', ['name' => 'arrow', 'size' => 16])</a>
                             </li>
                         @endforeach
                     </ul>

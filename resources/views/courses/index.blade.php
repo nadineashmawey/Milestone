@@ -7,7 +7,7 @@
 
         <header class="courses-page__header">
             <div>
-                <p class="courses-page__semester">Fall 2026</p>
+                <p class="courses-page__semester">{{ $selectedCourse['semester'] ?? 'No courses yet' }}</p>
                 <h1>My Courses</h1>
             </div>
             <a class="ms-button ms-button--primary" href="{{ route('professor.projects.create') }}">
@@ -15,6 +15,13 @@
             </a>
         </header>
 
+        @if ($selectedCourse === null)
+            <x-card>
+                <x-empty-state title="No courses are assigned to you yet.">
+                    <p>An administrator assigns courses each semester. Once you have one, you can create its academic projects here.</p>
+                </x-empty-state>
+            </x-card>
+        @else
         <div class="courses-page__layout">
 
             {{-- Course selector --}}
@@ -67,7 +74,7 @@
                         </h2>
 
                         <p class="ms-muted">
-                            Fall 2026
+                            {{ $selectedCourse['semester'] }}
                             · {{ $selectedCourse['schedule'] }}
                             · {{ $selectedCourse['studentCount'] }} enrolled students
                         </p>
@@ -113,7 +120,7 @@
                     @forelse ($selectedCourse['projects'] as $project)
                         <article class="courses-page__project">
                             <div>
-                                <h4>{{ $project['title'] }}</h4>
+                                <h4><a href="{{ $project['href'] }}">{{ $project['title'] }}</a></h4>
 
                                 <p class="ms-muted">
                                     {{ $project['teams'] }} teams
@@ -122,8 +129,8 @@
                                 </p>
                             </div>
 
-                            <x-badge tone="success">
-                                Published
+                            <x-badge :tone="$project['tone']">
+                                {{ $project['status'] }}
                             </x-badge>
                         </article>
                     @empty
@@ -189,5 +196,6 @@
 
             </x-card>
         </div>
+        @endif
     </div>
 @endsection

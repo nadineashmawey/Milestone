@@ -933,15 +933,20 @@ final class ZinaDemoData
     // Added on zina/professor-dashboard.
 
     /**
-     * Professor Lee's dashboard (PROF-1). $empty gives a new professor with no projects.
+     * The professor's dashboard (PROF-1). $empty gives a new professor with no projects.
+     * Projects, team counts and deadlines come from the database ($live, see ProfessorProjects::dashboard());
+     * risk, reviews waiting, "Needs attention" and activity have no tables yet and stay demo data here.
      * Links to teammates' pages resolve once their routes exist; each item names the page owner.
      *
+     * @param  array{projects: \Illuminate\Support\Collection<int, array<string, mixed>>, deadlines: \Illuminate\Support\Collection<int, array<string, mixed>>, teams: int, courses: int}|null  $live
      * @return array<string, mixed>
      */
-    public function professorDashboard(bool $empty = false): array
+    public function professorDashboard(bool $empty = false, ?array $live = null, ?string $name = null): array
     {
         $now = $this->now();
-        $professor = $this->person('lee');
+        $professor = [...$this->person('lee'), 'name' => $name ?? $this->person('lee')['name']];
+        $live ??= ['projects' => collect(), 'deadlines' => collect(), 'teams' => 0, 'courses' => 0];
+        $empty = $empty || $live['projects']->isEmpty();
         $base = [
             'professor' => $professor,
             'today' => $now->format('l, F j'),
@@ -977,19 +982,25 @@ final class ZinaDemoData
         $attention[] = ['tone' => 'review', 'priority' => 'Watch', 'title' => 'Team 3 emailed you about an M2 extension', 'meta' => 'Software Engineering Capstone · request arrived by email Oct 12', 'action' => 'Record extension', ...$extensions];
         $attention[] = ['tone' => 'neutral', 'priority' => 'FYI', 'title' => 'Sara Ahmed reported an issue: Team 3 has no active leader', 'meta' => 'Software Engineering Capstone · reported by your TA yesterday', 'action' => 'View', ...$notifications];
 
-        $projects = [
-            ['title' => 'Software Engineering Capstone', 'type' => 'Academic', 'course' => 'CS 490 · 8 teams', 'progress' => 62, 'risk' => 'Low', 'risk_tone' => 'success', 'reason' => 'All teams active this week', 'next' => 'M2 Design Document', 'next_due' => $this->date('2026-10-18 17:00'), 'extended' => '1 team extended', ...$teams],
-            ['title' => 'Database Systems', 'type' => 'Academic', 'course' => 'CS 342 · 6 teams', 'progress' => 35, 'risk' => 'High', 'risk_tone' => 'danger', 'reason' => '3 teams inactive for 4+ days', 'next' => 'M2 Design Document', 'next_due' => $this->date('2026-10-14 17:00'), 'extended' => null, ...$teams],
-            ['title' => 'Web Development Workshop', 'type' => 'Academic', 'course' => 'CS 210 · 5 teams', 'progress' => 88, 'risk' => 'Medium', 'risk_tone' => 'warning', 'reason' => '2 reviews waiting', 'next' => 'M3 Demo', 'next_due' => $this->date('2026-10-22 17:00'), 'extended' => null, ...$teams],
+        // Demo data: simulated risk (Nadine's Risk Radar has no table yet), keyed by the seeded project titles.
+        $risk = [
+            'Software Engineering Capstone' => ['risk' => 'Low', 'risk_tone' => 'success', 'reason' => 'All teams active this week', 'extended' => '1 team extended'],
+            'Database Systems' => ['risk' => 'High', 'risk_tone' => 'danger', 'reason' => '3 teams inactive for 4+ days', 'extended' => null],
+            'Web Development Workshop' => ['risk' => 'Medium', 'risk_tone' => 'warning', 'reason' => '2 reviews waiting', 'extended' => null],
         ];
-        $projects = array_map(fn ($project) => [...$project, 'next_label' => $project['next_due']->format('M j'), 'countdown' => $this->countdown($project['next_due'])], $projects);
+        $unknownRisk = ['risk' => 'Not enough data', 'risk_tone' => 'neutral', 'reason' => 'Risk shows once teams start working', 'extended' => null];
 
-        $deadlines = collect([
-            ['title' => 'M2 · Design Document', 'project' => 'Database Systems', 'due' => $this->date('2026-10-14 17:00'), 'note' => '6 teams · 2 submitted'],
-            ['title' => 'M2 · Design Document', 'project' => 'Software Engineering Capstone', 'due' => $this->date('2026-10-18 17:00'), 'note' => '8 teams · 3 submitted · Team 3 extended to Oct 21'],
-            ['title' => 'M3 · Demo', 'project' => 'Web Development Workshop', 'due' => $this->date('2026-10-22 17:00'), 'note' => '5 teams'],
-            ['title' => 'M3 · Final Demo', 'project' => 'Software Engineering Capstone', 'due' => $this->date('2026-11-08 17:00'), 'note' => 'Opens after M2 review'],
-        ])->sortBy(fn ($deadline) => $deadline['due'])->map(fn ($deadline) => [
+        $projects = $live['projects']->map(fn (array $project) => [
+            ...$teams,
+            ...$project,
+            ...($risk[$project['title']] ?? $unknownRisk),
+            'course' => ($project['course_code'] ?? 'No course').' · '.$project['teams'].' '.($project['teams'] === 1 ? 'team' : 'teams'),
+            'next' => $project['next']['name'] ?? 'No upcoming milestone',
+            'next_label' => $project['next']['label'] ?? '',
+            'countdown' => $project['next']['countdown'] ?? ['label' => 'Nothing due', 'tone' => 'neutral'],
+        ])->all();
+
+        $deadlines = $live['deadlines']->map(fn ($deadline) => [
             ...$deadline,
             'day' => $deadline['due']->format('j'),
             'month' => $deadline['due']->format('M'),
@@ -1007,17 +1018,21 @@ final class ZinaDemoData
             array_unshift($activity, ['who' => end($resubmissions)['submitter'], 'text' => 'submitted M2 Design Document, version '.end($resubmissions)['number'], 'meta' => 'Team 1 · Capstone · just now', 'avatar' => 0]);
         }
 
+        // Demo data: reviews waiting (Submissions has no table yet). The other figures are counted from the database.
         $waiting = 7 + count($resubmissions);
+        $projectCount = count($projects);
+        $high = collect($projects)->where('risk', 'High')->count();
+        $medium = collect($projects)->where('risk', 'Medium')->count();
         $needsYou = collect($attention)->whereIn('priority', ['Due soon', 'Waiting on you'])->count();
 
         return [
             ...$base,
-            'summary' => "3 supervised projects across 19 teams. {$needsYou} ".($needsYou === 1 ? 'item needs' : 'items need').' you today.',
+            'summary' => $projectCount.' supervised '.($projectCount === 1 ? 'project' : 'projects').' across '.$live['teams'].' '.($live['teams'] === 1 ? 'team' : 'teams').". {$needsYou} ".($needsYou === 1 ? 'item needs' : 'items need').' you today.',
             'stats' => [
-                ['label' => 'Active projects', 'value' => 3, 'note' => 'Across 3 courses', 'icon' => 'folder', 'tone' => ''],
-                ['label' => 'Teams', 'value' => 19, 'note' => '2 students unassigned', 'icon' => 'users', 'tone' => 'success'],
-                ['label' => 'Waiting for review', 'value' => $waiting, 'note' => '2 due before Oct 14', 'icon' => 'check', 'tone' => 'review'],
-                ['label' => 'At-risk projects', 'value' => 2, 'note' => 'Simulated risk · 1 High, 1 Medium', 'icon' => 'chart', 'tone' => 'danger'],
+                ['label' => 'Active projects', 'value' => $projectCount, 'note' => 'Across '.$live['courses'].' '.($live['courses'] === 1 ? 'course' : 'courses'), 'icon' => 'folder', 'tone' => ''],
+                ['label' => 'Teams', 'value' => $live['teams'], 'note' => '2 students unassigned · sample', 'icon' => 'users', 'tone' => 'success'],
+                ['label' => 'Waiting for review', 'value' => $waiting, 'note' => '2 due before Oct 14 · sample', 'icon' => 'check', 'tone' => 'review'],
+                ['label' => 'At-risk projects', 'value' => $high + $medium, 'note' => "Simulated risk · {$high} High, {$medium} Medium", 'icon' => 'chart', 'tone' => 'danger'],
             ],
             'attention' => $attention,
             'projects' => $projects,
