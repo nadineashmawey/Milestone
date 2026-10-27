@@ -6,14 +6,16 @@
     @vite('resources/css/pages/student-dashboard.css')
 @endpush
 
-@section('prototype-controls')
-    @include('zina.partials.context-switch', [
-        'field' => 'viewer',
-        'label' => 'Viewing as',
-        'options' => ['aya' => 'Aya · team leader', 'malek' => 'Malek · team member'],
-        'current' => $context['viewer'],
-    ])
-@endsection
+@if ($canSwitchViewer)
+    @section('prototype-controls')
+        @include('zina.partials.context-switch', [
+            'field' => 'viewer',
+            'label' => 'Viewing as',
+            'options' => ['aya' => 'Aya · team leader', 'malek' => 'Malek · team member'],
+            'current' => $context['viewer'],
+        ])
+    @endsection
+@endif
 
 @section('content')
     @php($d = $dashboard)
@@ -35,10 +37,21 @@
                 <section class="as-empty" aria-labelledby="sd-empty-title">
                     <span class="as-empty-icon" aria-hidden="true">@include('public.partials.icon', ['name' => 'folder', 'size' => 24])</span>
                     <h2 id="sd-empty-title">You’re not in any projects yet.</h2>
-                    <p>Join a course project with the code your professor shared, or start an independent project and invite up to nine teammates.</p>
+                    @if ($independent)
+                        <p>Start an independent project and invite up to nine teammates, or join one with the invite code a teammate shared.</p>
+                    @else
+                        <p>Join a course project with the code your professor shared, or start an independent project and invite up to nine teammates.</p>
+                    @endif
                     <div class="as-empty-actions">
-                        <x-button :href="$joinHref">Join with a code</x-button>
-                        <x-button variant="secondary" :href="$createHref">@include('public.partials.icon', ['name' => 'plus', 'size' => 18]) Create an independent project</x-button>
+                        @if ($independent && $createHref)
+                            <x-button :href="$createHref">@include('public.partials.icon', ['name' => 'plus', 'size' => 18]) Create an independent project</x-button>
+                            <x-button variant="secondary" :href="$joinHref">Join with a code</x-button>
+                        @else
+                            <x-button :href="$joinHref">Join with a code</x-button>
+                            @if ($createHref)
+                                <x-button variant="secondary" :href="$createHref">@include('public.partials.icon', ['name' => 'plus', 'size' => 18]) Create an independent project</x-button>
+                            @endif
+                        @endif
                     </div>
                     <p class="as-note">Tasks, deadlines and grades show up here once you’re on a team.</p>
                 </section>
@@ -91,7 +104,7 @@
                                         </div>
                                         <h3>{{ $project['title'] }}</h3>
                                         <p class="as-meta">{{ $project['subtitle'] }}</p>
-                                        <p class="sd-next">@include('public.partials.icon', ['name' => 'calendar', 'size' => 16]) Next: {{ $project['next'] }} <span class="sd-next-count">· {{ $project['next_countdown']['label'] }}</span></p>
+                                        <p class="sd-next">@include('public.partials.icon', ['name' => 'calendar', 'size' => 16]) Next: {{ $project['next'] }}@if ($project['next_countdown']) <span class="sd-next-count">· {{ $project['next_countdown']['label'] }}</span>@endif</p>
                                     </div>
                                     <a class="as-text-link sd-open" href="{{ $project['href'] }}">Open project<span class="as-sr">: {{ $project['title'] }}</span> @include('public.partials.icon', ['name' => 'arrow', 'size' => 16])</a>
                                 </li>

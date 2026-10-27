@@ -85,7 +85,50 @@ final class ZinaDemoData
      */
     public function viewer(): array
     {
+        if ($user = $this->ownAccount()) {
+            $parts = preg_split('/\s+/', trim((string) $user->name), 2) ?: [];
+
+            return [
+                'id' => 'user-'.$user->id,
+                'name' => $user->name,
+                'first' => $user->first_name ?: ($parts[0] ?? ''),
+                'last' => $user->last_name ?: ($parts[1] ?? ''),
+                'email' => $user->email,
+                'role' => Navigation::normalise((string) $user->role),
+                'avatar' => $user->id % 5,
+            ];
+        }
+
+        // The independent demo account is Omar, a member of the sample independent project.
+        if ($this->isIndependent()) {
+            return $this->person('omar');
+        }
+
         return $this->person($this->context()['viewer']);
+    }
+
+    /**
+     * The signed-in user when it's a real account. Null for visitors and the demo accounts
+     * (config/demo.php), which keep seeing the sample people so the team can test every state.
+     */
+    public function ownAccount(): ?\App\Models\User
+    {
+        $user = auth()->user();
+        $demoEmails = array_map('strtolower', array_column(config('demo.accounts', []), 'email'));
+
+        return $user && ! in_array(strtolower($user->email), $demoEmails, true) ? $user : null;
+    }
+
+    /** Independent accounts (non-MIU email) only take part in independent projects. */
+    public function isIndependent(): bool
+    {
+        return auth()->user()?->project_type === 'independent';
+    }
+
+    /** Whether the "Viewing as" switch applies: only to the sample university student. */
+    public function canSwitchViewer(): bool
+    {
+        return ! $this->ownAccount() && ! $this->isIndependent();
     }
 
     /**
@@ -252,6 +295,35 @@ final class ZinaDemoData
         $viewer = $this->viewer();
         $isLeader = $viewer['id'] === 'aya';
 
+        // A real account sees only its own projects: the independent projects it created this session.
+        if ($user = $this->ownAccount()) {
+            $own = collect(session('independent_projects', []))
+                ->where('owner_id', $user->id)
+                ->map(fn (array $project) => [
+                    'id' => $project['id'], 'title' => $project['title'], 'type' => 'Independent',
+                    'status' => 'Just started', 'status_tone' => 'info', 'progress' => 0, 'ring_tone' => 'blue',
+                    'subtitle' => 'Independent · 1 of '.self::INDEPENDENT_MEMBER_LIMIT.' members · No grading',
+                    'next' => 'Add your first task', 'next_countdown' => null,
+                    'href' => $this->link('student.projects.show', ['project' => $project['id']]),
+                ])->values()->all();
+
+            if ($own !== [] && ! $empty) {
+                return [
+                    'viewer' => $viewer,
+                    'today' => $now->format('l, F j'),
+                    'greeting' => $this->greeting(),
+                    'summary' => count($own).' '.(count($own) === 1 ? 'project' : 'projects').'. Add tasks and invite teammates to get going.',
+                    'actions' => [],
+                    'projects' => $own,
+                    'deadlines' => [],
+                    'tasks' => [],
+                    'completed' => [],
+                ];
+            }
+
+            $empty = true;
+        }
+
         if ($empty) {
             return [
                 'viewer' => $viewer,
@@ -281,7 +353,11 @@ final class ZinaDemoData
             'countdown' => $this->countdown($deadline['due']),
         ])->values();
 
-        $tasks = collect($isLeader ? [
+        $tasks = collect($viewer['id'] === 'omar' ? [
+            // Omar's own work on the independent project, for the independent demo account.
+            ['title' => 'Accessible route options', 'project' => $campus, 'due' => $this->date('2026-10-16 17:00'), 'priority' => 'Medium', 'blocked' => null, 'href' => $this->link('student.tasks.index')],
+            ['title' => 'Usability test plan', 'project' => $campus, 'due' => $this->date('2026-10-22 17:00'), 'priority' => 'Low', 'blocked' => null, 'href' => $this->link('student.tasks.index')],
+        ] : ($isLeader ? [
             ['title' => 'Research summary', 'project' => $capstone, 'due' => $this->date('2026-10-11 17:00'), 'priority' => 'High', 'blocked' => null, 'href' => $this->link('student.tasks.index')],
             ['title' => 'Upload design document', 'project' => $capstone, 'due' => $this->date('2026-10-18 17:00'), 'priority' => 'Medium', 'blocked' => null, 'href' => $this->link('student.tasks.show', ['task' => 'design-document'])],
             ['title' => 'Share interactive prototype', 'project' => $campus, 'due' => $this->date('2026-10-19 17:00'), 'priority' => 'Medium', 'blocked' => 'Waiting on Wireframes (Nour Saleh)', 'href' => $this->link('student.tasks.show', ['task' => 'interactive-prototype'])],
@@ -290,7 +366,7 @@ final class ZinaDemoData
             // Malek's own work, for the team-member view.
             ['title' => 'API contract', 'project' => $capstone, 'due' => $this->date('2026-10-14 17:00'), 'priority' => 'Medium', 'blocked' => null, 'href' => $this->link('student.tasks.index')],
             ['title' => 'Indoor map data', 'project' => $campus, 'due' => $this->date('2026-10-21 17:00'), 'priority' => 'Low', 'blocked' => null, 'href' => $this->link('student.tasks.index')],
-        ])->map(fn ($task) => [
+        ]))->map(fn ($task) => [
             ...$task,
             'when' => $task['due']->format('M j · g:i A'),
             'overdue' => $task['due']->lessThan($now),
@@ -338,6 +414,21 @@ final class ZinaDemoData
             [...$campus, 'ring_tone' => 'blue', 'subtitle' => 'Independent · 4 of 10 members · No grading', 'next' => 'Prototype checkpoint · Oct 23', 'next_countdown' => $this->countdown($this->date('2026-10-23 17:00')), 'href' => $this->link('student.projects.show', ['project' => $campus['id']])],
         ];
 
+        $completed = [
+            ['title' => 'Human-Centered Design Study', 'type' => 'Academic', 'term' => 'CS 380 · Spring 2026', 'result' => '47 / 50', 'note' => 'Grade released by Professor Lee'],
+            ['title' => 'Student Budget Planner', 'type' => 'Independent', 'term' => 'Summer 2026', 'result' => 'No grade', 'note' => 'Independent projects aren’t graded'],
+        ];
+
+        // Independent accounts have no courses: keep only independent projects and their work.
+        if ($this->isIndependent()) {
+            $independent = fn ($item) => ($item['project']['type'] ?? $item['type']) === 'Independent';
+            $projects = array_values(array_filter($projects, $independent));
+            $deadlines = $deadlines->filter($independent)->values();
+            $tasks = $tasks->filter($independent)->values();
+            $completed = array_values(array_filter($completed, $independent));
+            $actions = array_values(array_filter($actions, fn ($action) => $action['kind'] !== 'Changes requested'));
+        }
+
         $thisWeek = $deadlines->filter(fn ($deadline) => ! $deadline['countdown']['overdue'] && $deadline['due']->lessThanOrEqualTo($now->addDays(7)))->count();
         $taskCount = $tasks->count();
 
@@ -350,10 +441,7 @@ final class ZinaDemoData
             'projects' => $projects,
             'deadlines' => $deadlines->all(),
             'tasks' => $tasks->all(),
-            'completed' => [
-                ['title' => 'Human-Centered Design Study', 'type' => 'Academic', 'term' => 'CS 380 · Spring 2026', 'result' => '47 / 50', 'note' => 'Grade released by Professor Lee'],
-                ['title' => 'Student Budget Planner', 'type' => 'Independent', 'term' => 'Summer 2026', 'result' => 'No grade', 'note' => 'Independent projects aren’t graded'],
-            ],
+            'completed' => $completed,
         ];
     }
 
@@ -968,7 +1056,8 @@ final class ZinaDemoData
     {
         // Same role as the navbar: the signed-in user's, or the demo role.
         $role = Navigation::role();
-        $person = match ($role) {
+        $own = $this->ownAccount() !== null;
+        $person = $own ? $this->viewer() : match ($role) {
             'professor' => $this->person('lee'),
             'ta' => $this->person('sara'),
             'admin' => $this->person('admin'),
@@ -1002,7 +1091,7 @@ final class ZinaDemoData
                 ['label' => 'Two-factor authentication', 'value' => 'Off', 'tone' => 'warning', 'link' => ['label' => 'Manage in Security', 'href' => $this->link('admin.security'), 'owner' => 'Habiba']],
             ],
             default => [
-                ['label' => 'Program', 'value' => $newAccount ? 'Not set yet' : 'Computer Science'],
+                ['label' => 'Program', 'value' => $newAccount || $own ? 'Not set yet' : 'Computer Science'],
             ],
         };
 
@@ -1014,8 +1103,8 @@ final class ZinaDemoData
             'values' => $values,
             'saved_at' => $saved['saved_at'] ?? null,
             'locked' => array_values(array_filter([
-                ['label' => 'University email', 'value' => $person['email']],
-                $role === 'student' ? ['label' => 'Student ID', 'value' => $person['id'] === 'malek' ? '20230047' : '20230012'] : null,
+                ['label' => $this->isIndependent() ? 'Email' : 'University email', 'value' => $person['email']],
+                $role === 'student' && ! $own ? ['label' => 'Student ID', 'value' => $person['id'] === 'malek' ? '20230047' : '20230012'] : null,
                 ['label' => 'Role', 'value' => ['student' => 'Student', 'professor' => 'Professor', 'ta' => 'Teaching assistant', 'admin' => 'Admin'][$role]],
             ])),
             'details' => $details,
