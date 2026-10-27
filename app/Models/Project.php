@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
-    'course_id', 'professor_id', 'type', 'title', 'description', 'goals', 'total_grade', 'team_min', 'team_max',
+    'course_id', 'professor_id', 'owner_id', 'type', 'title', 'description', 'goals', 'total_grade', 'team_min', 'team_max',
     'formation_deadline', 'leftover_mode', 'status', 'settings', 'submission_key', 'published_at',
 ])]
 class Project extends Model
@@ -59,10 +59,30 @@ class Project extends Model
         return $this->hasMany(Team::class);
     }
 
+    /**
+     * The student who created an independent project. Academic projects have a professor instead.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
     /** @param Builder<Project> $query */
     public function scopeOwnedBy(Builder $query, User $professor): void
     {
         $query->where('professor_id', $professor->id);
+    }
+
+    /**
+     * A student's own independent projects.
+     *
+     * @param  Builder<Project>  $query
+     */
+    public function scopeIndependentFor(Builder $query, User $student): void
+    {
+        $query->where('type', 'independent')->where('owner_id', $student->id);
     }
 
     public function isDraft(): bool
