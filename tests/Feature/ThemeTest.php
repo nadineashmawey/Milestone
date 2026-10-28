@@ -115,8 +115,6 @@ class ThemeTest extends TestCase
             if ($path === 'resources/css/tokens.css') {
                 continue;
             }
-            // The navbar's dark mode may redefine colour tokens inside .ms-navbar only.
-            $contents = preg_replace("/:root\[data-theme='dark'\] \.ms-navbar \{[^}]*\}/", '', $contents);
             // Tailwind's @theme maps utilities onto the tokens by name.
             $contents = preg_replace('/@theme inline reference \{.*?\n\}/s', '', $contents);
             foreach ($names[1] as $name) {
@@ -129,9 +127,90 @@ class ThemeTest extends TestCase
         $this->assertSame([], $offenders, 'Change shared values in tokens.css, not in a page file.');
     }
 
+    /**
+     * Dark-mode rules outside tokens.css that are meant to be there, each with the reason. Keep this short.
+     */
+    private const ALLOWED_DARK_RULES = [
+        // The logo PNG has dark lettering, so in dark mode it sits on a small white plate.
+        "resources/css/base.css: :root[data-theme='dark'] img[src*='milestone-logo']",
+        // The toggle's own icons: moon in light mode, sun in dark mode.
+        "resources/css/components/navbar.css: :root[data-theme='dark'] .ms-navbar__theme-dark",
+        "resources/css/components/navbar.css: :root[data-theme='dark'] .ms-navbar__theme-light",
+    ];
+
+    public function test_dark_mode_lives_in_tokens_css_only(): void
+    {
+        $tokens = file_get_contents(resource_path('css/tokens.css'));
+        $this->assertMatchesRegularExpression("/:root\.dark,\s*:root\[data-theme='dark'\] \{[^}]*color-scheme: dark;[^}]*--color-page:/s", $tokens);
+
+        $offenders = [];
+        foreach ($this->files('resources/css', '*.css') as $path => $contents) {
+            if ($path === 'resources/css/tokens.css') {
+                continue;
+            }
+            // Old one-off dark tokens are gone; everything reads the switching tokens instead.
+            if (preg_match('/--color-dark-/', $contents)) {
+                $offenders[] = "{$path}: uses a --color-dark-* token";
+            }
+            // app.css points Tailwind's dark: variant at the same switch; that line is a declaration, not a dark rule.
+            $contents = str_replace('@custom-variant dark (&:where(.dark, .dark *));', '', $contents);
+            preg_match_all('/([^{};]*(?:\.dark\b|data-theme=.dark.|prefers-color-scheme:\s*dark)[^{};]*)\{/', $contents, $rules);
+            foreach ($rules[1] as $selector) {
+                $rule = $path.': '.trim($selector);
+                if (! in_array($rule, self::ALLOWED_DARK_RULES, true)) {
+                    $offenders[] = $rule;
+                }
+            }
+        }
+
+        $this->assertSame([], $offenders, 'Put dark colours in the dark block of tokens.css, not in a page file.');
+    }
+
+    public function test_views_use_token_utilities_not_the_tailwind_palette(): void
+    {
+        $offenders = [];
+        foreach ($this->files('resources/views', '*.blade.php') as $path => $contents) {
+            preg_match_all('/(?<![\w-])(?:dark:)?(?:bg-white|bg-black|text-white|text-black|(?:bg|text|border|ring|divide)-(?:gray|slate|zinc|neutral|stone)-\d{2,3})(?![\w-])/', $contents, $matches);
+            foreach (array_unique($matches[0]) as $class) {
+                $offenders[] = "{$path}: {$class}";
+            }
+        }
+
+        $this->assertSame([], $offenders, 'Use bg-surface, bg-page, text-ink, text-muted, border-border… so the class follows dark mode.');
+    }
+
+    public function test_dark_text_reaches_wcag_aa(): void
+    {
+        $css = file_get_contents(resource_path('css/tokens.css'));
+        $darkAt = strpos($css, ':root.dark');
+        $read = function (string $block): array {
+            preg_match_all('/--color-([\w-]+):\s*(#[0-9a-f]{6})/i', $block, $m);
+
+            return array_combine($m[1], $m[2]);
+        };
+        $dark = array_replace($read(substr($css, 0, $darkAt)), $read(substr($css, $darkAt)));
+        $luminance = function (string $hex): float {
+            $channels = array_map(fn (int $v) => ($v /= 255) <= .03928 ? $v / 12.92 : (($v + .055) / 1.055) ** 2.4, sscanf($hex, '#%02x%02x%02x'));
+
+            return .2126 * $channels[0] + .7152 * $channels[1] + .0722 * $channels[2];
+        };
+        $ratio = fn (string $a, string $b) => (max($luminance($a), $luminance($b)) + .05) / (min($luminance($a), $luminance($b)) + .05);
+
+        foreach (['ink', 'ink-2', 'muted', 'faint', 'link'] as $text) {
+            foreach (['page', 'surface'] as $background) {
+                $this->assertGreaterThanOrEqual(4.5, $ratio($dark[$text], $dark[$background]), "Dark {$text} on {$background}");
+            }
+        }
+        foreach (['info', 'success', 'warning', 'danger', 'review'] as $tint) {
+            $this->assertGreaterThanOrEqual(4.5, $ratio($dark["{$tint}-text"], $dark["{$tint}-bg"]), "Dark {$tint}-text on {$tint}-bg");
+        }
+    }
+
     public function test_tailwind_utilities_use_the_tokens(): void
     {
         $app = file_get_contents(resource_path('css/app.css'));
+        // dark: utilities follow the site's switch on <html>, not only the system setting.
+        $this->assertStringContainsString('@custom-variant dark (&:where(.dark, .dark *));', $app);
 
         // "reference" keeps Tailwind from re-emitting same-name keys like --color-ink: var(--color-ink), which would be circular.
         $this->assertStringContainsString('@theme inline reference {', $app);
