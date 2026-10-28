@@ -8,7 +8,7 @@
     <x-card title="What you are looking at">
         <p>The bar at the top is the shared navbar for your current role. The sample controls below do not save, delete or submit anything.</p>
         <p class="ms-muted">On this page:
-            <a href="#theme">Typography and colour</a> · <a href="#navbar">Navbar</a> · <a href="#buttons">Buttons</a> · <a href="#fields">Inputs</a> · <a href="#badges">Badges</a> ·
+            <a href="#theme">Typography and colour</a> · <a href="#dark-mode">Dark mode</a> ·<a href="#navbar">Navbar</a> · <a href="#buttons">Buttons</a> · <a href="#fields">Inputs</a> · <a href="#badges">Badges</a> ·
             <a href="#more-buttons">Button options</a> · <a href="#more-fields">Select and textarea</a> · <a href="#feedback">Alerts and empty states</a> ·
             <a href="#section-headings">Section heading</a>
         </p>
@@ -74,6 +74,28 @@
                 </li>
             @endforeach
         </ul>
+    </x-card>
+
+    <x-card title="Dark mode" id="dark-mode" class="ms-stack">
+        <p>One switch for the whole site: the toggle sets <code>class="dark"</code> and <code>data-theme="dark"</code> on <code>&lt;html&gt;</code>, and the dark block in <code>tokens.css</code> redefines the colour tokens. A page that uses tokens is dark-mode ready with no extra CSS. See “Dark mode” in <code>docs/ui-kit.md</code>.</p>
+        <div class="ms-row">
+            <x-button variant="secondary" data-navbar-theme aria-pressed="false">
+                <span class="ms-navbar__theme-dark">@include('public.partials.icon', ['name' => 'moon', 'size' => 18])</span>
+                <span class="ms-navbar__theme-light">@include('public.partials.icon', ['name' => 'sun', 'size' => 18])</span>
+                Dark mode
+            </x-button>
+            <span class="ms-muted ms-caption">Same toggle as the navbar. The choice is remembered; with none, the system setting is used.</span>
+        </div>
+        <ul class="grid grid-cols-2 gap-3 sm:grid-cols-4" role="list">
+            @foreach (['page' => 'Page', 'surface' => 'Surface', 'ink' => 'Ink (text)', 'muted' => 'Muted text', 'border' => 'Border', 'link' => 'Link', 'night' => 'Night (stays dark)', 'white' => 'White (stays white)'] as $token => $label)
+                <li class="grid gap-1">
+                    <span class="block h-12 rounded-md border border-border" style="background: var(--color-{{ $token }});" aria-hidden="true"></span>
+                    <code class="ms-caption">--color-{{ $token }}</code>
+                    <span class="ms-caption ms-muted">{{ $label }}</span>
+                </li>
+            @endforeach
+        </ul>
+        <x-alert title="Readable in both modes">Alerts, badges, fields, tables and dialogs all read their colours from the tokens.</x-alert>
     </x-card>
 
     <x-card title="Navbar" id="navbar" class="ms-stack">
