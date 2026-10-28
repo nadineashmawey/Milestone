@@ -19,7 +19,7 @@
 
 /* ---------- Left panel ---------- */
 .auth-intro {
-    background: var(--color-ink);
+    background: var(--color-night);
     color: var(--color-white);
     padding: clamp(32px, 5vw, 72px);
     display: flex;
@@ -52,7 +52,7 @@
     padding: 9px 14px;
     border-radius: var(--radius-pill);
     background: var(--color-info-bg);
-    color: var(--color-primary);
+    color: var(--color-link);
     font-size: var(--font-small);
     font-weight: var(--weight-semibold);
 }
@@ -77,7 +77,7 @@
 .auth-intro-body > p {
     max-width: 480px;
     margin: 0;
-    color: var(--color-lavender);
+    color: var(--color-on-night);
     font-size: var(--font-body);
     line-height: 1.7;
 }
@@ -123,7 +123,7 @@
 
 .auth-card .eyebrow {
     margin: 0;
-    color: var(--color-primary);
+    color: var(--color-link);
     font-size: var(--font-caption);
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
@@ -172,7 +172,7 @@
     border: 0;
     border-radius: var(--radius-control);
     background: var(--color-lavender);
-    color: var(--color-primary);
+    color: var(--color-link);
     font: inherit;
     font-size: var(--font-small);
     font-weight: var(--weight-bold);
@@ -184,7 +184,7 @@
     outline-offset: var(--focus-offset);
 }
 
-.auth-link { color: var(--color-primary); font-size: var(--font-small); font-weight: var(--weight-bold); }
+.auth-link { color: var(--color-link); font-size: var(--font-small); font-weight: var(--weight-bold); }
 
 .auth-switch {
     margin: var(--space-5) 0 0;
@@ -193,7 +193,7 @@
     font-size: var(--font-small);
 }
 
-.auth-switch a { color: var(--color-primary); font-weight: var(--weight-bold); text-decoration: none; }
+.auth-switch a { color: var(--color-link); font-weight: var(--weight-bold); text-decoration: none; }
 .auth-switch a:hover { text-decoration: underline; }
 
 /* ---------- Account type cards ---------- */
@@ -268,14 +268,14 @@
     padding: 4px 10px;
     border-radius: var(--radius-pill);
     background: var(--color-info-bg);
-    color: var(--color-primary);
+    color: var(--color-link);
     font-size: var(--font-caption);
     font-weight: var(--weight-bold);
 }
 
 .account-type-option.is-green:has(input:checked) {
     border-color: var(--color-green);
-    background: var(--color-white);
+    background: var(--color-surface);
     box-shadow: 0 0 0 1px var(--color-green);
 }
 .account-type-option.is-green:has(input:checked)::after { border-color: var(--color-green); background-color: var(--color-green); }

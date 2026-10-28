@@ -41,7 +41,7 @@ body {
 .link {
     border: 0;
     background: none;
-    color: var(--color-primary);
+    color: var(--color-link);
     font-weight: var(--weight-strong);
     cursor: pointer;
 }
@@ -72,7 +72,7 @@ body {
     place-items: center;
     border-radius: var(--radius-xl);
     background: var(--color-info-bg);
-    color: var(--color-primary);
+    color: var(--color-link);
     font-size: var(--font-title-lg);
     font-weight: var(--weight-bold);
 }
@@ -124,7 +124,7 @@ body {
     place-items: center;
     flex: none;
     background: var(--color-info-bg);
-    color: var(--color-primary);
+    color: var(--color-link);
     font-weight: var(--weight-bold);
 }
 .status-open {
@@ -132,7 +132,7 @@ body {
     background: var(--color-warning-bg);
 }
 .status-acknowledged {
-    color: var(--color-primary-hover);
+    color: var(--color-link-hover);
     background: var(--color-info-bg);
 }
 .status-resolved {
@@ -231,7 +231,7 @@ body {
 .ta-dropdown__menu button:hover,
 .ta-dropdown__menu button:focus-visible {
     background: var(--color-info-bg);
-    color: var(--color-primary);
+    color: var(--color-link);
     outline: 0;
 }
 .ta-dropdown__menu button[aria-selected='true'] {

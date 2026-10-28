@@ -52,7 +52,7 @@
     place-items: center;
     border-radius: var(--radius-control);
     background: var(--color-info-bg);
-    color: var(--color-primary);
+    color: var(--color-link);
 }
 .card-heading svg {
     width: 23px;
@@ -178,7 +178,7 @@
     padding: 28px 22px;
     border: 1px solid var(--color-danger-bg);
     border-radius: var(--radius-lg);
-    background: var(--color-white);
+    background: var(--color-surface);
 }
 .import-card .page-state .state-icon {
     width: 46px;
@@ -193,10 +193,10 @@
     margin-bottom: 17px;
 }
 .preview tr.row-rejected {
-    background: var(--color-white);
+    background: var(--color-surface);
 }
 .preview tr.row-duplicate {
-    background: var(--color-white);
+    background: var(--color-surface);
 }
 .complete {
     text-align: center;

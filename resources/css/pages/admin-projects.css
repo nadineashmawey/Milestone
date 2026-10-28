@@ -38,7 +38,7 @@
 .project-actions button {
     border: 0;
     background: none;
-    color: var(--color-primary);
+    color: var(--color-link);
     font-weight: var(--weight-strong);
     cursor: pointer;
 }
@@ -68,7 +68,7 @@
     background: none;
     padding: 0;
     margin-bottom: 18px;
-    color: var(--color-primary);
+    color: var(--color-link);
     font-weight: var(--weight-strong);
     cursor: pointer;
 }
@@ -105,7 +105,7 @@
     place-items: center;
     flex: none;
     border-radius: var(--radius-control);
-    background: var(--color-ink);
+    background: var(--color-night);
     color: var(--color-white);
 }
 .step-heading h2,
@@ -129,7 +129,7 @@
     padding: 13px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-control);
-    background: var(--color-white);
+    background: var(--color-surface);
     text-align: left;
     cursor: pointer;
 }
@@ -217,7 +217,7 @@
     transform: translate(-50%, -50%);
     width: min(625px, calc(100% - 32px));
     padding: 34px;
-    background: var(--color-white);
+    background: var(--color-surface);
     border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-lg);
 }
@@ -236,7 +236,7 @@
     margin-bottom: 18px;
     border-radius: var(--radius-lg);
     background: var(--color-info-bg);
-    color: var(--color-primary);
+    color: var(--color-link);
     font-size: var(--font-title);
 }
 .action-notice {

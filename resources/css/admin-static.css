@@ -31,7 +31,7 @@ a {
 }
 .eyebrow {
     margin: 0 0 7px;
-    color: var(--color-primary);
+    color: var(--color-link);
     font-size: var(--font-xs);
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
@@ -79,7 +79,7 @@ a {
 }
 .btn.secondary {
     border-color: var(--color-border);
-    background: var(--color-white);
+    background: var(--color-surface);
     color: var(--color-ink);
 }
 .btn:disabled {
@@ -113,7 +113,7 @@ a {
     background: var(--color-warning-bg);
 }
 .badge.info {
-    color: var(--color-primary-hover);
+    color: var(--color-link-hover);
     background: var(--color-info-bg);
 }
 .badge.danger {
@@ -139,7 +139,7 @@ a {
     min-height: 47px;
     border: 1px solid var(--color-info-bg);
     border-radius: var(--radius-md);
-    background: var(--color-white);
+    background: var(--color-surface);
     padding: 10px 13px;
     color: var(--color-ink);
     outline: none;
@@ -172,7 +172,7 @@ a {
     padding: 0 14px;
     border: 1px solid var(--color-info-bg);
     border-radius: var(--radius-md);
-    background: var(--color-white);
+    background: var(--color-surface);
     color: var(--color-ink);
     cursor: pointer;
 }
@@ -189,7 +189,7 @@ a {
     left: 0;
     right: 0;
     padding: 6px;
-    background: var(--color-white);
+    background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-control);
     box-shadow: var(--shadow-card);
@@ -208,7 +208,7 @@ a {
 .select-menu button:hover,
 .select-menu button[aria-selected="true"] {
     background: var(--color-info-bg);
-    color: var(--color-primary);
+    color: var(--color-link);
     font-weight: var(--weight-strong);
 }
 table {
@@ -238,7 +238,7 @@ tbody tr:last-child td {
     gap: 11px;
     align-items: center;
     padding: 15px 18px;
-    background: var(--color-ink);
+    background: var(--color-night);
     color: var(--color-white);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
@@ -299,7 +299,7 @@ tbody tr:last-child td {
     border: 1px solid var(--color-info-bg);
     border-radius: var(--radius-xl);
     background: var(--color-info-bg);
-    color: var(--color-primary);
+    color: var(--color-link);
     box-shadow: var(--shadow-raised);
     font-size: var(--font-title);
     font-weight: var(--weight-bold);

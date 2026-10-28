@@ -22,7 +22,7 @@
 .sd-next-count { color: var(--color-muted); }
 .sd-deadline { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-2); margin: 0 calc(-1 * var(--space-2)); border-radius: var(--radius-control); color: inherit; text-decoration: none; }
 .sd-deadline:hover { background: var(--color-page); }
-.sd-deadline:hover strong { color: var(--color-primary); }
+.sd-deadline:hover strong { color: var(--color-link); }
 .sd-date { display: grid; place-content: center; width: 2.75rem; height: 3rem; border: var(--border-width) solid var(--color-border); border-radius: var(--radius-md); text-align: center; }
 .sd-date strong { font-size: var(--font-lead); line-height: 1; }
 .sd-date small { margin-top: 2px; color: var(--color-muted); font-size: var(--font-micro); font-weight: var(--weight-semibold); text-transform: uppercase; }
@@ -37,11 +37,11 @@
 .sd-task-table tbody tr:last-child > * { border-bottom: 0; }
 .sd-task-table tbody tr:hover { background: var(--color-page); }
 .sd-task-name a { color: var(--color-ink); font-size: var(--font-ui); font-weight: var(--weight-semibold); text-decoration: none; }
-.sd-task-name a:hover { color: var(--color-primary); text-decoration: underline; }
+.sd-task-name a:hover { color: var(--color-link); text-decoration: underline; }
 .sd-flags { display: inline-flex; flex-wrap: wrap; gap: 6px; margin-left: var(--space-2); vertical-align: middle; }
 .sd-blocked-why { display: block; margin-top: 4px; }
 .sd-task-project { display: block; margin-bottom: 4px; color: var(--as-ink-2); }
-.sd-task-go { width: 2rem; color: var(--color-primary); }
+.sd-task-go { width: 2rem; color: var(--color-link); }
 
 /* Completed */
 .sd-completed { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }

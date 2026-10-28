@@ -9,7 +9,7 @@
 .ml-stop--active .ml-node { border-color: var(--color-violet); color: var(--color-review-text); box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-violet) 16%, transparent); }
 .ml-stop--locked .ml-node { border-color: var(--color-yellow); color: var(--color-warning-text); }
 .ml-stop--active .ml-card { border-color: var(--color-review-bg); box-shadow: var(--shadow-popover); }
-.ml-stop--locked .ml-card { background: var(--color-white); }
+.ml-stop--locked .ml-card { background: var(--color-surface); }
 
 .ml-card-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
 .ml-card-head h2 { margin-top: var(--space-3); font-size: var(--font-title-lg); letter-spacing: -.02em; }
@@ -73,7 +73,7 @@
 .ml-required { margin-left: 4px; color: var(--color-muted); font-size: var(--font-xs); font-weight: var(--weight-regular); }
 .ml-file-input { width: 100%; padding: var(--space-3); border: 1.5px dashed var(--color-light-blue); border-radius: var(--radius-control); background: color-mix(in srgb, var(--color-light-blue) 4%, transparent); color: var(--as-ink-2); font-size: var(--font-small); cursor: pointer; }
 .ml-file-input[aria-invalid='true'] { border-color: var(--color-danger-text); background: color-mix(in srgb, var(--color-danger-bg) 30%, transparent); }
-.ml-file-input::file-selector-button { margin-right: var(--space-3); padding: var(--space-2) var(--space-3); border: var(--border-width) solid var(--color-primary); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-primary); font: inherit; font-weight: var(--weight-semibold); cursor: pointer; }
+.ml-file-input::file-selector-button { margin-right: var(--space-3); padding: var(--space-2) var(--space-3); border: var(--border-width) solid var(--color-primary); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-link); font: inherit; font-weight: var(--weight-semibold); cursor: pointer; }
 .ml-check-error { display: block; margin-top: 2px; }
 .ml-confirm { display: grid; gap: var(--space-3); max-width: 40rem; padding: var(--space-5); border: var(--border-width) solid var(--color-review-bg); border-radius: var(--radius-lg); background: var(--color-page); scroll-margin-top: 6rem; }
 .ml-confirm h4 { font-size: var(--font-lead); }

@@ -37,7 +37,7 @@
 .pf-toggle-text { display: none; }
 
 /* Save bar */
-.pf-actions { position: sticky; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-3) var(--space-5); padding: var(--space-4) var(--space-5); border: var(--border-width) solid var(--as-line); border-radius: var(--radius-xl); background: color-mix(in srgb, var(--color-white) 96%, transparent); box-shadow: var(--shadow-card); }
+.pf-actions { position: sticky; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-3) var(--space-5); padding: var(--space-4) var(--space-5); border: var(--border-width) solid var(--as-line); border-radius: var(--radius-xl); background: color-mix(in srgb, var(--color-surface) 96%, transparent); box-shadow: var(--shadow-card); }
 .pf-actions .as-unsaved, .pf-actions .as-note { margin-right: auto; }
 .pf-buttons { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 

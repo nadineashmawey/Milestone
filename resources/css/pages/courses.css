@@ -12,7 +12,7 @@
 
 .courses-page__semester {
     margin-bottom: var(--space-2);
-    color: var(--color-primary);
+    color: var(--color-link);
     font-weight: var(--weight-semibold);
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -21,7 +21,7 @@
 .courses-page__export {
     background: var(--color-surface);
     border-color: var(--color-border);
-    color: var(--color-primary);
+    color: var(--color-link);
 }
 
 .courses-page__manage {
@@ -29,7 +29,7 @@
     padding-block: var(--space-2);
     background: transparent;
     border: 0;
-    color: var(--color-primary);
+    color: var(--color-link);
     font-weight: var(--weight-semibold);
     cursor: pointer;
 }
