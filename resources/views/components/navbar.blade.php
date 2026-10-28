@@ -13,10 +13,7 @@
     $links = Navigation::accountLinks();
 @endphp
 
-@if (! $preview)
-    {{-- Apply the saved theme before the page paints. --}}
-    <script>try { if (localStorage.getItem('milestone-theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch (e) {}</script>
-@endif
+{{-- The saved theme is applied before the page paints by partials/theme-init (in layouts/base). --}}
 
 @if ($variant === 'guest')
     <header {{ $attributes->class(['ms-navbar', 'ms-navbar--guest', 'is-preview' => $preview]) }} data-navbar data-navbar-guest>
@@ -35,6 +32,11 @@
             @endif
 
             <div @class(['ms-navbar__actions', 'is-short' => ! $full])>
+                <button type="button" class="ms-navbar__icon" data-navbar-theme aria-pressed="false" title="Dark mode">
+                    <span class="ms-navbar__theme-dark">@include('public.partials.icon', ['name' => 'moon', 'size' => 18])</span>
+                    <span class="ms-navbar__theme-light">@include('public.partials.icon', ['name' => 'sun', 'size' => 18])</span>
+                    <span class="ms-sr">Dark mode</span>
+                </button>
                 @unless ($full)
                     <x-button variant="ghost" :href="route('home')">@include('public.partials.icon', ['name' => 'back', 'size' => 18]) Home</x-button>
                 @endunless
@@ -220,7 +222,9 @@
                     </form>
                 @endif
                 <button type="button" class="ms-navbar__tool" data-navbar-theme aria-pressed="false">
-                    @include('public.partials.icon', ['name' => 'moon', 'size' => 18]) Dark mode
+                    <span class="ms-navbar__theme-dark">@include('public.partials.icon', ['name' => 'moon', 'size' => 18])</span>
+                    <span class="ms-navbar__theme-light">@include('public.partials.icon', ['name' => 'sun', 'size' => 18])</span>
+                    Dark mode
                 </button>
                 <a class="ms-navbar__tool" href="{{ route('help') }}">@include('public.partials.icon', ['name' => 'help', 'size' => 18]) Help</a>
             </div>

@@ -110,21 +110,29 @@ function initScrolled(navbar) {
     window.addEventListener('scroll', update, { passive: true });
 }
 
-// Dark mode, remembered in localStorage. The navbar applies the saved theme before the page paints.
+// Dark mode. partials/theme-init.blade.php has already set the mode before the first paint; this keeps the toggles,
+// <html class="dark" data-theme> and localStorage in step. With no saved choice, the system setting is followed live.
 function initTheme() {
-    const buttons = [...document.querySelectorAll('[data-navbar-theme]')];
-    if (!buttons.length) return;
     const root = document.documentElement;
-    const sync = () => buttons.forEach((button) => button.setAttribute('aria-pressed', String(root.dataset.theme === 'dark')));
+    const buttons = [...document.querySelectorAll('[data-navbar-theme]')];
+    const media = window.matchMedia?.('(prefers-color-scheme: dark)');
+    const saved = () => { try { return localStorage.getItem('milestone-theme'); } catch { return null; } };
+    const apply = (dark) => {
+        root.classList.toggle('dark', dark);
+        root.dataset.theme = dark ? 'dark' : 'light';
+        buttons.forEach((button) => {
+            button.setAttribute('aria-pressed', String(dark));
+            button.title = dark ? 'Dark mode is on' : 'Dark mode is off';
+        });
+    };
 
     buttons.forEach((button) => button.addEventListener('click', () => {
         const dark = root.dataset.theme !== 'dark';
-        if (dark) root.dataset.theme = 'dark';
-        else delete root.dataset.theme;
         try { localStorage.setItem('milestone-theme', dark ? 'dark' : 'light'); } catch { /* Private mode: the choice lasts for this page only. */ }
-        sync();
+        apply(dark);
     }));
-    sync();
+    media?.addEventListener?.('change', (event) => { if (!saved()) apply(event.matches); });
+    apply(root.dataset.theme === 'dark');
 }
 
 // Notifications preview in the bell dropdown (Raghad's data and read state, shared with the Notifications page).

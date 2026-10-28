@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Milestone') · Milestone</title>
+    <meta name="color-scheme" content="light dark">
+    @include('partials.theme-init')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>

@@ -17,6 +17,9 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+/* dark: utilities follow the site's own switch (class="dark" on <html>), not only the system setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Tailwind utilities use the Milestone tokens only. The default palette, fonts, radii and shadows are switched off,
    so a stray text-gray-500 or font-serif produces nothing instead of an off-theme style. */
 /* "reference" stops Tailwind writing these as variables (tokens.css already defines them), "inline" makes utilities use them directly. */
@@ -43,6 +46,8 @@
     --color-surface: var(--color-surface);
     --color-white: var(--color-white);
     --color-primary: var(--color-primary);
+    --color-link: var(--color-link);
+    --color-night: var(--color-night);
     --color-info: var(--color-info-text);
     --color-info-soft: var(--color-info-bg);
     --color-success: var(--color-success-text);
