@@ -19,14 +19,23 @@
     --color-line: #e1e5ef;
     --color-lavender: #e8ebf5;
     --color-page: #f5f6fb;
-    --color-white: #ffffff;
-    --color-surface: var(--color-white);
+    --color-surface: #ffffff;    /* cards, panels, fields: switches in dark mode */
     --color-text: var(--color-ink);
     --color-control-border: var(--color-muted);
 
+    /* Fixed in both modes: never redefined for dark */
+    --color-white: #ffffff;      /* text and icons on coloured fills (buttons, badges, the night sections) */
+    --color-night: #1e1f3b;      /* sections meant to stay dark, and dark text on yellow, green, violet and coral */
+    --color-on-night: #e8ebf5;   /* body text on night sections */
+    --color-on-night-muted: #d5dae8; /* secondary text on night sections */
+    --color-periwinkle: #9fb4ff; /* light blue accents on night sections and card hovers */
+    --color-shadow: #1e1f3b;     /* what shadows and dialog backdrops are mixed from */
+
     /* Roles */
-    --color-primary: var(--color-royal-blue);
+    --color-primary: var(--color-royal-blue);   /* fills with white text: buttons, active items */
     --color-primary-hover: #173cbb;
+    --color-link: var(--color-primary);         /* blue text: links, text buttons */
+    --color-link-hover: var(--color-primary-hover);
 
     /* Soft tints, always used as a pair: -text on -bg */
     --color-info-bg: #dbe4ff;
@@ -39,15 +48,6 @@
     --color-danger-text: #8c2929;
     --color-review-bg: #ead4fa;
     --color-review-text: #7032a2;
-
-    /* Dark mode (the navbar's toggle sets data-theme="dark" on <html>) */
-    --color-dark-ink: #f7f8ff;
-    --color-dark-muted: #adb6cd;
-    --color-dark-border: #353a58;
-    --color-dark-page: #181a2b;
-    --color-dark-surface: #24263c;
-    --color-dark-primary: #9fb4ff;
-    --color-dark-info-bg: #2d3a6b;
 
     /* Type: Plus Jakarta Sans only, weights 400 to 800 */
     --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -124,4 +124,47 @@
     --z-overlay: 20;
     --z-dialog: 30;
     --z-toast: 40;
+}
+
+/* Dark mode: the one place dark colours live. The toggle (and resources/views/partials/theme-init.blade.php before the
+   first paint) sets class="dark" and data-theme="dark" on <html>; every page reads the tokens, so the whole page switches.
+   Brand colours and the fixed tokens above stay the same. */
+:root.dark,
+:root[data-theme='dark'] {
+    color-scheme: dark;
+
+    --color-ink: #f7f8ff;
+    --color-ink-2: #d5daee;
+    --color-muted: #adb6cd;
+    --color-faint: #9ba5c0;
+    --color-icon: #7f89a6;
+    --color-border: #353a58;
+    --color-line: #2f3250;
+    --color-lavender: #2c2f4a;
+    --color-page: #181a2b;
+    --color-surface: #24263c;
+    --color-control-border: #6b7396;
+
+    --color-link: #9fb4ff;
+    --color-link-hover: #c5d2ff;
+
+    /* Soft tints, dimmed so they don't glow on the dark page; -text stays readable on -bg. */
+    --color-info-bg: #26346a;
+    --color-info-text: #c7d3ff;
+    --color-success-bg: #1d3a2c;
+    --color-success-text: #a3dfae;
+    --color-warning-bg: #3b3315;
+    --color-warning-text: #ffe17d;
+    --color-danger-bg: #48222a;
+    --color-danger-text: #ffb3b3;
+    --color-review-bg: #362653;
+    --color-review-text: #dcbdff;
+
+    --color-shadow: #000000;
+    --shadow-sm: 0 1px 3px rgb(0 0 0 / 30%);
+    --shadow-raised: 0 6px 14px rgb(0 0 0 / 24%);
+    --shadow-card: 0 10px 30px rgb(0 0 0 / 18%);
+    --shadow-popover: 0 18px 50px rgb(0 0 0 / 45%);
+    --shadow-lg: 0 30px 60px -20px rgb(0 0 0 / 55%);
+    --focus-ring: 0 0 0 4px rgb(159 180 255 / 30%);
 }

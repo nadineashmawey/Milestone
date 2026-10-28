@@ -14,8 +14,15 @@ body {
     line-height: var(--line-body);
 }
 
+/* The logo is a PNG with dark lettering, so in dark mode it sits on a small white plate. */
+:root[data-theme='dark'] img[src*='milestone-logo'] {
+    padding: 3px 6px;
+    border-radius: var(--radius-sm);
+    background: var(--color-white);
+}
+
 a {
-    color: var(--color-primary);
+    color: var(--color-link);
     text-underline-offset: .2em;
 }
 
