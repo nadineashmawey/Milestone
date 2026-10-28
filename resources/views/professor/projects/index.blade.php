@@ -1,4 +1,4 @@
-@extends('layouts.app-shell', ['shellStates' => true])
+@extends('layouts.app-shell')
 
 @section('title', 'My projects')
 

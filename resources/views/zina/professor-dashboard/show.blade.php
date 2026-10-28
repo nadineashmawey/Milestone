@@ -1,4 +1,4 @@
-@extends('layouts.app-shell', ['shellStates' => true])
+@extends('layouts.app-shell')
 
 @section('title', 'Professor dashboard')
 
@@ -77,7 +77,7 @@
                 <section aria-labelledby="pd-projects-title">
                     <div class="pd-section-head">
                         <h2 id="pd-projects-title">Active projects</h2>
-                        <p class="as-meta">Risk values are simulated in this prototype and never decide a grade.</p>
+                        <p class="as-meta">Risk values are simulated and never decide a grade.</p>
                     </div>
                     <ul class="pd-projects">
                         @foreach ($d['projects'] as $project)

@@ -1,4 +1,4 @@
-@extends('layouts.app-shell', ['shellStates' => true])
+@extends('layouts.app-shell')
 
 @section('title', 'Profile')
 
@@ -44,7 +44,6 @@
             @if (session('profile_saved'))
                 <x-alert tone="success" title="Saved">
                     <p>Your profile and notification preferences are up to date.</p>
-                    <p class="as-session-tag">Prototype: saved for this session</p>
                 </x-alert>
             @endif
             @if ($errors->any())
@@ -106,7 +105,7 @@
                 </div>
 
                 <section class="as-panel" aria-labelledby="pf-notify-title">
-                    <div class="as-panel-head"><div><h2 id="pf-notify-title">Notifications</h2><p>Choose where each kind of update reaches you. Email is simulated in this prototype; nothing is sent.</p></div></div>
+                    <div class="as-panel-head"><div><h2 id="pf-notify-title">Notifications</h2><p>Choose where each kind of update reaches you. Email is simulated; nothing is sent.</p></div></div>
                     <table class="pf-notify">
                         <caption class="as-sr">Notification channels for each category</caption>
                         <thead><tr><th scope="col">Category</th>@foreach ($channels as $channel => $label)<th scope="col">{{ $label }}</th>@endforeach</tr></thead>
@@ -138,7 +137,7 @@
 
                 <div class="pf-actions">
                     <p class="as-unsaved" data-as-unsaved-status hidden>@include('public.partials.icon', ['name' => 'alert', 'size' => 16]) You have unsaved changes.</p>
-                    @if ($p['saved_at'])<p class="as-note">Last saved today at {{ $p['saved_at'] }} · Prototype: saved for this session</p>@endif
+                    @if ($p['saved_at'])<p class="as-note">Last saved today at {{ $p['saved_at'] }}</p>@endif
                     <div class="pf-buttons">
                         <x-button type="reset" variant="secondary">Undo changes</x-button>
                         <x-button type="submit" data-as-busy="Saving…">Save changes</x-button>

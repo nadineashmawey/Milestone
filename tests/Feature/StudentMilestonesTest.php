@@ -161,7 +161,7 @@ class StudentMilestonesTest extends TestCase
             ->assertOk()
             ->assertSee('Version 2 received')
             ->assertSee('Submitted by Aya Hassan')
-            ->assertSee('Prototype: saved for this session')
+            ->assertDontSee('Prototype: saved for this session')
             ->assertSee('2 versions, all kept');
     }
 

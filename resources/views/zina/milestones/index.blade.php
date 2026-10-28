@@ -1,19 +1,10 @@
-@extends('layouts.app-shell', ['shellStates' => true])
+@extends('layouts.app-shell')
 
 @section('title', 'Milestones · '.$timeline['project']['title'])
 
 @push('styles')
     @vite('resources/css/pages/milestones.css')
 @endpush
-
-@section('prototype-controls')
-    @include('zina.partials.context-switch', [
-        'field' => 'viewer',
-        'label' => 'Viewing as',
-        'options' => ['aya' => 'Aya · team leader', 'malek' => 'Malek · team member'],
-        'current' => $context['viewer'],
-    ])
-@endsection
 
 @section('content')
     @php
@@ -136,7 +127,6 @@
                                             <div id="receipt" tabindex="-1">
                                                 <x-alert tone="success" title="Version {{ $receipt['number'] }} received">
                                                     <p>Submitted by {{ $receipt['submitter'] }} on {{ $receipt['when'] }} and sent to {{ $project['professor'] }} and {{ $project['ta'] }} for review. Every earlier version is kept.@if ($receipt['late']) It’s marked Late, with no automatic penalty.@endif</p>
-                                                    <p class="as-session-tag">Prototype: saved for this session</p>
                                                 </x-alert>
                                             </div>
                                         @endif

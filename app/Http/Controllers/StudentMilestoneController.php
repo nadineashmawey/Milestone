@@ -29,7 +29,6 @@ class StudentMilestoneController extends Controller
         return view('zina.milestones.index', [
             'state' => $state,
             'timeline' => $state === 'empty' ? [...$timeline, 'milestones' => []] : $timeline,
-            'context' => $demo->context(),
             'extensions' => ZinaDemoData::DELIVERABLE_EXTENSIONS,
             'simulateFailures' => $demo->statesEnabled(),
         ]);

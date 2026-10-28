@@ -2,7 +2,6 @@
 @if (session('team_status'))
     <x-alert tone="success" title="Done">
         <p>{{ session('team_status') }}</p>
-        <p class="as-session-tag">Prototype: saved for this session</p>
     </x-alert>
 @endif
 @if ($teamErrors->isNotEmpty())

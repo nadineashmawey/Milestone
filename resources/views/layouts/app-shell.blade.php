@@ -1,15 +1,10 @@
 @extends('layouts.app')
 
 {{--
-    Zina's signed-in pages: the shared layout (navbar included there), a prototype-controls bar, then the page.
-    Extend with data: @extends('layouts.app-shell', ['shellStates' => true])
-    Sections: content (required), prototype-controls (optional extra switches for the prototype bar).
-    Pages that support ?state= previews pass 'shellStates' => true.
+    Zina's signed-in pages: the shared layout (navbar included there), then the page in the shell's container.
+    Sections: content (required). Pages that have empty, loading and error states read ?state= in their controller
+    (local and testing only); there is no visible switcher.
 --}}
-@php
-    $shellStates = ($shellStates ?? false) && app(\App\Support\ZinaDemoData::class)->statesEnabled();
-@endphp
-
 {{-- Prepended: Blade runs the page's @push first, and page styles must load after the shell's. --}}
 @prepend('styles')
     @vite('resources/css/pages/app-shell.css')
@@ -21,8 +16,6 @@
 
 @section('page')
     <div class="as">
-        @include('zina.partials.prototype-bar', ['shellStates' => $shellStates])
-
         <main id="main" class="as-main">
             @yield('content')
         </main>

@@ -1,30 +1,10 @@
-@extends('layouts.app-shell', ['shellStates' => true])
+@extends('layouts.app-shell')
 
 @section('title', 'Team · '.$team['project']['title'])
 
 @push('styles')
     @vite('resources/css/pages/student-team.css')
 @endpush
-
-@section('prototype-controls')
-    @include('zina.partials.context-switch', [
-        'field' => 'viewer',
-        'label' => 'Viewing as',
-        'options' => ['aya' => 'Aya · team leader', 'malek' => 'Malek · team member'],
-        'current' => $context['viewer'],
-    ])
-    @if ($team['kind'] === 'academic')
-        @include('zina.partials.context-switch', [
-            'field' => 'phase',
-            'label' => 'Team formation',
-            'options' => ['locked' => 'Locked (today)', 'forming' => 'Open (Sep 9)'],
-            'current' => $context['phase'],
-        ])
-    @endif
-    <a class="as-text-link" href="{{ route('student.team.show', $team['kind'] === 'academic' ? 'campus-navigation-app' : 'software-engineering-capstone') }}">
-        {{ $team['kind'] === 'academic' ? 'See the independent-project team' : 'See the academic team' }}
-    </a>
-@endsection
 
 @section('content')
     @php

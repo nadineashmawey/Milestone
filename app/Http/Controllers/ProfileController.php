@@ -17,7 +17,6 @@ class ProfileController extends Controller
         return view('zina.profile.edit', [
             'state' => $state,
             'profile' => $demo->profile(newAccount: $state === 'empty'),
-            'context' => $demo->context(),
             'categories' => ZinaDemoData::NOTIFICATION_CATEGORIES,
             'channels' => ZinaDemoData::NOTIFICATION_CHANNELS,
             'options' => ZinaDemoData::DISPLAY_OPTIONS,

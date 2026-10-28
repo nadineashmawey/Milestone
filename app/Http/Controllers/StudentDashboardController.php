@@ -21,8 +21,6 @@ class StudentDashboardController extends Controller
         return view('zina.student-dashboard.show', [
             'state' => $state,
             'dashboard' => $dashboard,
-            'context' => $demo->context(),
-            'canSwitchViewer' => $demo->canSwitchViewer(),
             'independent' => $demo->isIndependent(),
             'joinHref' => $demo->link('student.projects.index'),
             // Only independent accounts can create projects (ProjectController@create); visitors still see the button.

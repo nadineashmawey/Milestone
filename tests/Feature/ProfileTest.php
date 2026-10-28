@@ -71,7 +71,8 @@ class ProfileTest extends TestCase
         $this->get('/profile')
             ->assertSee('Saved')
             ->assertSee('Aya Hassan-Ali')
-            ->assertSee('Prototype: saved for this session')
+            ->assertSee('Your profile and notification preferences are up to date.')
+            ->assertDontSee('Prototype: saved for this session')
             ->assertSee('<option value="24h" selected>', false);
     }
 

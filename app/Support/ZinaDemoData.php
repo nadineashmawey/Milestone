@@ -125,12 +125,6 @@ final class ZinaDemoData
         return auth()->user()?->project_type === 'independent';
     }
 
-    /** Whether the "Viewing as" switch applies: only to the sample university student. */
-    public function canSwitchViewer(): bool
-    {
-        return ! $this->ownAccount() && ! $this->isIndependent();
-    }
-
     /**
      * @return array<string, array<string, mixed>>
      */

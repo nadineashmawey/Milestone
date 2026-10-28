@@ -29,7 +29,6 @@ class StudentTeamController extends Controller
             'state' => $state,
             'team' => $team,
             'refusals' => $refusals,
-            'context' => $demo->context(),
             'confirm' => (string) $request->query('confirm', ''),
         ]);
     }

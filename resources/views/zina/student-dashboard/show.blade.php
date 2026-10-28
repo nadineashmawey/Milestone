@@ -1,21 +1,10 @@
-@extends('layouts.app-shell', ['shellStates' => true])
+@extends('layouts.app-shell')
 
 @section('title', 'Student dashboard')
 
 @push('styles')
     @vite('resources/css/pages/student-dashboard.css')
 @endpush
-
-@if ($canSwitchViewer)
-    @section('prototype-controls')
-        @include('zina.partials.context-switch', [
-            'field' => 'viewer',
-            'label' => 'Viewing as',
-            'options' => ['aya' => 'Aya · team leader', 'malek' => 'Malek · team member'],
-            'current' => $context['viewer'],
-        ])
-    @endsection
-@endif
 
 @section('content')
     @php($d = $dashboard)
