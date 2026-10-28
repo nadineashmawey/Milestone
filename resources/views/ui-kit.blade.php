@@ -8,7 +8,7 @@
     <x-card title="What you are looking at">
         <p>The bar at the top is the shared navbar for your current role. The sample controls below do not save, delete or submit anything.</p>
         <p class="ms-muted">On this page:
-            <a href="#theme">Typography and colour</a> · <a href="#dark-mode">Dark mode</a> ·<a href="#navbar">Navbar</a> · <a href="#buttons">Buttons</a> · <a href="#fields">Inputs</a> · <a href="#badges">Badges</a> ·
+            <a href="#theme">Typography and colour</a> · <a href="#dark-mode">Dark mode</a> · <a href="#page-states">Page states</a> · <a href="#navbar">Navbar</a> · <a href="#buttons">Buttons</a> · <a href="#fields">Inputs</a> · <a href="#badges">Badges</a> ·
             <a href="#more-buttons">Button options</a> · <a href="#more-fields">Select and textarea</a> · <a href="#feedback">Alerts and empty states</a> ·
             <a href="#section-headings">Section heading</a>
         </p>
@@ -96,6 +96,10 @@
             @endforeach
         </ul>
         <x-alert title="Readable in both modes">Alerts, badges, fields, tables and dialogs all read their colours from the tokens.</x-alert>
+    </x-card>
+
+    <x-card title="Page states" id="page-states" class="ms-stack">
+        <p>Pages with empty, loading and error states switch them with <code>?state=empty</code>, <code>?state=loading</code> or <code>?state=error</code> in the address (local and testing only). There is no visible switcher and no prototype bar: every page starts with its header right below the navbar. See “Rules for every page” in <code>docs/ui-kit.md</code>.</p>
     </x-card>
 
     <x-card title="Navbar" id="navbar" class="ms-stack">
