@@ -49,7 +49,7 @@ if (app) {
     Object.values(mockNotifications).forEach((items) => items.forEach((item) => { item.email = true; }));
     let store = { activeRole: 'student', roles: {} };
     let activeFilter = 'all';
-    let activeChannel = 'in-app';
+    const activeChannel = 'in-app'; // The list is always the in-app feed; the Email tab shows preferences instead.
     let activeNotificationId = null;
     let toastTimer;
 
@@ -101,10 +101,15 @@ if (app) {
             const article = document.createElement('article');
             article.className = `notification-row${read ? ' is-read' : ' is-unread'}`;
             article.dataset.notificationId = item.id;
-            article.innerHTML = `<button type="button" class="notification-main" data-open-notification="${escapeHtml(item.id)}"><span class="notification-leading">${iconMarkup(item)}<span class="notification-unread-dot" aria-hidden="true"></span></span><span class="notification-copy"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.description)}</span><small>${escapeHtml(item.time)}</small></span></button><div class="notification-actions"><button type="button" class="notification-action notification-action--read" data-mark-read="${escapeHtml(item.id)}" aria-label="${read ? 'Already read' : `Mark ${escapeHtml(item.title)} as read`}" title="${read ? 'Already read' : 'Mark as read'}" ${read ? 'disabled' : ''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></button><button type="button" class="notification-action" data-dismiss-notification="${escapeHtml(item.id)}" aria-label="Dismiss ${escapeHtml(item.title)}" title="Dismiss"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>`;
+            // One grid per row: unread dot | icon and text | actions. The actions name the row through aria-describedby.
+            const titleId = `notification-title-${escapeHtml(item.id)}`;
+            article.innerHTML = `<span class="notification-dot" aria-hidden="true"></span><button type="button" class="notification-main" data-open-notification="${escapeHtml(item.id)}">${iconMarkup(item)}<span class="notification-copy"><strong id="${titleId}">${read ? '' : '<span class="ms-sr">Unread: </span>'}${escapeHtml(item.title)}</strong><span>${escapeHtml(item.description)}</span><small>${escapeHtml(item.time)}</small></span></button><div class="notification-actions"><button type="button" class="notification-action notification-action--read" data-mark-read="${escapeHtml(item.id)}" aria-label="${read ? 'Already read' : 'Mark as read'}" title="${read ? 'Already read' : 'Mark as read'}" aria-describedby="${titleId}" ${read ? 'disabled' : ''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></button><button type="button" class="notification-action notification-action--dismiss" data-dismiss-notification="${escapeHtml(item.id)}" aria-label="Dismiss" title="Dismiss" aria-describedby="${titleId}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>`;
             list.append(article);
         });
-        app.querySelector('[data-notification-empty]').hidden = items.length > 0;
+        const empty = app.querySelector('[data-notification-empty]');
+        empty.hidden = items.length > 0;
+        // Nothing left at all reads as "caught up"; an empty filter says so instead.
+        empty.textContent = notifications.some((item) => !state.dismissed.includes(item.id)) ? 'No notifications in this view.' : 'You’re all caught up.';
         updateCounts();
     }
 
@@ -162,18 +167,31 @@ if (app) {
         renderList();
     }));
 
-    channelButtons.forEach((button) => button.addEventListener('click', () => {
-        activeChannel = button.dataset.channel;
-        channelButtons.forEach((channel) => channel.setAttribute('aria-pressed', String(channel === button)));
-        activeFilter = 'all';
-        filterButtons.forEach((filter) => filter.setAttribute('aria-pressed', String(filter.dataset.filter === 'all')));
-        renderList();
-    }));
+    // In-app / Email tabs: the In-app panel lists notifications, the Email panel shows the email preferences.
+    // Arrow keys, Home and End move between the tabs (WAI-ARIA tabs pattern, automatic activation).
+    const selectTab = (tab, focus = false) => {
+        channelButtons.forEach((channel) => {
+            const selected = channel === tab;
+            channel.setAttribute('aria-selected', String(selected));
+            channel.tabIndex = selected ? 0 : -1;
+            app.querySelector(`[data-channel-panel="${channel.dataset.channel}"]`).classList.toggle('is-inactive', !selected);
+        });
+        if (focus) tab.focus();
+    };
+    channelButtons.forEach((button, index) => {
+        button.addEventListener('click', () => selectTab(button));
+        button.addEventListener('keydown', (event) => {
+            const last = channelButtons.length - 1;
+            const next = { ArrowRight: index === last ? 0 : index + 1, ArrowLeft: index === 0 ? last : index - 1, Home: 0, End: last }[event.key];
+            if (next === undefined) return;
+            event.preventDefault();
+            selectTab(channelButtons[next], true);
+        });
+    });
 
     roleSelect.addEventListener('change', () => {
         store.activeRole = roleSelect.value;
-        activeChannel = 'in-app';
-        channelButtons.forEach((channel) => channel.setAttribute('aria-pressed', String(channel.dataset.channel === 'in-app')));
+        selectTab(channelButtons[0]);
         activeFilter = 'all';
         filterButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.filter === 'all')));
         if (detail.open) detail.close();
